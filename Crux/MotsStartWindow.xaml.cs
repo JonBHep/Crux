@@ -22,7 +22,7 @@ public partial class MotsStartWindow : Window
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            ClassUiServices.SetBusyState();
+            UiServices.SetBusyState();
             motList.SaveData();
         }
 

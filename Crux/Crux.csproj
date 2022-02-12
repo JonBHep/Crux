@@ -9,4 +9,14 @@
         <NeutralLanguage>en-GB</NeutralLanguage>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Reference Include="Solus, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\..\..\..\..\Common\SolusDll\Solus.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="MotEditor.xaml~" />
+    </ItemGroup>
+
 </Project>

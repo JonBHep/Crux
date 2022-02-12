@@ -1,0 +1,40 @@
+﻿<Window x:Class="Crux.MotMaker"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:Crux"
+        mc:Ignorable="d"
+        Title="Password generator" Height="280" Width="600" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" ContentRendered="Window_ContentRendered" ShowInTaskbar="False" SizeToContent="Height">
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"></RowDefinition>
+            <RowDefinition Height="24"/>
+            <RowDefinition Height="24"/>
+            <RowDefinition Height="24"/>
+            <RowDefinition Height="24"/>
+            <RowDefinition Height="24"/>
+            <RowDefinition Height="32"/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition Height="10"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="1" Margin="8 0 0 0">Include</TextBlock>
+        <CheckBox Grid.Row="2" x:Name="UpperCaseCheckBox" Margin="8 0" VerticalAlignment="Center" VerticalContentAlignment="Center" IsThreeState="False" IsChecked="True" Content="Upper case letters"/>
+        <CheckBox x:Name="LowerCaseCheckBox" Grid.Row="3" Margin="8 0" VerticalAlignment="Center" Content="Lower case letters" IsThreeState="False" IsChecked="True"/>
+        <CheckBox x:Name="NumberCheckBox" Grid.Row="4" Margin="8 0" VerticalAlignment="Center" IsThreeState="False" IsChecked="True" Content="Numbers"/>
+        <CheckBox x:Name="SymbolCheckBox" Grid.Row="5" Margin="8 0" VerticalAlignment="Center" IsThreeState="False" IsChecked="True" Content="Symbols"/>
+        <StackPanel Grid.Row="6" Orientation="Horizontal">
+            <TextBox x:Name="NumTextBox" Margin="8 0" Width="50" Text="0" VerticalAlignment="Center" TextChanged="NumTextBox_TextChanged"/>
+            <Button Margin="6,6,2,6" Content="˄" Width="20" Click="UpButton_Click"/>
+            <Button Margin="2,6,0,6"  Content="˅" Width="20" Click="DownButton_Click"/>
+        </StackPanel>
+        <Button Grid.Row="7" Margin="8 4" Padding="12 4" Width="80" VerticalAlignment="Center" HorizontalAlignment="Left" Click="GenerateButton_Click" Content="Generate"/>
+        <DockPanel Grid.Row="8" LastChildFill="False">
+            <TextBlock x:Name="PasswordTextBlock" Margin="8 4" Padding="8 5" FontFamily="Lucida Console" FontSize="14" FontWeight="Bold" Foreground="Maroon" Background="OldLace" VerticalAlignment="Center" MinWidth="144"><Run Text="Password"/></TextBlock>
+            <Button x:Name="CopyButton" Margin="8 0" Padding="12 4" VerticalAlignment="Center" Width="80" Click="CopyButton_Click" Content="Copy"/>
+            <Button x:Name="UseButton" Margin="8 0" Padding="12 4" VerticalAlignment="Center" FontWeight="Bold" Width="80" Click="UseButton_Click" Content="Use"/>
+            <Button x:Name="buttonCancel" DockPanel.Dock="Right" Margin="8 0" Padding="12 4" Width="80" VerticalAlignment="Center" IsCancel="True" Content="Cancel"/>
+        </DockPanel>
+    </Grid>
+</Window>
