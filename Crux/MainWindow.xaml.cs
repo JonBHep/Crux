@@ -24,5 +24,61 @@ namespace Crux
         {
             InitializeComponent();
         }
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            string path = Jbh.AppManager.DataPath;
+            path = System.IO.Path.Combine(path, "JohnWells1946.jpg");
+            Uri uri = new Uri(path, UriKind.Absolute);
+            BitmapImage bmi = new BitmapImage();
+            bmi.BeginInit();
+            bmi.UriSource = uri;
+            bmi.EndInit();
+            imageBackground.Source = bmi;
+            imageBackground.Stretch = Stretch.None;
+        }
+                
+        private void ButtonPasswords_Click(object sender, RoutedEventArgs e)
+        {
+            // MotStartWindow w = new MotStartWindow()
+            // {
+            //     Owner = this
+            // };
+            // w.ShowDialog();
+        }
+
+        private void ButtonAccounts_Click(object sender, RoutedEventArgs e)
+        {
+            // PortfolioStartWindow w = new PortfolioStartWindow()
+            // {
+            //     Owner = this
+            // };
+            // w.ShowDialog();
+        }
+
+        private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            // windowAbout w = new windowAbout
+            // {
+            //     Owner = this
+            // };
+            // w.ShowDialog();
+        }
+
+        private void TextBlock_MouseDown_1(object sender, MouseButtonEventArgs e)
+        {
+            Close();
+        }
+
+        private void TextBlock_MouseEnter(object sender, MouseEventArgs e)
+        {
+            TextBlock tb = sender as TextBlock;
+            tb.FontWeight = FontWeights.Bold;
+        }
+
+        private void TextBlock_MouseLeave(object sender, MouseEventArgs e)
+        {
+            TextBlock tb = sender as TextBlock;
+            tb.FontWeight = FontWeights.Normal;
+        }
     }
 }

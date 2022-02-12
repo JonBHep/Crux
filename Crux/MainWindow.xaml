@@ -5,8 +5,44 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Crux"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Crux" Height="440" Width="480" AllowsTransparency="True" Background="Transparent" Loaded="Window_Loaded" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" WindowStyle="None">
     <Grid>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Border HorizontalAlignment="Left" CornerRadius="24 24 0 0">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0.5 0" EndPoint="0.5 1">
+                    <GradientStopCollection>
+                        <GradientStop Offset="0" Color="Black"/>
+                        <GradientStop Offset="0.8" Color="SlateGray"/>
+                        <GradientStop Offset="1" Color="SlateGray"/>
+                    </GradientStopCollection>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Grid Margin="24 8 24 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"></ColumnDefinition>
+                    <ColumnDefinition Width="80"></ColumnDefinition>
+                    <ColumnDefinition Width="80"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock FontFamily="AR Julian" FontSize="18" Foreground="Ivory">Crux - JBH data</TextBlock>
+                <Border Grid.Column="1" Width="70" Margin="2" BorderBrush="Ivory" BorderThickness="1" CornerRadius="3" Height="24" VerticalAlignment="Center">
+                    <TextBlock Foreground="Ivory" HorizontalAlignment="Center" VerticalAlignment="Center" MouseDown="TextBlock_MouseDown" MouseEnter="TextBlock_MouseEnter" MouseLeave="TextBlock_MouseLeave">About</TextBlock>
+                </Border>
+                <Border Grid.Column="2" Width="70" BorderBrush="Ivory" BorderThickness="1" CornerRadius="3" Height="24" VerticalAlignment="Center">
+                    <TextBlock Foreground="Ivory" HorizontalAlignment="Center" VerticalAlignment="Center" MouseDown="TextBlock_MouseDown_1" MouseEnter="TextBlock_MouseEnter" MouseLeave="TextBlock_MouseLeave"  >Close</TextBlock>
+                </Border>
+            </Grid>
+            
+        </Border>
+        <Grid Grid.Row="1" Background="SlateGray">
+            <Image x:Name="imageBackground" Margin="2"/>
+            <Canvas x:Name="ParentCanvas" Margin="2">
+                <Button Padding="16 4" x:Name="buttonAccounts" Background="Transparent" Canvas.Right="24" Canvas.Top="16" FontFamily="Lucida Console" FontSize="14" Content="Accounts, policies and services" Click="ButtonAccounts_Click"/>
+                <Button Padding="16 4" x:Name="buttonPasswords" Background="Transparent" Canvas.Right="24" Canvas.Top="66" Content="Passwords" FontFamily="Lucida Console" FontSize="14" Click="ButtonPasswords_Click"/>
+            </Canvas>
+        </Grid>
     </Grid>
 </Window>
