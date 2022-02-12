@@ -1,0 +1,119 @@
+﻿<Window x:Class="Crux.MotsStartWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:Crux"
+        mc:Ignorable="d"
+        Title="Passwords" Height="800" Width="1200" WindowStartupLocation="CenterScreen" ShowInTaskbar="False" ContentRendered="Window_ContentRendered" Closing="Window_Closing" Loaded="Window_Loaded">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="120"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <DockPanel Grid.ColumnSpan="2">
+            <TextBlock x:Name="textblockFilterCaption" Margin="8 2" VerticalAlignment="Center">Filter</TextBlock>
+            <TextBox x:Name="textboxFilter" Margin="8 2" Width="80" VerticalAlignment="Center" TextChanged="TextboxFilter_TextChanged"></TextBox>
+            <Button x:Name="buttonClear" Margin="8 2" Padding="8 2" VerticalAlignment="Center" Click="ButtonClear_Click" >Clear</Button>
+            <TextBlock x:Name="textblockCount" Margin="8 2" VerticalAlignment="Center" Foreground="CornflowerBlue" FontSize="14" FontFamily="Consolas">entries</TextBlock>
+            <TextBlock Margin="8 2" VerticalAlignment="Center" TextAlignment="Left" Foreground="Crimson" FontSize="14" FontFamily="Consolas">For travelling, note key passwords in Eric's List in OneDrive/PersonalVault</TextBlock>
+        </DockPanel>
+        <TabControl x:Name="PasswordTabControl" Grid.Row="1">
+
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock Text="Favourite" Margin="8 1" MinWidth="60" FontFamily="Consolas"></TextBlock>
+                </TabItem.Header>
+                <DockPanel>
+                    <DockPanel DockPanel.Dock="Top" LastChildFill="False" Height="24" Background="Ivory">
+                        <TextBlock FontFamily="Consolas" DockPanel.Dock="Right" VerticalAlignment="Center" Width="90" Margin="0 0 28 0" Foreground="Firebrick">Accessed</TextBlock>
+                        <TextBlock FontFamily="Consolas" DockPanel.Dock="Right" VerticalAlignment="Center" Width="90" >Password</TextBlock>
+                        <TextBlock FontFamily="Consolas" DockPanel.Dock="Right" VerticalAlignment="Center" Width="90" Foreground="Teal">Updated</TextBlock>
+                        <TextBlock FontFamily="Consolas" DockPanel.Dock="Right" VerticalAlignment="Center" Width="60" >Items</TextBlock>
+                    </DockPanel>
+                    <ListBox x:Name="FavouriteListBox" MouseDoubleClick="ListBox_MouseDoubleClick" SelectionChanged="ListBox_SelectionChanged"></ListBox>
+                </DockPanel>
+            </TabItem>
+
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock Text="Recent" Margin="8 1" MinWidth="60" FontFamily="Consolas"></TextBlock>
+                </TabItem.Header>
+                <DockPanel>
+                    <DockPanel DockPanel.Dock="Top" LastChildFill="False" Height="24" Background="Ivory">
+                        <TextBlock FontFamily="Consolas" DockPanel.Dock="Right" VerticalAlignment="Center" Width="90" Margin="0 0 28 0" Foreground="Firebrick">Accessed</TextBlock>
+                        <TextBlock FontFamily="Consolas" DockPanel.Dock="Right" VerticalAlignment="Center" Width="90" >Password</TextBlock>
+                        <TextBlock FontFamily="Consolas" DockPanel.Dock="Right" VerticalAlignment="Center" Width="90" Foreground="Teal">Updated</TextBlock>
+                        <TextBlock FontFamily="Consolas" DockPanel.Dock="Right" VerticalAlignment="Center" Width="60" >Items</TextBlock>
+                    </DockPanel>
+                    <ListBox x:Name="RecentListBox" MouseDoubleClick="ListBox_MouseDoubleClick" SelectionChanged="ListBox_SelectionChanged"></ListBox>
+                </DockPanel>
+
+            </TabItem>
+
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock Text="All" Margin="8 1" MinWidth="60" FontFamily="Consolas"></TextBlock>
+                </TabItem.Header>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Height="24" Width="24" Tag="A" Margin="1" Click="LetterButton_Click">A</Button>
+                        <Button Height="24" Width="24" Tag="B" Margin="1" Click="LetterButton_Click">B</Button>
+                        <Button Height="24" Width="24" Tag="C" Margin="1" Click="LetterButton_Click">C</Button>
+                        <Button Height="24" Width="24" Tag="D" Margin="1" Click="LetterButton_Click">D</Button>
+                        <Button Height="24" Width="24" Tag="E" Margin="1" Click="LetterButton_Click">E</Button>
+                        <Button Height="24" Width="24" Tag="F" Margin="1" Click="LetterButton_Click">F</Button>
+                        <Button Height="24" Width="24" Tag="G" Margin="1" Click="LetterButton_Click">G</Button>
+                        <Button Height="24" Width="24" Tag="H" Margin="1" Click="LetterButton_Click">H</Button>
+                        <Button Height="24" Width="24" Tag="I" Margin="1" Click="LetterButton_Click">I</Button>
+                        <Button Height="24" Width="24" Tag="J" Margin="1" Click="LetterButton_Click">J</Button>
+                        <Button Height="24" Width="24" Tag="K" Margin="1" Click="LetterButton_Click">K</Button>
+                        <Button Height="24" Width="24" Tag="L" Margin="1" Click="LetterButton_Click">L</Button>
+                        <Button Height="24" Width="24" Tag="M" Margin="1" Click="LetterButton_Click">M</Button>
+                        <Button Height="24" Width="24" Tag="N" Margin="1" Click="LetterButton_Click">N</Button>
+                        <Button Height="24" Width="24" Tag="O" Margin="1" Click="LetterButton_Click">O</Button>
+                        <Button Height="24" Width="24" Tag="P" Margin="1" Click="LetterButton_Click">P</Button>
+                        <Button Height="24" Width="24" Tag="Q" Margin="1" Click="LetterButton_Click">Q</Button>
+                        <Button Height="24" Width="24" Tag="R" Margin="1" Click="LetterButton_Click">R</Button>
+                        <Button Height="24" Width="24" Tag="S" Margin="1" Click="LetterButton_Click">S</Button>
+                        <Button Height="24" Width="24" Tag="T" Margin="1" Click="LetterButton_Click">T</Button>
+                        <Button Height="24" Width="24" Tag="U" Margin="1" Click="LetterButton_Click">U</Button>
+                        <Button Height="24" Width="24" Tag="V" Margin="1" Click="LetterButton_Click">V</Button>
+                        <Button Height="24" Width="24" Tag="W" Margin="1" Click="LetterButton_Click">W</Button>
+                        <Button Height="24" Width="24" Tag="X" Margin="1" Click="LetterButton_Click">X</Button>
+                        <Button Height="24" Width="24" Tag="Y" Margin="1" Click="LetterButton_Click">Y</Button>
+                        <Button Height="24" Width="24" Tag="Z" Margin="1" Click="LetterButton_Click">Z</Button>
+                        <Button Height="24" Width="48" Tag="ALL" Margin="1" Click="LetterButton_Click">ALL</Button>
+                    </StackPanel>
+                    <DockPanel Grid.Row="1" LastChildFill="False" Height="24" Background="Ivory">
+                        <TextBlock FontFamily="Consolas" DockPanel.Dock="Right" VerticalAlignment="Center" Width="90" Margin="0 0 28 0" Foreground="Firebrick">Accessed</TextBlock>
+                        <TextBlock FontFamily="Consolas" DockPanel.Dock="Right" VerticalAlignment="Center" Width="90" >Password</TextBlock>
+                        <TextBlock FontFamily="Consolas" DockPanel.Dock="Right" VerticalAlignment="Center" Width="90" Foreground="Teal">Updated</TextBlock>
+                        <TextBlock FontFamily="Consolas" DockPanel.Dock="Right" VerticalAlignment="Center" Width="60" >Items</TextBlock>
+                    </DockPanel>
+                    <ListBox x:Name="EntireListBox" Grid.Row="2" MouseDoubleClick="ListBox_MouseDoubleClick" SelectionChanged="ListBox_SelectionChanged"></ListBox>
+                </Grid>
+
+            </TabItem>
+        </TabControl>
+
+        <DockPanel Grid.Column="1" Grid.Row="1" LastChildFill="False">
+            <Button x:Name="buttonView" Margin="8 2" DockPanel.Dock="Top" Height="48" Click="ButtonView_Click">View (edit)</Button>
+            <Button x:Name="buttonAdd" Margin="8 24 8 2" DockPanel.Dock="Top" Height="30" Click="ButtonAdd_Click">Add</Button>
+            <Button x:Name="buttonDelete" Margin="8 2" DockPanel.Dock="Top" Height="30" Click="ButtonDelete_Click">Delete</Button>
+            <TextBlock DockPanel.Dock="Top" FontFamily="Consolas" Foreground="Black" Margin="12 12 0 0">Password change</TextBlock>
+            <TextBlock DockPanel.Dock="Top" FontFamily="Consolas" Foreground="Green" Margin="24 4 0 0">recent</TextBlock>
+            <TextBlock DockPanel.Dock="Top" FontFamily="Consolas" Foreground="Red" Margin="24 4 0 0">ageing</TextBlock>
+            <Button x:Name="buttonClose" Margin="8 2 8 6" DockPanel.Dock="Bottom" Style="{StaticResource ButtonClose}" Click="ButtonClose_Click">Close</Button>
+        </DockPanel>
+    </Grid>
+</Window>

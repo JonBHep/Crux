@@ -35,6 +35,7 @@ namespace Crux
             bmi.EndInit();
             imageBackground.Source = bmi;
             imageBackground.Stretch = Stretch.None;
+            // TODO Research embedding images
         }
                 
         private void ButtonPasswords_Click(object sender, RoutedEventArgs e)
