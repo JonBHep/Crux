@@ -19,3 +19,15 @@ C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-w
 C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\ref\Crux.dll
 C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\Crux.pdb
 C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\Crux.genruntimeconfig.cache
+C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\bin\Debug\net6.0-windows\Solus.dll
+C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\bin\Debug\net6.0-windows\Solus.pdb
+C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\MotEditor.g.cs
+C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\MotMaker.g.cs
+C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\MotsStartWindow.g.cs
+C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\MotViewWindow.g.cs
+C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\MotEditor.baml
+C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\MotMaker.baml
+C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\MotsStartWindow.baml
+C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\MotViewWindow.baml
+C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\Crux.csproj.CopyComplete
+C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\App.baml

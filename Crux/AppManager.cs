@@ -102,13 +102,7 @@ namespace Jbh
             }
         }
 
-        private static string RunTimeFile
-        {
-            get
-            {
-                return Path.Combine(DataPath, "_runtime.txt");
-            }
-        }
+        private static string RunTimeFile => Path.Combine(DataPath, "_runtime.txt");
 
         internal static void SetRunStart()
         {

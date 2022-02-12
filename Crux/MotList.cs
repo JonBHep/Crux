@@ -9,30 +9,28 @@ public class MotList
     public const char Mainconnector = '|';
         public const char Pairconnector = '¬';
 
-        private List<Mot> jFiles = new List<Mot>();
-        public Dictionary<string, int> MotDictionary = new Dictionary<string, int>();
-        public List<string> Names { get { return MotDictionary.Keys.ToList(); } }
-        public Mot MotForName(string nom) { return jFiles[ MotDictionary[nom]]; }
-        public int Count
-        {
-            get { return jFiles.Count; }
-        }
-        public int FavouritesCount
+        private readonly List<Mot> _jFiles = new List<Mot>();
+        internal readonly Dictionary<string, int> MotDictionary = new Dictionary<string, int>();
+        internal List<string> Names => MotDictionary.Keys.ToList();
+        internal Mot MotForName(string nom) { return _jFiles[ MotDictionary[nom]]; }
+        internal int Count => _jFiles.Count;
+
+        internal int FavouritesCount
         {
             get
             {
                 int f = 0;
-                foreach (Mot pwf in jFiles) { if (pwf.Favourite) { f++; } }
+                foreach (Mot pwf in _jFiles) { if (pwf.Favourite) { f++; } }
                 return f;
             }
         }
 
-        public void RefreshDictionary()
+        internal void RefreshDictionary()
         {
             MotDictionary.Clear();
-            for(int i=0; i < jFiles.Count; i++)
+            for(int i=0; i < _jFiles.Count; i++)
             {
-                foreach(string titl in jFiles[i].Aliases)
+                foreach(string titl in _jFiles[i].Aliases)
                 {
                     MotDictionary.Add(titl, i);
                 }
@@ -46,8 +44,7 @@ public class MotList
 
         public static bool IsPermittedString(string proposed)
         {
-            bool rv = true;
-            if (proposed.Contains(Mainconnector)) { rv = false; }
+            bool rv = !proposed.Contains(Mainconnector);
             if (proposed.Contains(Pairconnector)) { rv = false; }
             return rv;
         }
@@ -56,9 +53,8 @@ public class MotList
         {
             // Purge oldest backup files if there are more than 99
             const string filespec = "Mots_*.txt";
-            System.IO.FileInfo foundfileinfo;
-            string DataFolder = Jbh.AppManager.DataPath;
-            string[] foundfiles = System.IO.Directory.GetFiles(DataFolder, filespec, System.IO.SearchOption.TopDirectoryOnly);
+            string dataFolder = Jbh.AppManager.DataPath;
+            string[] foundfiles = System.IO.Directory.GetFiles(dataFolder, filespec, System.IO.SearchOption.TopDirectoryOnly);
             while (foundfiles.Count() > 100) // current data plus 99 backups
             {
                 // identify and delete the oldest file
@@ -66,7 +62,7 @@ public class MotList
                 string oldestfile = string.Empty;
                 foreach (string f in foundfiles)
                 {
-                    foundfileinfo = new System.IO.FileInfo(f);
+                    var foundfileinfo = new System.IO.FileInfo(f);
                     if (foundfileinfo.LastWriteTimeUtc < oldestdate)
                     {
                         oldestdate = foundfileinfo.LastWriteTimeUtc;
@@ -74,7 +70,7 @@ public class MotList
                     }
                 }
                 if (!string.IsNullOrWhiteSpace(oldestfile)) { System.IO.File.Delete(oldestfile); }
-                foundfiles = System.IO.Directory.GetFiles(DataFolder, filespec, System.IO.SearchOption.TopDirectoryOnly);
+                foundfiles = System.IO.Directory.GetFiles(dataFolder, filespec, System.IO.SearchOption.TopDirectoryOnly);
             }
             // Create a backup file by renaming the data file which is about to be overwritten
             string filepath = System.IO.Path.Combine(Jbh.AppManager.DataPath, "Mots.txt");
@@ -93,65 +89,66 @@ public class MotList
             try
             {
                 string filepath = System.IO.Path.Combine(Jbh.AppManager.DataPath, "Mots.txt");
-                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(filepath))
-                {
-                    foreach (Mot jf in jFiles)
-                    { string p = jf.Specification; string c = Solus.PolyAlphabetic.Encoded(p); sw.WriteLine(c); }
-                }
+                using System.IO.StreamWriter sw = new System.IO.StreamWriter(filepath);
+                foreach (Mot jf in _jFiles)
+                { string p = jf.Specification; string c = Solus.PolyAlphabetic.Encoded(p); sw.WriteLine(c); }
             }
             catch (Exception ex)
             { System.Windows.MessageBox.Show("Data not saved\n\n" + ex.Message, "Crucial", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning); }
         }
 
-        public void LoadData()
+        private void LoadData()
         {
-            jFiles.Clear();
+            _jFiles.Clear();
             string filepath = System.IO.Path.Combine(Jbh.AppManager.DataPath, "Mots.txt");
             if (!System.IO.File.Exists(filepath)) { return; }
             using (System.IO.StreamReader sr = new System.IO.StreamReader(filepath))
             {
                 while (!sr.EndOfStream)
                 {
-                    string c = sr.ReadLine();
-                    string p = Solus.PolyAlphabetic.Decoded(c);
-                    Mot jf = new Mot()
+                    string? rd = sr.ReadLine();
+                    if (rd is { })
                     {
-                        Specification = p
-                    };
-                    jFiles.Add(jf);
+                        string p = Solus.PolyAlphabetic.Decoded(rd);
+                        Mot jf = new Mot()
+                        {
+                            Specification = p
+                        };
+                        _jFiles.Add(jf);
+                    }
                 }
             }
             RefreshDictionary();
         }
 
-        
-        public void AddItem(Mot newItem)
+
+        internal void AddItem(Mot newItem)
         {
-            jFiles.Add(newItem);
+            _jFiles.Add(newItem);
             RefreshDictionary();
         }
 
         public void DeleteItem(string caption)
         {
             int y= MotDictionary[caption];
-            jFiles.RemoveAt(y);
+            _jFiles.RemoveAt(y);
             RefreshDictionary();
         }
 
         public List<string> Top20()
         {
             List<DateTime> datelist = new List<DateTime>();
-            foreach (Mot pwf in jFiles) { datelist.Add(pwf.Accessed); }
+            foreach (Mot pwf in _jFiles) { datelist.Add(pwf.Accessed); }
             datelist.Sort();
             datelist.Reverse();
-            int pointer = Math.Min(25, jFiles.Count);
+            int pointer = Math.Min(25, _jFiles.Count);
             DateTime criterion = datelist[pointer - 1];
             List<string> recently = new List<string>();
-            for (int t = 0; t < jFiles.Count; t++)
+            foreach (var t1 in _jFiles)
             {
-                if (jFiles[t].Accessed >= criterion) 
+                if (t1.Accessed >= criterion) 
                 {
-                    foreach(string n in jFiles[t].Aliases)
+                    foreach(string n in t1.Aliases)
                     {
                         recently.Add(n);
                     }

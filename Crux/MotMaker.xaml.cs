@@ -12,7 +12,7 @@ public partial class MotMaker : Window
     }
     private int lengthValue;
 
-        public string GeneratedPassword        { get { return PasswordTextBlock.Text; } }
+        public string GeneratedPassword => PasswordTextBlock.Text;
 
         private int PasswordLength
         {

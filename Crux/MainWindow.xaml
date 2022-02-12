@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Crux"
         mc:Ignorable="d"
-        Title="Crux" Height="440" Width="480" AllowsTransparency="True" Background="Transparent" Loaded="Window_Loaded" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" WindowStyle="None">
+        Title="Crux" Height="440" Width="480" AllowsTransparency="True" Background="Transparent" Loaded="Window_Loaded" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" WindowStyle="None"
+        x:ClassModifier="internal">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"></RowDefinition>

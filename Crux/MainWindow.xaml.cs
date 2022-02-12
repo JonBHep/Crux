@@ -18,9 +18,9 @@ namespace Crux
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    internal partial class MainWindow : Window
     {
-        public MainWindow()
+        internal MainWindow()
         {
             InitializeComponent();
         }
@@ -40,11 +40,11 @@ namespace Crux
                 
         private void ButtonPasswords_Click(object sender, RoutedEventArgs e)
         {
-            // MotStartWindow w = new MotStartWindow()
-            // {
-            //     Owner = this
-            // };
-            // w.ShowDialog();
+            MotsStartWindow w = new MotsStartWindow()
+            {
+                Owner = this
+            };
+            w.ShowDialog();
         }
 
         private void ButtonAccounts_Click(object sender, RoutedEventArgs e)

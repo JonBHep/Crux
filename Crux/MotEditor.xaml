@@ -3,10 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:local="clr-namespace:Crux"
         mc:Ignorable="d"
     
-        Title="Password editor" FontFamily="Consolas" Height="800" Width="1200" WindowStartupLocation="CenterScreen" ContentRendered="Window_ContentRendered" Loaded="Window_Loaded" ShowInTaskbar="False">
+        Title="Password editor" FontFamily="Consolas" Height="800" Width="1200" WindowStartupLocation="CenterScreen" ContentRendered="Window_ContentRendered" 
+        Loaded="Window_Loaded" ShowInTaskbar="False">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="32"/>
@@ -23,7 +23,7 @@
         <DockPanel>
             <TextBlock DockPanel.Dock="Left" Margin="4 0" VerticalAlignment="Center">Titles</TextBlock>
             <Button x:Name="AddTitleButton" DockPanel.Dock="Right" Margin="6 0" VerticalAlignment="Center" Width="60" Height="23" Click="AddTitleButton_Click">Add</Button>
-            <TextBox x:Name="textboxTitle" Margin="4" Padding="4" VerticalAlignment="Center" FontFamily="Lucida Console" TextChanged="textboxTitle_TextChanged"/>
+            <TextBox x:Name="TextboxTitle" Margin="4" Padding="4" VerticalAlignment="Center" FontFamily="Lucida Console" TextChanged="textboxTitle_TextChanged"/>
         </DockPanel>
         <DockPanel Grid.Row="1">
             <Button x:Name="RemoveTitleButton" DockPanel.Dock="Right" Margin="6 0" VerticalAlignment="Center" Width="60" Height="23" Click="RemoveTitleButton_Click">Remove</Button>
@@ -32,31 +32,31 @@
         <TextBlock Grid.Row="2" Margin="4 0" VerticalAlignment="Center">Data items</TextBlock>
         <ListBox x:Name="PasswordListBox" Grid.Row="3" Margin="4" SelectionChanged="PasswordListBox_SelectionChanged"></ListBox>
         <StackPanel Grid.Row="4" Orientation="Horizontal">
-            <Button x:Name="buttonMoveUp" Margin="4" Padding="4" VerticalAlignment="Center" Width="80" Click="ButtonMoveUp_Click" Content="Move up"/>
-            <Button x:Name="buttonDelete" Margin="4" Padding="4" VerticalAlignment="Center" Width="80" Click="ButtonDelete_Click" Content="Delete"/>
-            <Button x:Name="buttonEdit" Margin="4" Padding="4" VerticalAlignment="Center" Width="80" Content="Edit" Click="ButtonEdit_Click"/>
+            <Button x:Name="ButtonMoveUp" Margin="4" Padding="4" VerticalAlignment="Center" Width="80" Click="ButtonMoveUp_Click" Content="Move up"/>
+            <Button x:Name="ButtonDelete" Margin="4" Padding="4" VerticalAlignment="Center" Width="80" Click="ButtonDelete_Click" Content="Delete"/>
+            <Button x:Name="ButtonEdit" Margin="4" Padding="4" VerticalAlignment="Center" Width="80" Content="Edit" Click="ButtonEdit_Click"/>
         </StackPanel>
         <DockPanel Grid.Row="5">
             <TextBlock DockPanel.Dock="Left" Margin="4" Padding="4" VerticalAlignment="Center" Width="60"><Run Text="Caption"/></TextBlock>
-            <Button x:Name="buttonHotmail" DockPanel.Dock="Right" Margin="4" Padding="4" VerticalAlignment="Center" Click="ButtonHotmail_Click" Content="Insert Hotmail email address" Focusable="False"/>
-            <ComboBox x:Name="comboboxKey" Margin="4" Padding="4" VerticalAlignment="Center" IsEditable="True" FontFamily="Lucida Console" SelectionChanged="ComboboxKey_SelectionChanged" PreviewKeyUp="comboboxKey_PreviewKeyUp"/>
+            <Button DockPanel.Dock="Right" Margin="4" Padding="4" VerticalAlignment="Center" Click="ButtonHotmail_Click" Content="Insert Hotmail email address" Focusable="False"/>
+            <ComboBox x:Name="ComboboxKey" Margin="4" Padding="4" VerticalAlignment="Center" IsEditable="True" FontFamily="Lucida Console" SelectionChanged="ComboboxKey_SelectionChanged" PreviewKeyUp="comboboxKey_PreviewKeyUp"/>
         </DockPanel>
         <DockPanel Grid.Row="6">
             <TextBlock DockPanel.Dock="Left" Margin="4" Padding="4" VerticalAlignment="Center" Width="60"><Run Text="Value"/></TextBlock>
-            <Button x:Name="buttonGeneratePassword" DockPanel.Dock="Right" Margin="4" Padding="4" VerticalAlignment="Center" Click="buttonGeneratePassword_Click" Content="Generate a password" Focusable="False"/>
-            <TextBox x:Name="textboxValue" Margin="4" Padding="4" VerticalAlignment="Center" VerticalContentAlignment="Center" FontFamily="Lucida Console" TextChanged="textboxValue_TextChanged"/>
+            <Button DockPanel.Dock="Right" Margin="4" Padding="4" VerticalAlignment="Center" Click="buttonGeneratePassword_Click" Content="Generate a password" Focusable="False"/>
+            <TextBox x:Name="TextboxValue" Margin="4" Padding="4" VerticalAlignment="Center" VerticalContentAlignment="Center" FontFamily="Lucida Console" TextChanged="textboxValue_TextChanged"/>
         </DockPanel>
         <DockPanel Grid.Row="7" LastChildFill="False">
             <CheckBox x:Name="LinkCheckBox" IsThreeState="False" DockPanel.Dock="Left" Margin="72 6 0 6" VerticalAlignment="Center" VerticalContentAlignment="Center" Content="Weblink"/>
             <TextBlock Margin="8 0 0 0" Foreground="DarkSlateBlue" VerticalAlignment="Center"><Run Text="Tick 'Weblink' for a web address which can be launched when viewing the Password file"/></TextBlock>
         </DockPanel>
         
-        <Button x:Name="buttonAdd" Grid.Row="8" Margin="72 0 0 0" Padding="4" HorizontalAlignment="Left" VerticalAlignment="Center" Width="80" IsDefault="True" Click="ButtonAdd_Click" Content="Add"/>
+        <Button x:Name="ButtonAdd" Grid.Row="8" Margin="72 0 0 0" Padding="4" HorizontalAlignment="Left" VerticalAlignment="Center" Width="80" IsDefault="True" Click="ButtonAdd_Click" Content="Add"/>
         
         <DockPanel Grid.Row="9" LastChildFill="False">
             <Button x:Name="SaveButton" DockPanel.Dock="Right" Style="{StaticResource ButtonClose}" Margin="4 4 4 8" VerticalAlignment="Center" Click="SaveButton_Click"/>
-            <Button x:Name="buttonCancel" DockPanel.Dock="Right" Margin="4 4 4 8" Padding="4" VerticalAlignment="Center" Width="80" Click="ButtonCancel_Click" Content="Cancel"/>
-            <CheckBox x:Name="checkboxFavourite" IsThreeState="False" DockPanel.Dock="Right" Margin="0 0 8 0" VerticalAlignment="Center" VerticalContentAlignment="Center" Checked="checkboxFavourite_Checked"  Unchecked="checkboxFavourite_Unchecked" Content="Favourite"/>
+            <Button DockPanel.Dock="Right" Margin="4 4 4 8" Padding="4" VerticalAlignment="Center" Width="80" Click="ButtonCancel_Click" Content="Cancel"/>
+            <CheckBox x:Name="CheckboxFavourite" IsThreeState="False" DockPanel.Dock="Right" Margin="0 0 8 0" VerticalAlignment="Center" VerticalContentAlignment="Center" Checked="checkboxFavourite_Checked"  Unchecked="checkboxFavourite_Unchecked" Content="Favourite"/>
         </DockPanel>
     </Grid>
     

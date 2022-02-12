@@ -7,7 +7,7 @@ using System.Windows.Media;
 
 namespace Crux;
 
-public partial class MotEditor : Window
+public partial class MotEditor
 {
    internal MotEditor(string passwordSpec, MotList ml)
         {
@@ -24,13 +24,13 @@ public partial class MotEditor : Window
         
         private void Window_ContentRendered(object sender, EventArgs e)
         {
-            comboboxKey.Items.Clear();
-            comboboxKey.Items.Add("Account number");
-            comboboxKey.Items.Add("Email");
-            comboboxKey.Items.Add("Login name");
-            comboboxKey.Items.Add("Password");
-            comboboxKey.Items.Add("User ID");
-            comboboxKey.Items.Add("Website");
+            ComboboxKey.Items.Clear();
+            ComboboxKey.Items.Add("Account number");
+            ComboboxKey.Items.Add("Email");
+            ComboboxKey.Items.Add("Login name");
+            ComboboxKey.Items.Add("Password");
+            ComboboxKey.Items.Add("User ID");
+            ComboboxKey.Items.Add("Website");
             _somethingAltered = false;
         }
 
@@ -46,9 +46,9 @@ public partial class MotEditor : Window
             Left = Xm;
             Top = Ym;
 
-            textboxTitle.Focus();
-            textboxTitle.SelectAll();
-            checkboxFavourite.IsChecked = _tempPasswordFile.Favourite;
+            TextboxTitle.Focus();
+            TextboxTitle.SelectAll();
+            CheckboxFavourite.IsChecked = _tempPasswordFile.Favourite;
 
             RefreshLists();
             SaveButton.IsEnabled = false;
@@ -86,10 +86,10 @@ public partial class MotEditor : Window
                 ListBoxItem item = new ListBoxItem() { Content = panel };
                 PasswordListBox.Items.Add(item);
             }
-            comboboxKey.Text = string.Empty;
-            textboxValue.Clear();
+            ComboboxKey.Text = string.Empty;
+            TextboxValue.Clear();
             Enablement();
-            if (PasswordListBox.Items.Count > 0) { comboboxKey.Focus(); } else { textboxTitle.Focus(); }
+            if (PasswordListBox.Items.Count > 0) { ComboboxKey.Focus(); } else { TextboxTitle.Focus(); }
         }
         private void Enablement()
         {
@@ -97,24 +97,24 @@ public partial class MotEditor : Window
             bool highitemselected = false;
             if (itemselected) { highitemselected = PasswordListBox.SelectedIndex > 0; }
             bool textinboxes = true;
-            if (string.IsNullOrWhiteSpace(comboboxKey.Text)) { textinboxes = false; }
-            if (string.IsNullOrWhiteSpace(textboxValue.Text)) { textinboxes = false; }
-            buttonAdd.IsEnabled = textinboxes;
-            buttonDelete.IsEnabled = itemselected;
-            buttonEdit.IsEnabled = itemselected;
-            buttonMoveUp.IsEnabled = highitemselected;
+            if (string.IsNullOrWhiteSpace(ComboboxKey.Text)) { textinboxes = false; }
+            if (string.IsNullOrWhiteSpace(TextboxValue.Text)) { textinboxes = false; }
+            ButtonAdd.IsEnabled = textinboxes;
+            ButtonDelete.IsEnabled = itemselected;
+            ButtonEdit.IsEnabled = itemselected;
+            ButtonMoveUp.IsEnabled = highitemselected;
             SaveButton.IsEnabled = (TitlesListBox.Items.Count>0) && (PasswordListBox.Items.Count > 0) && _somethingAltered;
         }
 
         private void PasswordListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string addcaption = (string)buttonAdd.Content;
+            string addcaption = (string)ButtonAdd.Content;
             if (addcaption == "Change")
             {
                 // cancel edit if selected item changes
-                buttonAdd.Content = "Add";
-                comboboxKey.Text = string.Empty;
-                textboxValue.Text = string.Empty;
+                ButtonAdd.Content = "Add";
+                ComboboxKey.Text = string.Empty;
+                TextboxValue.Text = string.Empty;
             }
             Enablement();
         }
@@ -141,7 +141,7 @@ public partial class MotEditor : Window
 
         private void textboxTitle_TextChanged(object sender, TextChangedEventArgs e)
         {
-            AddTitleButton.IsEnabled = textboxTitle.Text.Trim().Length > 0;
+            AddTitleButton.IsEnabled = TextboxTitle.Text.Trim().Length > 0;
         }
 
         private void buttonGeneratePassword_Click(object sender, RoutedEventArgs e)
@@ -150,7 +150,7 @@ public partial class MotEditor : Window
             {
                 Owner = this
             };
-            if (mmkr.ShowDialog() == true) { textboxValue.Text = mmkr.GeneratedPassword; }
+            if (mmkr.ShowDialog() == true) { TextboxValue.Text = mmkr.GeneratedPassword; }
         }
 
         private void checkboxFavourite_Checked(object sender, RoutedEventArgs e)
@@ -167,21 +167,21 @@ public partial class MotEditor : Window
 
         private void ButtonHotmail_Click(object sender, RoutedEventArgs e)
         {
-            comboboxKey.Text = "Email";
+            ComboboxKey.Text = "Email";
             ComboReaction();
-            textboxValue.Text = "jonathanhepworth@hotmail.co.uk";
+            TextboxValue.Text = "jonathanhepworth@hotmail.co.uk";
         }
 
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
-            string keytext = comboboxKey.Text.Trim();
-            string valtext = textboxValue.Text.Trim();
+            string keytext = ComboboxKey.Text.Trim();
+            string valtext = TextboxValue.Text.Trim();
             bool ok = true;
             if (!MotList.IsPermittedString(keytext)) { ok = false; }
             if (!MotList.IsPermittedString(valtext)) { ok = false; }
             if (!ok) { MessageBox.Show("Invalid characters in input strings", "Invalid input", MessageBoxButton.OK, MessageBoxImage.Warning); return; }
 
-            if ((string)buttonAdd.Content == "Add")
+            if ((string)ButtonAdd.Content == "Add")
             {
                 _tempPasswordFile.AddElement(keytext, valtext, LinkCheckBox.IsChecked.Value);
             }
@@ -191,7 +191,7 @@ public partial class MotEditor : Window
                 {
                     int i = PasswordListBox.SelectedIndex;
                     _tempPasswordFile.AmendElement(i, keytext, valtext, LinkCheckBox.IsChecked.Value);
-                    buttonAdd.Content = "Add";
+                    ButtonAdd.Content = "Add";
                 }
             }
             _somethingAltered = true;
@@ -229,7 +229,7 @@ public partial class MotEditor : Window
             if (answ == MessageBoxResult.Cancel) { return; }
             if (answ == MessageBoxResult.Yes) { _tempPasswordFile.PasswordChanged = DateTime.Today; }
             _tempPasswordFile.Updated = DateTime.Today.ToString("dd MMM yyyy");
-            _tempPasswordFile.Favourite = checkboxFavourite.IsChecked.Value;
+            _tempPasswordFile.Favourite = CheckboxFavourite.IsChecked.Value;
             _tempPasswordFile.Accessed = DateTime.Now;
             editedSpec = _tempPasswordFile.Specification;
             DialogResult = true;
@@ -239,25 +239,25 @@ public partial class MotEditor : Window
         {
             if (PasswordListBox.SelectedItem is null) { return; }
             int i = PasswordListBox.SelectedIndex;
-            comboboxKey.Text = _tempPasswordFile.Element[i].Caption;
-            textboxValue.Text = _tempPasswordFile.Element[i].Content;
+            ComboboxKey.Text = _tempPasswordFile.Element[i].Caption;
+            TextboxValue.Text = _tempPasswordFile.Element[i].Content;
             LinkCheckBox.IsChecked = _tempPasswordFile.Element[i].IsLink;
-            buttonAdd.Content = "Change";
+            ButtonAdd.Content = "Change";
         }
 
         private void AddTitleButton_Click(object sender, RoutedEventArgs e)
         {
-            string nu = textboxTitle.Text.Trim();
+            string nu = TextboxTitle.Text.Trim();
             if (pool.MotDictionary.ContainsKey(nu))
             {
                 MessageBox.Show("Cannot add this caption as it is already in use", Jbh.AppManager.AppName, MessageBoxButton.OK, MessageBoxImage.Hand);
                 return;
             }
             _somethingAltered = true;
-            _tempPasswordFile.Aliases.Add(textboxTitle.Text.Trim());
+            _tempPasswordFile.Aliases.Add(TextboxTitle.Text.Trim());
             _tempPasswordFile.Aliases.Remove("New password file");  // remove placeholder title
             _tempPasswordFile.Aliases.Sort();
-            textboxTitle.Clear();
+            TextboxTitle.Clear();
             RefreshLists();
         }
 
@@ -285,5 +285,6 @@ public partial class MotEditor : Window
         {
             RemoveTitleButton.IsEnabled = TitlesListBox.SelectedIndex >= 0;
         }
+        
         
 }

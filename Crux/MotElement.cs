@@ -26,11 +26,5 @@ public class MotElement
         
     public bool IsLink { get; set; }
 
-    public string Specification
-    {
-        get
-        {
-            return $"{Caption}{MotList.Pairconnector}{Content}{MotList.Pairconnector}{IsLink}";
-        }
-    }
+    public string Specification => $"{Caption}{MotList.Pairconnector}{Content}{MotList.Pairconnector}{IsLink}";
 }
