@@ -708,10 +708,8 @@ public partial class PortfolioStartWindow : Window
 
         private void GiftsButton_Click(object sender, RoutedEventArgs e)
         {
-            // TODO
-            // GiftsWindow win = new GiftsWindow() { Owner = this };
-            // win.ShowDialog();
-
+            GiftsWindow win = new GiftsWindow() { Owner = this };
+            win.ShowDialog();
         }
 
         private void ButtonCards_Click(object sender, RoutedEventArgs e)
