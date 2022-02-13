@@ -248,12 +248,17 @@ public class PortfolioCore
         public void AddTodaysBalances()
         {
             _datedBalances.Add(new ClassDatedBalances(DateTime.Today, (int)Math.Round(LivePoundBalance(), MidpointRounding.ToEven), (int)Math.Round(LiveEuroBalance(), MidpointRounding.ToEven)));
-            // TODO clean list by (a) deleting all but the last entry for a given date (b) deleting any balance whose amount is unchanged from the previous. We may already have implemented this
+            // Here, cleans list by deleting all but the last entry for a given date
+            // On saving to xml, dated balances for which the pound and euro amounts are unchanged since the previous dated balance are forgotten
             List<ClassDatedBalances> reverseList = new List<ClassDatedBalances>();
             int previousDateIndex = 0;
             for (int z = _datedBalances.Count-1; z>=0;z--)
             {
-                if (_datedBalances[z].BalanceDateIndex != previousDateIndex) { reverseList.Add(_datedBalances[z]); previousDateIndex = _datedBalances[z].BalanceDateIndex; }
+                if (_datedBalances[z].BalanceDateIndex != previousDateIndex)
+                {
+                    reverseList.Add(_datedBalances[z]); 
+                    previousDateIndex = _datedBalances[z].BalanceDateIndex;
+                }
             }
             _datedBalances.Clear();
             for (int z = reverseList.Count-1; z >= 0; z--){ _datedBalances.Add(reverseList[z]); }

@@ -1,0 +1,30 @@
+﻿<Window x:Class="Crux.DatedBalancesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        mc:Ignorable="d"
+        ContentRendered="Window_ContentRendered" ShowInTaskbar="False" Loaded="Window_Loaded" MinHeight="200" MinWidth="400">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Background="Cornsilk" Grid.Row="1">
+            <TextBlock Width="80" Margin="12 0 0 0" Padding="4 2" VerticalAlignment="Center" Foreground="DarkMagenta" >Date</TextBlock>
+            <TextBlock Width="80" Padding="4 2" VerticalAlignment="Center" Foreground="SaddleBrown" TextAlignment="Right">Pounds</TextBlock>
+            <TextBlock Width="80" Padding="4 2" VerticalAlignment="Center" Foreground="DarkOliveGreen" TextAlignment="Right" >Euros</TextBlock>
+        </StackPanel>
+        <DockPanel Grid.ColumnSpan="2" LastChildFill="False">
+            <Button x:Name="buttonClose" DockPanel.Dock="Right" Style="{StaticResource ButtonClose}" Click="ButtonClose_Click" Margin="0 0 8 0"/>
+            <CheckBox x:Name="ListLimitedTick" IsThreeState="False" Checked="ListLimitedTick_Checked" Unchecked="ListLimitedTick_Checked" VerticalAlignment="Center" Margin="6 0 0 0" IsChecked="True">List last 2 years</CheckBox>
+        </DockPanel>
+        <ListBox x:Name="BalancesListBox" Grid.Row="2" Margin="4 4 2 4"></ListBox>
+        <Canvas x:Name="canvasGraph" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Margin="0 0 4 4" Background="AliceBlue"></Canvas>
+    </Grid>
+</Window>

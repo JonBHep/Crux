@@ -39,3 +39,13 @@ C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-w
 C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\CardsWindow.g.cs
 C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\GiftsWindow.g.cs
 C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\GiftsWindow.baml
+C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\DossierDetailsWindow.g.cs
+C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\DossierSubDetailsWindow.g.cs
+C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\PortfolioAlertsWindow.g.cs
+C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\PortfolioListWindow.g.cs
+C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\DossierDetailsWindow.baml
+C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\DossierSubDetailsWindow.baml
+C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\PortfolioAlertsWindow.baml
+C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\PortfolioListWindow.baml
+C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\DatedBalancesWindow.baml
+C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\DatedBalancesWindow.g.cs

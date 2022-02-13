@@ -20,4 +20,12 @@
       <None Remove="GiftsWindow.xaml~" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Page Remove="PortfolioDetailsWindow.xaml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="PortfolioDetailsWindow.xaml.cs" />
+    </ItemGroup>
+
 </Project>

@@ -426,7 +426,7 @@ public class PortfolioXml
             Single valueSingle;
             DateTime valueDateTime;
 
-            List<string> ReportedUnknownTags = new List<string>(); // todo review whether this is correctly implemented
+            List<string> ReportedUnknownTags = new List<string>(); 
 
             OnRaisePassMessageEvent(new XmlEventArguments("Starting load"));
 

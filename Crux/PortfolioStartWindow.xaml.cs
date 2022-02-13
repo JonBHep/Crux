@@ -676,34 +676,31 @@ public partial class PortfolioStartWindow : Window
 
         private void ButtonAccounts_Click(object sender, RoutedEventArgs e)
         {
-            // TODO
-            // PortfolioListWindow w = new PortfolioListWindow(classPortfolioDossier.DossierTypeConstants.AccountDossier, _portfolio)
-            // {
-            //     Owner = this
-            // };
-            // w.ShowDialog();
+            PortfolioListWindow w = new PortfolioListWindow(PortfolioDossier.DossierTypeConstants.AccountDossier, _portfolio)
+            {
+                Owner = this
+            };
+            w.ShowDialog();
             ShowCounts();
         }
 
         private void ButtonServices_Click(object sender, RoutedEventArgs e)
         {
-            // TODO
-            // PortfolioListWindow w = new PortfolioListWindow(classPortfolioDossier.DossierTypeConstants.ServiceDossier, _portfolio)
-            // {
-            //     Owner = this
-            // };
-            // w.ShowDialog();
+            PortfolioListWindow w = new PortfolioListWindow(PortfolioDossier.DossierTypeConstants.ServiceDossier, _portfolio)
+            {
+                Owner = this
+            };
+            w.ShowDialog();
             ShowCounts();
         }
 
         private void ButtonDueDates_Click(object sender, RoutedEventArgs e)
         {
-            // TODO
-            // windowPortfolioAlerts w = new windowPortfolioAlerts(_portfolio.DueDates())
-            // {
-            //     Owner = this
-            // };
-            // w.ShowDialog();
+            PortfolioAlertsWindow w = new PortfolioAlertsWindow(_portfolio.DueDates())
+            {
+                Owner = this
+            };
+            w.ShowDialog();
         }
 
         private void GiftsButton_Click(object sender, RoutedEventArgs e)

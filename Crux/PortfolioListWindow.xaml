@@ -1,0 +1,138 @@
+﻿<Window x:Class="Crux.PortfolioListWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:Crux"
+        mc:Ignorable="d"
+        Title="Portfolio list" Height="700" Width="1000" WindowStartupLocation="CenterScreen" ContentRendered="Window_ContentRendered" ResizeMode="NoResize" ShowInTaskbar="False">
+    <Window.Resources>
+
+        <Style TargetType="{x:Type ListViewItem}">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <!--If the HorizontalContentAlignment listviewitem style is not set then all cell contents within the listview will left-align-->
+        </Style>
+
+        <DataTemplate x:Key="datatemplateDossierTitle">
+            <TextBlock x:Name="textblockTitle" FontFamily="Arial" FontSize="12" FontWeight="SemiBold" TextAlignment="Left" Foreground="SaddleBrown" Text="{Binding DossierName}"/>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Obsolete}" Value="True">
+                    <Setter TargetName="textblockTitle" Property="Foreground" Value="Red"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+        <DataTemplate x:Key="datatemplateProvider">
+            <TextBlock x:Name="textblockProvider" FontFamily="Arial" FontSize="12" TextAlignment="Left" Foreground="DarkGreen" Text="{Binding Provider}"/>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Obsolete}" Value="True">
+                    <Setter TargetName="textblockProvider" Property="Foreground" Value="Red"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+        <DataTemplate x:Key="datatemplateAlerts">
+            <TextBlock x:Name="textblockAlerts" FontSize="12" FontWeight="SemiBold" TextAlignment="Center" Foreground="SaddleBrown" Text="{Binding Alerts}"/>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding AlertOverdue}" Value="True">
+                    <Setter TargetName="textblockAlerts" Property="Background" Value="Red"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+        <DataTemplate x:Key="InDocumentTemplate">
+            <CheckBox HorizontalAlignment="Center" IsChecked="{Binding InDocument}" IsEnabled="False"/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="ObsolescenceTemplate">
+            <CheckBox HorizontalAlignment="Center" IsChecked="{Binding Obsolete}" IsEnabled="False"/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="datatemplateOnline">
+            <CheckBox HorizontalAlignment="Center" IsChecked="{Binding Online}" IsEnabled="False"/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="datatemplateAmount">
+            <TextBlock x:Name="textblockAmount" HorizontalAlignment="Right" Text="{Binding Amount}" Foreground="Black" FontWeight="Medium"/>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding BankBalanceOld}" Value="True">
+                    <Setter TargetName="textblockAmount" Property="Foreground" Value="Red"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding BankBalanceToday}" Value="True">
+                    <Setter TargetName="textblockAmount" Property="Foreground" Value="Green"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+        <DataTemplate x:Key="datatemplateAmountDate">
+            <TextBlock x:Name="textblockAmountDate" Text="{Binding AmountDate}" Foreground="Black" HorizontalAlignment="Center" FontWeight="Medium"/>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding BankBalanceOld}" Value="True">
+                    <Setter TargetName="textblockAmountDate" Property="Foreground" Value="Red"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding BankBalanceToday}" Value="True">
+                    <Setter TargetName="textblockAmountDate" Property="Foreground" Value="Green"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="34"/>
+            <RowDefinition Height="34"/>
+        </Grid.RowDefinitions>
+        <ListView x:Name="listviewDossiers" SelectionChanged="ListviewDossiers_SelectionChanged" MouseDoubleClick="ListviewDossiers_MouseDoubleClick">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn x:Name="columnDossier" CellTemplate="{StaticResource datatemplateDossierTitle}" Header="Account"/>
+                    <GridViewColumn x:Name="columnProvider" CellTemplate="{StaticResource datatemplateProvider}"/>
+                    <GridViewColumn x:Name="columnAmount" Header="Amount" CellTemplate="{StaticResource datatemplateAmount}"/>
+                    <GridViewColumn x:Name="columnAmountDate" Header="AmountDate" CellTemplate="{StaticResource datatemplateAmountDate}"/>
+                    <GridViewColumn x:Name="columnAlerts" Header="Alerts" CellTemplate="{StaticResource datatemplateAlerts}"/>
+                    <GridViewColumn x:Name="columnOnline" Header="Online" CellTemplate="{StaticResource datatemplateOnline}"/>
+                    <GridViewColumn x:Name="columnDocument" Header="Document" CellTemplate="{StaticResource InDocumentTemplate}"/>
+                    <GridViewColumn x:Name="columnObsolete" Header="Obsolete" CellTemplate="{StaticResource ObsolescenceTemplate}"/>
+                </GridView>
+            </ListView.View>
+            <ListView.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.ContainerStyle>
+                        <Style TargetType="{x:Type GroupItem}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <Expander IsExpanded="True">
+                                            <Expander.Header>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="DarkGreen" FontSize="14" FontFamily="Arial" VerticalAlignment="Center" />
+                                                    <TextBlock Text="{Binding ItemCount}" FontSize="14" Foreground="Silver" FontStyle="Italic" Margin="10,0,0,0" VerticalAlignment="Center" />
+                                                    <TextBlock Text=" item(s)" FontSize="14" Foreground="Silver" FontStyle="Italic" VerticalAlignment="Center" />
+                                                </StackPanel>
+                                            </Expander.Header>
+                                            <ItemsPresenter />
+                                        </Expander>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </GroupStyle.ContainerStyle>
+                </GroupStyle>
+            </ListView.GroupStyle>
+        </ListView>
+        <StackPanel Orientation="Horizontal" Grid.Row="1">
+            <TextBlock x:Name="textblockDossierTotalCount" VerticalAlignment="Center" Margin="8"><Run Text="Count"/></TextBlock>
+            <TextBlock x:Name="textblockDossierLiveCount" VerticalAlignment="Center" Margin="8" Foreground="DarkGreen"><Run Text="Count"/></TextBlock>
+            <TextBlock x:Name="textblockDossierObsoleteCount" VerticalAlignment="Center" Margin="8 0" Foreground="Maroon"><Run Text="Obsolete"/></TextBlock>
+            <TextBlock x:Name="textblockTotalPounds" VerticalAlignment="Center" Margin="8 0"><Run Text="Total"/></TextBlock>
+            <TextBlock x:Name="textblockTotalEuros" VerticalAlignment="Center" Margin="8 0"><Run Text="Total"/></TextBlock>
+            <TextBlock VerticalAlignment="Center" Margin="8 0" Foreground="Red" FontWeight="Bold"><Run Text="Double-click an item to view or edit details"/></TextBlock>
+            <TextBlock VerticalAlignment="Center" Margin="8 0"><Run Text="Right-click the list to access the menu"/></TextBlock>
+        </StackPanel>
+        <DockPanel LastChildFill="False" Grid.Row="2">
+            <Button x:Name="buttonClose" Margin="4" Style="{StaticResource ButtonClose}" VerticalAlignment="Center" ToolTip="Return to Accounts and Services main screen" Click="ButtonClose_Click">Return</Button>
+            <Button x:Name="BalancesButton" ToolTip="View a list and chart of dated balances" DockPanel.Dock="Right" VerticalAlignment="Center" Width="72" Height="27" Margin="0 0 8 0" Click="BalancesButton_Click">Timeline</Button>
+        </DockPanel>
+    </Grid>
+</Window>
