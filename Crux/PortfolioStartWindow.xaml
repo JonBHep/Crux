@@ -21,15 +21,22 @@
             <Button x:Name="buttonServices" Margin="8 4 8 4" Padding ="12 4" DockPanel.Dock="Top" ToolTip="Policies and services" Click="ButtonServices_Click" Content="Services"/>
             <Button x:Name="GiftsButton" Margin="8 4 8 4" Padding="12 4" DockPanel.Dock="Top" ToolTip="Record of gifts I have made" Click="GiftsButton_Click" Content="Gifts"/>
             <Button x:Name="buttonDueDates" Margin="8 24 8 4" Padding ="12 4" DockPanel.Dock="Top" Click="ButtonDueDates_Click" Content="Due dates"/>
-            <Button x:Name="buttonDocument" Margin="8 4 8 4" Padding ="12 4" DockPanel.Dock="Top" ToolTip="Save a document listing all this information" Click="ButtonDocument_Click" Content="Save document"/>
-            <Button x:Name="PrintButton" Margin="8 4 8 4" Padding ="0 4" DockPanel.Dock="Top" ToolTip="Print or save to PDF a document listing this information" Click="PrintButton_Click" Content="Print / PDF"/>
+            
+            <Border DockPanel.Dock="Top" Margin="8 24 8 4" BorderBrush="OliveDrab" BorderThickness="1" CornerRadius="6">
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" Margin="4">Document</TextBlock>
+                    <Button x:Name="buttonDocument" Margin="8 4 8 4" Padding ="12 4" DockPanel.Dock="Top" ToolTip="Save a document listing all this information" Click="ButtonDocument_Click" Content="Save"/>
+                    <Button x:Name="PrintButton" Margin="8 4 8 4" Padding ="0 4" DockPanel.Dock="Top" ToolTip="Print or save to PDF a document listing this information" Click="PrintButton_Click" Content="Print / PDF"/>
+                    <TextBlock FontWeight="SemiBold" DockPanel.Dock="Top" HorizontalAlignment="Center" Margin="4"><Run Text="Document last exported"/></TextBlock>
+                    <TextBlock x:Name="textblockDocumentExported" DockPanel.Dock="Top" HorizontalAlignment="Center" Margin="4"><Run Text="18 June 2015" /></TextBlock>
+                </DockPanel>
+            </Border>
             <TextBlock x:Name="textblockAccountsCount" Padding="10 16 10 4" DockPanel.Dock="Top"><Run Text="X accounts"/></TextBlock>
             <TextBlock x:Name="textblockServicesCount" Padding="10" DockPanel.Dock="Top"><Run Text="Y services"/></TextBlock>
-            <TextBlock x:Name="textblockOverdue" Padding="10 10 10 4" FontWeight="SemiBold" DockPanel.Dock="Top"><Run Text="Overdue alerts"/></TextBlock>
+            <TextBlock x:Name="textblockOverdue" Padding="10 8 10 4" FontWeight="SemiBold" DockPanel.Dock="Top"><Run Text="Overdue alerts"/></TextBlock>
             <TextBlock x:Name="textblockAccountsOverdueCount" Padding="20 0 10 0" Foreground="Red" DockPanel.Dock="Top"><Run Text="X accounts"/></TextBlock>
             <TextBlock x:Name="textblockServicesOverdueCount" Padding="20 4 10 0" Foreground="Red" DockPanel.Dock="Top"><Run Text="Y services"/></TextBlock>
-            <TextBlock Padding="10 20 10 4" FontWeight="SemiBold" DockPanel.Dock="Top"><Run Text="Document last exported"/></TextBlock>
-            <TextBlock x:Name="textblockDocumentExported" Padding="20 0 10 0" DockPanel.Dock="Top"><Run Text="18 June 2015"/></TextBlock>
+            
 
             <Button x:Name="buttonClose" Margin="8" Style="{StaticResource ButtonClose}" DockPanel.Dock="Bottom" Click="ButtonClose_Click" ToolTip="Return to first screen" Content="Main screen"/>
 

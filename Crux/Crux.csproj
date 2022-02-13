@@ -17,6 +17,7 @@
 
     <ItemGroup>
       <None Remove="MotEditor.xaml~" />
+      <None Remove="GiftsWindow.xaml~" />
     </ItemGroup>
 
 </Project>

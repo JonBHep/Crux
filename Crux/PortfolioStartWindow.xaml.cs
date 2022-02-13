@@ -716,14 +716,12 @@ public partial class PortfolioStartWindow : Window
 
         private void ButtonCards_Click(object sender, RoutedEventArgs e)
         {
-            // TODO
-            // CartesSelecter w = new CartesSelecter() { Owner = this };
-            // w.ShowDialog();
+            CardsWindow cw=new CardsWindow() { Owner = this };
+            cw.ShowDialog();
         }
 
         private void ButtonDocument_Click(object sender, RoutedEventArgs e)
         {
-
             // Save to xps document but NB Microsoft is retiring the xps format
             string path = GetLocationForExportedDocument();
             Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog
