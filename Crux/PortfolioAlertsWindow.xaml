@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:local="clr-namespace:Crux"
         mc:Ignorable="d"
         Title="Alerts for accounts and services" WindowStartupLocation="CenterScreen" WindowState="Maximized" ResizeMode="NoResize" ContentRendered="Window_ContentRendered" ShowInTaskbar="False">
     <Window.Resources>
@@ -19,46 +18,46 @@
             </Style.Triggers>
         </Style>
 
-        <DataTemplate x:Key="datatemplateDueDate">
+        <DataTemplate x:Key="DatatemplateDueDate">
             <TextBlock FontFamily="Arial" FontSize="12" FontWeight="SemiBold" TextAlignment="Left" Text="{Binding DueDate}"/>
         </DataTemplate>
 
-        <DataTemplate x:Key="datatemplateDay">
+        <DataTemplate x:Key="DatatemplateDay">
             <TextBlock FontFamily="Arial" FontSize="12" FontWeight="SemiBold" TextAlignment="Left" Text="{Binding Day}"/>
         </DataTemplate>
 
-        <DataTemplate x:Key="datatemplateType">
+        <DataTemplate x:Key="DatatemplateType">
             <TextBlock FontFamily="Arial" FontSize="12" FontWeight="SemiBold" TextAlignment="Left" Text="{Binding Type}"/>
         </DataTemplate>
 
-        <DataTemplate x:Key="datatemplateItem">
+        <DataTemplate x:Key="DatatemplateItem">
             <TextBlock FontFamily="Arial" FontSize="12" FontWeight="SemiBold" TextAlignment="Left" Text="{Binding Item}"/>
         </DataTemplate>
 
-        <DataTemplate x:Key="datatemplateAlert">
+        <DataTemplate x:Key="DatatemplateAlert">
             <TextBlock FontFamily="Arial" FontSize="12" FontWeight="SemiBold" TextAlignment="Left" Text="{Binding Alert}"/>
         </DataTemplate>
 
-        <DataTemplate x:Key="datatemplateAmount">
+        <DataTemplate x:Key="DatatemplateAmount">
             <TextBlock FontFamily="Arial" FontSize="12" FontWeight="SemiBold" TextAlignment="Left" Text="{Binding Amount}"/>
         </DataTemplate>
 
-        <DataTemplate x:Key="datatemplateAway">
+        <DataTemplate x:Key="DatatemplateAway">
             <TextBlock FontFamily="Arial" FontSize="12" FontWeight="SemiBold" TextAlignment="Left" Text="{Binding Away}"/>
         </DataTemplate>
 
     </Window.Resources>
     <Grid d:IsLocked="True">
-        <ListView x:Name="listviewAlerts" Margin="6" d:IsLocked="True">
+        <ListView x:Name="ListviewAlerts" Margin="6" d:IsLocked="True">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Due date" CellTemplate="{StaticResource datatemplateDueDate}"/>
-                    <GridViewColumn Header="Day" CellTemplate="{StaticResource datatemplateDay}"/>
-                    <GridViewColumn Header="Type" CellTemplate="{StaticResource datatemplateType}"/>
-                    <GridViewColumn Header="Item" CellTemplate="{StaticResource datatemplateItem}"/>
-                    <GridViewColumn Header="Alert" CellTemplate="{StaticResource datatemplateAlert}"/>
-                    <GridViewColumn Header="Amount" CellTemplate="{StaticResource datatemplateAmount}"/>
-                    <GridViewColumn Header="Away" CellTemplate="{StaticResource datatemplateAway}"/>
+                    <GridViewColumn Header="Due date" CellTemplate="{StaticResource DatatemplateDueDate}"/>
+                    <GridViewColumn Header="Day" CellTemplate="{StaticResource DatatemplateDay}"/>
+                    <GridViewColumn Header="Type" CellTemplate="{StaticResource DatatemplateType}"/>
+                    <GridViewColumn Header="Item" CellTemplate="{StaticResource DatatemplateItem}"/>
+                    <GridViewColumn Header="Alert" CellTemplate="{StaticResource DatatemplateAlert}"/>
+                    <GridViewColumn Header="Amount" CellTemplate="{StaticResource DatatemplateAmount}"/>
+                    <GridViewColumn Header="Away" CellTemplate="{StaticResource DatatemplateAway}"/>
                 </GridView>
             </ListView.View>
             <ListView.GroupStyle>

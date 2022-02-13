@@ -6,14 +6,14 @@ using System.Windows.Media;
 
 namespace Crux;
 
-public partial class MotsStartWindow : Window
+public partial class MotsStartWindow
 {
     public MotsStartWindow()
     {
         InitializeComponent();
     }
-    private readonly MotList motList = new MotList();
-        private string chosenLetter = "ALL";
+    private readonly MotList _motList = new MotList();
+        private string _chosenLetter = "ALL";
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
@@ -23,41 +23,38 @@ public partial class MotsStartWindow : Window
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             UiServices.SetBusyState();
-            motList.SaveData();
+            _motList.SaveData();
         }
 
         private void Window_ContentRendered(object sender, EventArgs e)
         {
             RefreshList();
-            textboxFilter.Focus();
+            TextboxFilter.Focus();
         }
 
         private void RefreshList()
         {
-            string filterText = textboxFilter.Text.Trim().ToLower();
-            bool showRec;
-            bool showFav;
-            bool showEnt;
+            string filterText = TextboxFilter.Text.Trim().ToLower();
             int countrecents = 0;
-            motList.RefreshDictionary();
-            List<string> captions = motList.Names;
+            _motList.RefreshDictionary();
+            List<string> captions = _motList.Names;
             captions.Sort();
 
             RecentListBox.Items.Clear();
             EntireListBox.Items.Clear();
             FavouriteListBox.Items.Clear();
-            List<string> recently = motList.Top20();
+            List<string> recently = _motList.Top20();
             foreach (string nom in captions)
             {
-                Mot m = motList.MotForName(nom);
-                showEnt = true;
-                showFav = true;
-                showRec = true;
+                Mot m = _motList.MotForName(nom);
+                var showEnt = true;
+                var showFav = true;
+                var showRec = true;
                 DateTime recentdate = DateTime.Now.AddMonths(-2);
                 if (!string.IsNullOrWhiteSpace(filterText)) { showEnt = showFav = showRec = nom.ToLower().Contains(filterText); }
-                if (chosenLetter.Length == 1)
+                if (_chosenLetter.Length == 1)
                 {
-                    if (!nom.StartsWith(chosenLetter, StringComparison.CurrentCultureIgnoreCase)) { showEnt = false; }
+                    if (!nom.StartsWith(_chosenLetter, StringComparison.CurrentCultureIgnoreCase)) { showEnt = false; }
                 }
                 if (!m.Favourite) { showFav = false; }
                 if (m.Accessed < recentdate) { showRec = false; }
@@ -65,24 +62,24 @@ public partial class MotsStartWindow : Window
 
                 if (showEnt)
                 {
-                    EntireListBox.Items.Add(PasswordLBItem(nom, m));
+                    EntireListBox.Items.Add(PasswordLbItem(nom, m));
                 }
                 if (showFav)
                 {
-                    FavouriteListBox.Items.Add(PasswordLBItem(nom, m));
+                    FavouriteListBox.Items.Add(PasswordLbItem(nom, m));
                 }
                 if (showRec)
                 {
                     countrecents++;
-                    RecentListBox.Items.Add(PasswordLBItem(nom, m));
+                    RecentListBox.Items.Add(PasswordLbItem(nom, m));
                 }
             }
-            buttonDelete.IsEnabled = false;
-            buttonView.IsEnabled = false;
-            textblockCount.Text = $"{motList.Count} items, {motList.FavouritesCount} favourites, {countrecents} recent";
+            ButtonDelete.IsEnabled = false;
+            ButtonView.IsEnabled = false;
+            TextblockCount.Text = $"{_motList.Count} items, {_motList.FavouritesCount} favourites, {countrecents} recent";
         }
 
-        private ListBoxItem PasswordLBItem(string caption,Mot pword )
+        private ListBoxItem PasswordLbItem(string caption,Mot pword )
         {
             double datewidth = 90;
             double itemwidth = 60;
@@ -114,25 +111,24 @@ public partial class MotsStartWindow : Window
 
         private void ButtonClear_Click(object sender, RoutedEventArgs e)
         {
-            textboxFilter.Clear();
+            TextboxFilter.Clear();
             RefreshList();
-            textboxFilter.Focus();
+            TextboxFilter.Focus();
         }
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sender is ListBox box)
             {
-                bool enab = (!(box.SelectedItem == null));
-                buttonDelete.IsEnabled = enab;
-                buttonView.IsEnabled = enab;
-                if (!enab) { return; }
+                bool enab = (box.SelectedItem != null);
+                ButtonDelete.IsEnabled = enab;
+                ButtonView.IsEnabled = enab;
             }
         }
 
         private void TextboxFilter_TextChanged(object sender, TextChangedEventArgs e)
         {
-            buttonClear.IsEnabled = (!string.IsNullOrWhiteSpace(textboxFilter.Text));
+            ButtonClear.IsEnabled = (!string.IsNullOrWhiteSpace(TextboxFilter.Text));
             RefreshList();
         }
 
@@ -150,13 +146,10 @@ public partial class MotsStartWindow : Window
                         { box = FavouriteListBox; break; }
                     case 2:
                         { box = EntireListBox; break; }
-                    default:
-                        { break; }
                 }
-                if (box.SelectedItem is ListBoxItem item)
-                {
-                    if (item.Tag is string q) { s = q; }
-                }
+                if (box.SelectedItem is ListBoxItem {Tag: string q})
+                { s = q; }
+
                 return s;
             }
         }
@@ -164,7 +157,7 @@ public partial class MotsStartWindow : Window
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
             Mot newpwd = new Mot();
-            MotEditor ed=new MotEditor(newpwd.Specification, motList)
+            MotEditor ed=new MotEditor(newpwd.Specification, _motList)
             {
                 Owner = this
             };
@@ -172,7 +165,7 @@ public partial class MotsStartWindow : Window
             {
                 string revisedSpecification = ed.EditedSpecification;
                 newpwd.Specification = revisedSpecification;
-                motList.AddItem(newpwd);
+                _motList.AddItem(newpwd);
                 RefreshList();
             }
         }
@@ -182,7 +175,7 @@ public partial class MotsStartWindow : Window
             string i = SelectedName;
             if (MessageBox.Show("Delete this item?\n\n" + i, "Confirm deletion", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK)
             {
-                motList.DeleteItem(i);
+                _motList.DeleteItem(i);
                 RefreshList();
             } 
         }
@@ -195,14 +188,14 @@ public partial class MotsStartWindow : Window
         private void DoView()
         {
             string s = SelectedName;
-            Mot q = motList.MotForName(s);
+            Mot q = _motList.MotForName(s);
             q.Accessed = DateTime.Now;
-            MotViewWindow w = new MotViewWindow(q.Specification, motList)
+            MotViewWindow w = new MotViewWindow(q.Specification, _motList)
             {
                 Owner = this
         };
             w.ShowDialog();
-            motList.MotForName(s).Specification = w.RevisedSpecification;
+            _motList.MotForName(s).Specification = w.RevisedSpecification;
             RefreshList(); // because at least the 'accessed' date has changed
         }
 
@@ -213,13 +206,10 @@ public partial class MotsStartWindow : Window
 
         private void LetterButton_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is Button bouton)
+            if (sender is Button {Tag: string l})
             {
-                if (bouton.Tag is string L)
-                {
-                    chosenLetter = L;
-                    RefreshList();
-                }
+                _chosenLetter = l;
+                RefreshList();
             }
         }
 
@@ -229,10 +219,10 @@ public partial class MotsStartWindow : Window
             double scrY = SystemParameters.PrimaryScreenHeight;
             double winX = scrX * .98;
             double winY = scrY * .94;
-            double Xm = (scrX - winX) / 2;
-            double Ym = (scrY - winY) / 4;
+            double xm = (scrX - winX) / 2;
+            double ym = (scrY - winY) / 4;
             Width = winX; Height = winY;
-            Left = Xm;
-            Top = Ym;
+            Left = xm;
+            Top = ym;
         }
 }

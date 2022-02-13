@@ -3,13 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:local="clr-namespace:Crux"
         mc:Ignorable="d"
         Title="Gifts made (excluding gifts to charities and political parties)" Height="700" Width="1000" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ContentRendered="Window_ContentRendered" ShowInTaskbar="False" Loaded="Window_Loaded" Closing="Window_Closing" >
     <Window.Resources>
         <Style TargetType="{x:Type ListViewItem}">
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-            <!--If the HorizontalContentAlignment listviewitem style is not set then all cell contents within the listview will left-align-->
+            <!--If the HorizontalContentAlignment ListViewItem style is not set then all cell contents within the listview will left-align-->
         </Style>
         <DataTemplate x:Key="DateTemplate">
             <TextBlock MinWidth="80" HorizontalAlignment="Right" Foreground="{Binding Tint}" Text="{Binding G_date}"/>
@@ -64,12 +63,12 @@
                     <TextBox x:Name="GiftAmountBox" Width="80" Margin="4 0 8 0" VerticalAlignment="Center"></TextBox>
                     <TextBlock VerticalAlignment="Center">Details</TextBlock>
                     
-                    <Button x:Name="buttonAdd" VerticalAlignment="Center" DockPanel.Dock="Right" Margin="6" Padding="0 4" ToolTip="Add as a new gift" Content="Add" Width="60" Click="ButtonAdd_Click"/>
+                    <Button VerticalAlignment="Center" DockPanel.Dock="Right" Margin="6" Padding="0 4" ToolTip="Add as a new gift" Content="Add" Width="60" Click="ButtonAdd_Click"/>
                     <TextBox x:Name="GiftDetailBox" VerticalAlignment="Center" Margin="4 0 0 0"></TextBox>
                 </DockPanel>
                 <DockPanel LastChildFill="False">
-                    <Button x:Name="buttonDelete" Margin="6" DockPanel.Dock="Right" Padding="0 4" ToolTip="Delete the selected gift" Content="Delete" Width="60" Click="ButtonDelete_Click" IsEnabled="False"/>
-                    <Button x:Name="buttonEdit" Margin="6" DockPanel.Dock="Right" Padding="0 4" ToolTip="Amend the selected gift" Content="Edit" Width="60" Click="ButtonEdit_Click" IsEnabled="False"/>
+                    <Button x:Name="ButtonDelete" Margin="6" DockPanel.Dock="Right" Padding="0 4" ToolTip="Delete the selected gift" Content="Delete" Width="60" Click="ButtonDelete_Click" IsEnabled="False"/>
+                    <Button x:Name="ButtonEdit" Margin="6" DockPanel.Dock="Right" Padding="0 4" ToolTip="Amend the selected gift" Content="Edit" Width="60" Click="ButtonEdit_Click" IsEnabled="False"/>
                 </DockPanel>
             </StackPanel>
             <Grid Grid.Row="1" >
@@ -90,21 +89,21 @@
 
                 <TextBlock Margin="8" Foreground="SaddleBrown" FontWeight="Bold">SUMMARY</TextBlock>
 
-                <TextBlock Margin="8 0 4 0" Grid.Row="1" Foreground="SaddleBrown" FontFamily="Lucida Console">All time total</TextBlock>
+                <TextBlock Margin="8 0 4 0" Grid.Row="1" Grid.Column="0" Foreground="SaddleBrown" FontFamily="Lucida Console">All time total</TextBlock>
                 <TextBlock x:Name="AllTimeCountTextBlock" Grid.Row="1" Grid.Column="1" FontFamily="Lucida Console">X</TextBlock>
                 <TextBlock x:Name="AllTimeTotalTextBlock" Grid.Row="1" Grid.Column="2" FontFamily="Lucida Console">X</TextBlock>
 
-                <TextBlock Grid.Row="2" Margin="8 0 4 0" VerticalAlignment="Center" FontFamily="Lucida Console" Foreground="SaddleBrown">Less than 7 years ago</TextBlock>
+                <TextBlock Grid.Row="2" Grid.Column="0" Margin="8 0 4 0" VerticalAlignment="Center" FontFamily="Lucida Console" Foreground="SaddleBrown">Less than 7 years ago</TextBlock>
                 <TextBlock x:Name="SevenYearCountTextBlock" Grid.Row="2" Grid.Column="1" FontFamily="Lucida Console" >X</TextBlock>
                 <TextBlock x:Name="SevenYearTotalTextBlock" Grid.Row="2" Grid.Column="2" FontFamily="Lucida Console" >X</TextBlock>
 
-                <TextBlock Grid.Row="3" Grid.ColumnSpan="2" Margin="8 12 4 12" VerticalAlignment="Center" FontFamily="Lucida Console" Foreground="SaddleBrown">Total non-exempt potentially chargeable gifts</TextBlock>
+                <TextBlock Grid.Row="3" Grid.ColumnSpan="2" Grid.Column="0" Margin="8 12 4 12" VerticalAlignment="Center" FontFamily="Lucida Console" Foreground="SaddleBrown">Total non-exempt potentially chargeable gifts</TextBlock>
                 <TextBlock x:Name="PotentiallyChargeableTextBlock" Grid.Row="3" Grid.Column="2" Margin="0 12" FontFamily="Lucida Console" >X</TextBlock>
                 
-                <TextBlock Grid.Row="4" Grid.ColumnSpan="3" Margin="8" Foreground="SaddleBrown" FontWeight="Bold">TAX YEAR SUMMARIES</TextBlock>
-                <TextBlock x:Name="AssumptionTextBlock" Grid.Row="5" Grid.ColumnSpan="3" Margin="8" Foreground="SaddleBrown" TextWrapping="Wrap">Assumes annual exemption of ...</TextBlock>
+                <TextBlock Grid.Row="4" Grid.ColumnSpan="3" Grid.Column="0" Margin="8" Foreground="SaddleBrown" FontWeight="Bold">TAX YEAR SUMMARIES</TextBlock>
+                <TextBlock x:Name="AssumptionTextBlock" Grid.Row="5" Grid.ColumnSpan="3" Grid.Column="0" Margin="8" Foreground="SaddleBrown" TextWrapping="Wrap">Assumes annual exemption of ...</TextBlock>
 
-                <ListView x:Name="YearsListView" Grid.ColumnSpan="3" Grid.Row="6" SelectionChanged="GiftsListView_SelectionChanged" FontFamily="Lucida Console">
+                <ListView x:Name="YearsListView" Grid.ColumnSpan="3" Grid.Column="0" Grid.Row="6" SelectionChanged="GiftsListView_SelectionChanged" FontFamily="Lucida Console">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn CellTemplate="{StaticResource YearDatesTemplate}" Header="Year"/>
@@ -115,7 +114,7 @@
                     </ListView.View>
                 </ListView>
             </Grid>
-            <Button x:Name="buttonClose" Grid.Row="2" HorizontalAlignment="Right" Margin="6" Style="{StaticResource ButtonClose}" Click="ButtonClose_Click" />
+            <Button x:Name="ButtonClose" Grid.Row="2" HorizontalAlignment="Right" Margin="6" Style="{StaticResource ButtonClose}" Click="ButtonClose_Click" />
         </Grid>
         
     </Grid>

@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:local="clr-namespace:Crux"
         mc:Ignorable="d"
         Title="Password generator" Height="280" Width="600" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" ContentRendered="Window_ContentRendered" ShowInTaskbar="False" SizeToContent="Height">
     <Grid >
@@ -34,7 +33,7 @@
             <TextBlock x:Name="PasswordTextBlock" Margin="8 4" Padding="8 5" FontFamily="Lucida Console" FontSize="14" FontWeight="Bold" Foreground="Maroon" Background="OldLace" VerticalAlignment="Center" MinWidth="144"><Run Text="Password"/></TextBlock>
             <Button x:Name="CopyButton" Margin="8 0" Padding="12 4" VerticalAlignment="Center" Width="80" Click="CopyButton_Click" Content="Copy"/>
             <Button x:Name="UseButton" Margin="8 0" Padding="12 4" VerticalAlignment="Center" FontWeight="Bold" Width="80" Click="UseButton_Click" Content="Use"/>
-            <Button x:Name="buttonCancel" DockPanel.Dock="Right" Margin="8 0" Padding="12 4" Width="80" VerticalAlignment="Center" IsCancel="True" Content="Cancel"/>
+            <Button DockPanel.Dock="Right" Margin="8 0" Padding="12 4" Width="80" VerticalAlignment="Center" IsCancel="True" Content="Cancel"/>
         </DockPanel>
     </Grid>
 </Window>

@@ -10,15 +10,14 @@ public class Cartes
             LoadData();
         }
 
-        public List<CarteBancaire> Cards = new List<CarteBancaire>();
+        public readonly List<CarteBancaire> Cards = new List<CarteBancaire>();
 
         private static void BackupData()
         {
             // Purge oldest backup files if there are more than 99
             const string filespec = "CBs_*.txt";
-            System.IO.FileInfo foundfileinfo;
-            string DataFolder = Jbh.AppManager.DataPath;
-            string[] foundfiles = System.IO.Directory.GetFiles(DataFolder, filespec, System.IO.SearchOption.TopDirectoryOnly);
+            string dataFolder = Jbh.AppManager.DataPath;
+            string[] foundfiles = System.IO.Directory.GetFiles(dataFolder, filespec, System.IO.SearchOption.TopDirectoryOnly);
             while (foundfiles.Length > 100) // current data plus 99 backups
             {
                 // identify and delete the oldest file
@@ -26,7 +25,7 @@ public class Cartes
                 string oldestfile = string.Empty;
                 foreach (string f in foundfiles)
                 {
-                    foundfileinfo = new System.IO.FileInfo(f);
+                    var foundfileinfo = new System.IO.FileInfo(f);
                     if (foundfileinfo.LastWriteTimeUtc < oldestdate)
                     {
                         oldestdate = foundfileinfo.LastWriteTimeUtc;
@@ -34,7 +33,7 @@ public class Cartes
                     }
                 }
                 if (!string.IsNullOrWhiteSpace(oldestfile)) { System.IO.File.Delete(oldestfile); }
-                foundfiles = System.IO.Directory.GetFiles(DataFolder, filespec, System.IO.SearchOption.TopDirectoryOnly);
+                foundfiles = System.IO.Directory.GetFiles(dataFolder, filespec, System.IO.SearchOption.TopDirectoryOnly);
             }
             // Create a backup file by renaming the data file which is about to be overwritten
             string filepath = System.IO.Path.Combine(Jbh.AppManager.DataPath, "CBs.txt");
@@ -54,10 +53,12 @@ public class Cartes
             try
             {
                 string filepath = System.IO.Path.Combine(Jbh.AppManager.DataPath, "CBs.txt");
-                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(filepath))
+                using System.IO.StreamWriter sw = new System.IO.StreamWriter(filepath);
+                foreach (CarteBancaire cb in Cards)
                 {
-                    foreach (CarteBancaire cb in Cards)
-                    { string p =cb.Specification; string c = Solus.PolyAlphabetic.Encoded(p); sw.WriteLine(c); }
+                    string p =cb.Specification;
+                    string c = Solus.PolyAlphabetic.Encoded(p); 
+                    sw.WriteLine(c);
                 }
             }
             catch (Exception ex)
@@ -73,10 +74,13 @@ public class Cartes
             {
                 while (!sr.EndOfStream)
                 {
-                    string c = sr.ReadLine();
-                    string p = Solus.PolyAlphabetic.Decoded(c);
-                    CarteBancaire cb = new CarteBancaire() { Specification = p };
-                    Cards.Add(cb);
+                    string? q= sr.ReadLine();
+                    if (q is { } c)
+                    {
+                        string p = Solus.PolyAlphabetic.Decoded(c);
+                        CarteBancaire cb = new CarteBancaire() {Specification = p};
+                        Cards.Add(cb);
+                    }
                 }
             }
             Cards.Sort();

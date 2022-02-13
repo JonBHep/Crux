@@ -22,10 +22,10 @@ public partial class AboutBox : Window
         TimeSpan versionAge = DateTime.Today - lastVersion;
         var daze = (int)versionAge.TotalDays;
         var dayString = daze == 1 ? "day" : "days";
-        textblockVersion.Text = $"First .NET 6.0 version {lastVersion:dd MMM yyyy} ({daze} {dayString} old)";
-        textblockTitle.Text = Jbh.AppManager.AppName;
-        textblockDescription.Text = "Essential personal data";
-        textblockCopyright.Text ="Jonathan Hepworth 2015 - 2022";
+        TextBlockVersion.Text = $"First .NET 6.0 version {lastVersion:dd MMM yyyy} ({daze} {dayString} old)";
+        TextBlockTitle.Text = Jbh.AppManager.AppName;
+        TextBlockDescription.Text = "Essential personal data";
+        TextBlockCopyright.Text ="Jonathan Hepworth 2015 - 2022";
         HistoryTextBlock.Text = "Based on a series of my previous VB and C# applications including 'Essentia', 'Crucial' etc.";
         ImplementationTextBlock.Text = "Adapted February 2022 using Rider IDE in WPF / C# / .NET 6.0";
         

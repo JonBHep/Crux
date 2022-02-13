@@ -5,27 +5,28 @@ using System.Windows.Media;
 
 namespace Crux;
 
-public partial class GiftsWindow : Window
+public partial class GiftsWindow
 {
     public GiftsWindow()
     {
         InitializeComponent();
+        _dons = new GiftList();
     }
     private struct Donation
         {
-            public string G_date { get;set;}
-            public string G_age { get;set;}
-            public string G_detail { get; set; }
-            public string G_amount { get; set; }
+            public string GDate { get;set;}
+            public string GAge { get;set;}
+            public string GDetail { get; set; }
+            public string GAmount { get; set; }
             public Brush Tint { get; set; }
         }
 
         private struct TaxYearSummary
         {
-            public string Y_dates { get; set; }
-            public string Y_count { get; set; }
-            public string Y_gross { get; set; }
-            public string Y_net { get; set; }
+            public string YDates { get; set; }
+            public string YCount { get; set; }
+            public string YGross { get; set; }
+            public string YNet { get; set; }
         }
 
         private readonly System.Collections.ObjectModel.ObservableCollection<Donation> _giftsList = new System.Collections.ObjectModel.ObservableCollection<Donation>();
@@ -47,7 +48,7 @@ public partial class GiftsWindow : Window
             Left = xm;
             Top = ym;
 
-            _dons = new GiftList();
+            
         }
 
         private void Window_ContentRendered(object sender, EventArgs e)
@@ -58,18 +59,18 @@ public partial class GiftsWindow : Window
         private void RebuildListViewSources()
         {
             Donation d = new Donation();
-            TaxYearSummary ty = new TaxYearSummary();
+            TaxYearSummary ty;
 
             _giftsList.Clear();
             foreach (GiftList.GiftGiven g in _dons.Gifts)
             {
-                d = new Donation() { G_amount = g.Amount.ToString("#0.00"), G_date = g.GiftDate.ToShortDateString(), G_detail = g.Detail, G_age = g.AgeString };
+                d = new Donation() { GAmount = g.Amount.ToString("#0.00"), GDate = g.GiftDate.ToShortDateString(), GDetail = g.Detail, GAge = g.AgeString };
                 if (g.LessThanSevenYearsOld) { d.Tint = Brushes.Black; } else { d.Tint = Brushes.Gray; }
                 _giftsList.Add(d);
             }
             GiftsListView.ItemsSource = _giftsList;
             // scroll to last item
-            if (!string.IsNullOrWhiteSpace(d.G_detail))
+            if (!string.IsNullOrWhiteSpace(d.GDetail))
             {
                 GiftsListView.ScrollIntoView(d);
             }
@@ -81,21 +82,21 @@ public partial class GiftsWindow : Window
             {
                 ty = new TaxYearSummary
                 {
-                    Y_dates = $"{yr}-{yr + 1}",
-                    Y_gross ="£"+ _dons.TaxYearTotal(yr, out int ycount).ToString("#,0.00"),
-                    Y_net ="£"+ _dons.TaxYearTotalLessAnnualExemption(yr).ToString("#,0.00"),
-                    Y_count = ycount.ToString()
+                    YDates = $"{yr}-{yr + 1}",
+                    YGross ="£"+ _dons.TaxYearTotal(yr, out int ycount).ToString("#,0.00"),
+                    YNet ="£"+ _dons.TaxYearTotalLessAnnualExemption(yr).ToString("#,0.00"),
+                    YCount = ycount.ToString()
                 };
                 _taxYearsList.Add(ty);
             }
             YearsListView.ItemsSource = _taxYearsList;
 
             // summary 
-            AllTimeTotalTextBlock.Text ="£"+ _dons.AllTimeTotal(out int AllCount).ToString("#,0.00");
-            AllTimeCountTextBlock.Text = $"{AllCount} gifts";
+            AllTimeTotalTextBlock.Text ="£"+ _dons.AllTimeTotal(out int allCount).ToString("#,0.00");
+            AllTimeCountTextBlock.Text = $"{allCount} gifts";
 
-            SevenYearTotalTextBlock.Text = "£" + _dons.SevenYearTimeTotal(out int SevenCount).ToString("#,0.00");
-            SevenYearCountTextBlock.Text =$"{SevenCount} gifts";
+            SevenYearTotalTextBlock.Text = "£" + _dons.SevenYearTimeTotal(out int sevenCount).ToString("#,0.00");
+            SevenYearCountTextBlock.Text =$"{sevenCount} gifts";
 
             PotentiallyChargeableTextBlock.Text = "£" + _dons.MyCalculationOfTotalPotentiallyChargeableGifts().ToString("#,0.00");
         }
@@ -115,17 +116,17 @@ public partial class GiftsWindow : Window
             int s = GiftsListView.SelectedIndex;
             if (s < 0)
             {
-                buttonDelete.IsEnabled = false;
-                buttonEdit.IsEnabled = false;
+                ButtonDelete.IsEnabled = false;
+                ButtonEdit.IsEnabled = false;
             }
             else
             {
-                buttonDelete.IsEnabled = true;
-                buttonEdit.IsEnabled = true;
+                ButtonDelete.IsEnabled = true;
+                ButtonEdit.IsEnabled = true;
                 Donation don = (Donation)GiftsListView.SelectedItem;
-                GiftAmountBox.Text = don.G_amount;
-                GiftDatePicker.SelectedDate = DateTime.Parse(don.G_date);
-                GiftDetailBox.Text = don.G_detail;
+                GiftAmountBox.Text = don.GAmount;
+                GiftDatePicker.SelectedDate = DateTime.Parse(don.GDate);
+                GiftDetailBox.Text = don.GDetail;
             }
         }
 
@@ -142,15 +143,15 @@ public partial class GiftsWindow : Window
 
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
-            if (!EnteredDataIsOK()) { MessageBox.Show("Invalid data entered", Jbh.AppManager.AppName, MessageBoxButton.OK, MessageBoxImage.Asterisk); return; }
+            if (!EnteredDataIsOk()) { MessageBox.Show("Invalid data entered", Jbh.AppManager.AppName, MessageBoxButton.OK, MessageBoxImage.Asterisk); return; }
 
-            DateTime when = GiftDatePicker.SelectedDate.Value;
-            double howmuch =double.Parse(GiftAmountBox.Text);
+            DateTime when =GiftDatePicker.SelectedDate ?? DateTime.Today; // in fact will not be null - already checked
+            double howMuch =double.Parse(GiftAmountBox.Text);
             string what = GiftDetailBox.Text.Trim();
 
             GiftList.GiftGiven g = new GiftList.GiftGiven
             {
-                Amount = howmuch,
+                Amount = howMuch,
                 Detail = what,
                 GiftDate = when
             };
@@ -161,41 +162,44 @@ public partial class GiftsWindow : Window
 
         private void ButtonEdit_Click(object sender, RoutedEventArgs e)
         {
-            if (!EnteredDataIsOK()) { MessageBox.Show("Invalid data entered", Jbh.AppManager.AppName, MessageBoxButton.OK, MessageBoxImage.Asterisk); return; }
+            if (!EnteredDataIsOk()) { MessageBox.Show("Invalid data entered", Jbh.AppManager.AppName, MessageBoxButton.OK, MessageBoxImage.Asterisk); return; }
 
             MessageBoxResult answ = MessageBox.Show("Do you want to amend the details of the selected gift?", Jbh.AppManager.AppName, MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (answ == MessageBoxResult.Yes)
             {
-                DateTime when = GiftDatePicker.SelectedDate.Value;
-                double howmuch = double.Parse(GiftAmountBox.Text);
+                DateTime when =GiftDatePicker.SelectedDate ?? DateTime.Today; // in fact will not be null - already checked
+                double howMuch = double.Parse(GiftAmountBox.Text);
                 string what = GiftDetailBox.Text.Trim();
 
                 int s = GiftsListView.SelectedIndex;
-                _dons.Gifts[s].Amount = howmuch;
+                _dons.Gifts[s].Amount = howMuch;
                 _dons.Gifts[s].Detail=what;
                 _dons.Gifts[s].GiftDate = when;
                 RebuildListViewSources();
             }
         }
 
-        private bool EnteredDataIsOK()
+        private bool EnteredDataIsOk()
         {
-            bool OK = true;
-        DateTime when = DateTime.MinValue;
-        string what = string.Empty;
+            bool ok = true;
+            DateTime when = DateTime.MinValue;
+            string what = string.Empty;
             if (!double.TryParse(GiftAmountBox.Text, out double howmuch))
             {
-                OK = false;
+                ok = false;
             }
+
             if (!GiftDatePicker.SelectedDate.HasValue)
             {
-                OK = false;
+                ok = false;
             }
+
             if (string.IsNullOrWhiteSpace(GiftDetailBox.Text))
             {
-                OK = false;
+                ok = false;
             }
-            return OK;
+
+            return ok;
         }
 
 }

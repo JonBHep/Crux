@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:local="clr-namespace:Crux"
         mc:Ignorable="d"
         ResizeMode="NoResize" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" ContentRendered="Window_ContentRendered" ShowInTaskbar="False">
     <Grid>
@@ -17,14 +16,14 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <TextBlock x:Name="textblockLabelOne" VerticalAlignment="Center" Margin="8 12 8 6"><Run Text="Reference caption/Alert date"/></TextBlock>
-        <TextBlock x:Name="textblockLabelTwo" Grid.Row="1" VerticalAlignment="Center" Margin="8 6"><Run Text="Reference text/Alert text"/></TextBlock>
-        <TextBlock x:Name="textblockLabelThree" Grid.Row="2" VerticalAlignment="Center" Margin="8 6 8 12"><Run Text="Reference highlight/Alert show amount"/></TextBlock>
-        <TextBox x:Name="textboxReferenceCaption" Grid.Column="1" VerticalAlignment="Center" TextChanged="textboxReferenceCaption_TextChanged" Foreground="Blue"/>
-        <DatePicker x:Name="datepickerAlertDate" Grid.Column="1" VerticalAlignment="Center" Foreground="Blue" SelectedDateChanged="datepickerAlertDate_SelectedDateChanged"/>
-        <TextBox x:Name="textboxAlertReferenceValue" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" FontFamily="Lucida Console" TextChanged="textboxAlertReferenceValue_TextChanged" Foreground="Blue"/>
-        <CheckBox x:Name="checkboxReferenceHighlightAlertShowAmount" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center"  Foreground="Blue" Checked="checkboxReferenceHighlightAlertShowAmount_Checked" Unchecked="checkboxReferenceHighlightAlertShowAmount_Unchecked"/>
-        <Button x:Name="buttonOK" Grid.Column="2" Style="{StaticResource ButtonClose}" Margin="8 0 8 0" VerticalAlignment="Center" Click="buttonOK_Click"/>
-        <Button x:Name="buttonCancel" Grid.Column="2" Grid.Row="1" Width="80" Margin="8 0 8 0" VerticalAlignment="Center" IsCancel="True" Click="buttonCancel_Click" Content="Cancel"/>
+        <TextBlock x:Name="TextBlockLabelOne" VerticalAlignment="Center" Margin="8 12 8 6"><Run Text="Reference caption/Alert date"/></TextBlock>
+        <TextBlock x:Name="TextBlockLabelTwo" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="8 6"><Run Text="Reference text/Alert text"/></TextBlock>
+        <TextBlock x:Name="TextBlockLabelThree" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="8 6 8 12"><Run Text="Reference highlight/Alert show amount"/></TextBlock>
+        <TextBox x:Name="TextBoxReferenceCaption" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" TextChanged="TextBoxReferenceCaption_TextChanged" Foreground="Blue"/>
+        <DatePicker x:Name="DatepickerAlertDate" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Foreground="Blue" SelectedDateChanged="datepickerAlertDate_SelectedDateChanged"/>
+        <TextBox x:Name="TextBoxAlertReferenceValue" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" FontFamily="Lucida Console" TextChanged="textBoxAlertReferenceValue_TextChanged" Foreground="Blue"/>
+        <CheckBox x:Name="CheckboxReferenceHighlightAlertShowAmount" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center"  Foreground="Blue" Checked="checkboxReferenceHighlightAlertShowAmount_Checked" Unchecked="checkboxReferenceHighlightAlertShowAmount_Unchecked"/>
+        <Button Grid.Row="0" Grid.Column="2" Style="{StaticResource ButtonClose}" Margin="8 0 8 0" VerticalAlignment="Center" Click="buttonOK_Click"/>
+        <Button Grid.Column="2" Grid.Row="1" Width="80" Margin="8 0 8 0" VerticalAlignment="Center" IsCancel="True" Click="buttonCancel_Click" Content="Cancel"/>
     </Grid>
 </Window>

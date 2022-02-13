@@ -5,19 +5,19 @@ using System.Windows.Media;
 
 namespace Crux;
 
-public partial class CardsWindow : Window
+public partial class CardsWindow
 {
-    private readonly Cartes _cartes;
+    private readonly Cartes _portefeuille;
 
     public CardsWindow()
     {
         InitializeComponent();
-        _cartes = new Cartes();
+        _portefeuille = new Cartes();
     }
 
     private void CloseButton_Click(object sender, RoutedEventArgs e)
     {
-        _cartes.SaveData();
+        _portefeuille.SaveData();
         DialogResult = true;
     }
 
@@ -28,7 +28,7 @@ public partial class CardsWindow : Window
         if (response.HasValue && response.Value)
         {
             CarteBancaire cb = new CarteBancaire() {Specification = ed.CardSpecification};
-            _cartes.Cards.Add(cb);
+            _portefeuille.Cards.Add(cb);
             DisplayList();
         }
     }
@@ -38,8 +38,8 @@ public partial class CardsWindow : Window
         EditButton.IsEnabled = false;
         DeleteButton.IsEnabled = false;
         CardsListBox.Items.Clear();
-        _cartes.Cards.Sort();
-        foreach (CarteBancaire cb in _cartes.Cards)
+        _portefeuille.Cards.Sort();
+        foreach (CarteBancaire cb in _portefeuille.Cards)
         {
             TextBlock bloc = new TextBlock()
             {
@@ -64,7 +64,7 @@ public partial class CardsWindow : Window
         if (enab)
         {
             int i = CardsListBox.SelectedIndex;
-            CardCaptionBlock.Text = _cartes.Cards[i].CardDetailDisplay;
+            CardCaptionBlock.Text = _portefeuille.Cards[i].CardDetailDisplay;
         }
         else
         {
@@ -75,21 +75,25 @@ public partial class CardsWindow : Window
     private void EditButton_Click(object sender, RoutedEventArgs e)
     {
         int i = CardsListBox.SelectedIndex;
-        ListBoxItem l = CardsListBox.SelectedItem as ListBoxItem;
-        string s = (l.Tag.ToString());
-        CardEditor w = new CardEditor(s) {Owner = this};
-        bool? response = w.ShowDialog();
-        if (response.HasValue && response.Value)
+        if (i >= 0)
         {
-            _cartes.Cards[i].Specification = w.CardSpecification;
-            DisplayList();
+            if (CardsListBox.SelectedItem is ListBox {Tag: string s})
+            {
+                CardEditor w = new CardEditor(s) {Owner = this};
+                bool? response = w.ShowDialog();
+                if (response.HasValue && response.Value)
+                {
+                    _portefeuille.Cards[i].Specification = w.CardSpecification;
+                    DisplayList();
+                }        
+            }
         }
     }
 
     private void DeleteButton_Click(object sender, RoutedEventArgs e)
     {
         int i = CardsListBox.SelectedIndex;
-        string cap = _cartes.Cards[i].Caption;
+        string cap = _portefeuille.Cards[i].Caption;
         MessageBoxResult ans = MessageBox.Show($"Delete the card {cap}", Jbh.AppManager.AppName, MessageBoxButton.YesNo
             , MessageBoxImage.Question);
         if (ans != MessageBoxResult.Yes)
@@ -97,14 +101,14 @@ public partial class CardsWindow : Window
             return;
         }
 
-        _cartes.Cards.RemoveAt(i);
+        _portefeuille.Cards.RemoveAt(i);
         DisplayList();
     }
 
     private void CopyNameButton_Click(object sender, RoutedEventArgs e)
     {
         int i = CardsListBox.SelectedIndex;
-        string source = _cartes.Cards[i].NameOnCard;
+        string source = _portefeuille.Cards[i].NameOnCard;
         Clipboard.SetText(source);
         CopyNameButton.IsEnabled = false;
     }
@@ -112,7 +116,7 @@ public partial class CardsWindow : Window
     private void CopyNumberButton_Click(object sender, RoutedEventArgs e)
     {
         int i = CardsListBox.SelectedIndex;
-        string source = _cartes.Cards[i].CardNumber;
+        string source = _portefeuille.Cards[i].CardNumber;
         Clipboard.SetText(source);
         CopyNumberButton.IsEnabled = false;
     }
@@ -120,7 +124,7 @@ public partial class CardsWindow : Window
     private void CopyCcvButton_Click(object sender, RoutedEventArgs e)
     {
         int i = CardsListBox.SelectedIndex;
-        string source = _cartes.Cards[i].Cvv;
+        string source = _portefeuille.Cards[i].Cvv;
         Clipboard.SetText(source);
         CopyCcvButton.IsEnabled = false;
     }

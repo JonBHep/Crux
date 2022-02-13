@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows;
 using System.Windows.Data;
 
 namespace Crux;
@@ -12,6 +11,7 @@ public partial class PortfolioAlertsWindow
         {
             InitializeComponent();
             _dueDates = alerts;
+            _alertItems = new System.Collections.ObjectModel.ObservableCollection<AlertItem>();
         }
 
         private readonly List<PortfolioCore.ClassDueDate> _dueDates;
@@ -21,6 +21,18 @@ public partial class PortfolioAlertsWindow
 
         private class AlertItem
         {
+            public AlertItem()
+            {
+                Day = string.Empty;
+                DueDate = string.Empty;
+                Type = string.Empty;
+                Item = string.Empty;
+                Alert = string.Empty;
+                Amount = string.Empty;
+                Away = string.Empty;
+                Overdue = false;
+                Grouper = string.Empty;
+            }
             public string DueDate { get; set; }
             public string Day { get; set; }
             public string Type { get; set; }
@@ -58,7 +70,7 @@ public partial class PortfolioAlertsWindow
      
         private void GetMinAndMaxYears()
         {
-            int y = 0;
+            int y;
             foreach (PortfolioCore.ClassDueDate dd in _dueDates)
             {
                 y = dd.Due.Year;
@@ -71,11 +83,11 @@ public partial class PortfolioAlertsWindow
         {
             GetMinAndMaxYears();
             BuildList();
-            listviewAlerts.ItemsSource = _alertItems;
+            ListviewAlerts.ItemsSource = _alertItems;
             // set up listview grouping (see also XAML)
-            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(listviewAlerts.ItemsSource);
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ListviewAlerts.ItemsSource);
             PropertyGroupDescription groupDescription = new PropertyGroupDescription("Grouper");
-            view.GroupDescriptions.Add(groupDescription);
+            view.GroupDescriptions?.Add(groupDescription);
         }
 
 }

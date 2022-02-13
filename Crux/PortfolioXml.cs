@@ -1,42 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Windows;
 
 namespace Crux;
 
 public class PortfolioXml
 {
     // Declare the event using EventHandler<T> 
-        public event EventHandler<XmlEventArguments> RaiseAlertEvent;
-        public event EventHandler<XmlEventArguments> RaisePassMessageEvent;
+       // public event EventHandler<XmlEventArguments> RaiseAlertEvent;
+       // public event EventHandler<XmlEventArguments> RaisePassMessageEvent;
 
         // Wrap event invocations inside a protected virtual method to allow derived classes to override the event invocation behavior 
-        protected virtual void OnRaiseAlertEvent(XmlEventArguments e)
+       // protected virtual void OnRaiseAlertEvent(XmlEventArguments e)
         // A protected member of a base class is accessible in a derived class only if the access occurs through the derived class type.
         // The implementation of a virtual member can be changed by an overriding member in a derived class.
-        {
+        // {
             // Make a temporary copy of the event to avoid possibility of a race condition if the last subscriber unsubscribes immediately after the null check and before the event is raised.
-            EventHandler<XmlEventArguments> handler = RaiseAlertEvent;
+         //   EventHandler<XmlEventArguments> handler = RaiseAlertEvent;
 
             // Event will be null if there are no subscribers 
-            if (handler != null)
-            {
-                // Format the string to send inside the CustomEventArgs parameter
-                e.Message += String.Format(" at {0}", DateTime.Now.ToString());
+        //     if (handler != null)
+        //     {
+        //         // Format the string to send inside the CustomEventArgs parameter
+        //         e.Message += $" at {DateTime.Now.ToString(CultureInfo.CurrentCulture)}";
+        //
+        //         // Use the () operator to raise the event.
+        //         handler(this, e);
+        //     }
+        // }
 
-                // Use the () operator to raise the event.
-                handler(this, e);
-            }
-        }
-
-        protected virtual void OnRaisePassMessageEvent(XmlEventArguments e)
-        {
-            EventHandler<XmlEventArguments> handler = RaisePassMessageEvent;
-            if (handler != null)
-            {
-                e.Message += String.Format(" at {0}", DateTime.Now.ToString());
-                handler(this, e);
-            }
-        }
+        // protected virtual void OnRaisePassMessageEvent(XmlEventArguments e)
+        // {
+        //     EventHandler<XmlEventArguments> handler = RaisePassMessageEvent;
+        //     if (handler != null)
+        //     {
+        //         e.Message += $" at {DateTime.Now.ToString(CultureInfo.CurrentCulture)}";
+        //         handler(this, e);
+        //     }
+        // }
 
         private int _linesWritten;
 
@@ -122,8 +124,7 @@ public class PortfolioXml
 
         private static string AcceptableText(string original)
         {
-            string o;
-            o = original.Replace('&', '+'); // ampersand messes up xml code
+            var o = original.Replace('&', '+');
             o = o.Replace('<', '{');
             o = o.Replace('>', '}');
             o = o.Replace('\"', '\''); // double quotes replaced with single
@@ -143,10 +144,6 @@ public class PortfolioXml
         /// <param name="tagValue">The content of the data in this tag (as a string)</param>
         private static XmlLineType ParseXmlLine(string xmlLine, out string tagCaption, out string tagValue)
         {
-            int p1; // first <
-            int p2; // first >
-            int p3; // start of matching closing tag, if present
-
             tagCaption = string.Empty;
             tagValue = string.Empty;
             XmlLineType returnType = XmlLineType.Unparseable;
@@ -158,12 +155,12 @@ public class PortfolioXml
             }
             else
             {
-                p1 = xmlLine.IndexOf('<');
-                p2 = xmlLine.IndexOf('>');
+                var p1 = xmlLine.IndexOf('<'); // first <
+                var p2 = xmlLine.IndexOf('>'); // first >
                 if ((p1 >= 0) && (p2 > p1))
                 {
                     tagCaption = xmlLine.Substring(p1 + 1, p2 - (p1 + 1));
-                    p3 = xmlLine.IndexOf("</" + tagCaption + ">", p2 + 1);
+                    var p3 = xmlLine.IndexOf("</" + tagCaption + ">", p2 + 1, StringComparison.Ordinal); // start of matching closing tag, if present
                     if (p3 >= 0) // opening and closing tags and content all contained in same line
                     {
                         tagValue = xmlLine.Substring(p2 + 1, p3 - (p2 + 1));
@@ -200,93 +197,132 @@ public class PortfolioXml
         /// <summary>
         /// September 2018 version
         /// </summary>
-        /// <param name="VerifiedLines">Number of lines examined in the xml file</param>
-        /// <param name="TagResolutionError">Whether any error was detected in the nesting of tags</param>
-        /// <param name="TagSequences">List of nested tags found in the xml file</param>
-        private void VerifyXmlFile(out int VerifiedLines, out bool TagResolutionError, out List<string> TagSequences)
+        /// <param name="verifiedLines">Number of lines examined in the xml file</param>
+        /// <param name="tagResolutionError">Whether any error was detected in the nesting of tags</param>
+        /// <param name="tagSequences">List of nested tags found in the xml file</param>
+        private void VerifyXmlFile(out int verifiedLines, out bool tagResolutionError, out List<string> tagSequences)
         {
             // This Sub is not application-specific as MakeXmlFile and ReadXmlFile are: it does not depend on application-specific data characteristics
-            // The TagSequences list is returned for diagnositc purposes; no use is made of it in normal use
+            // The TagSequences list is returned for diagnostic purposes; no use is made of it in normal use
             int currentLevel = -1;
             List<string> etage = new List<string>();
-            string s;
 
-            OnRaisePassMessageEvent(new XmlEventArguments("Verifying data file write"));
+            // OnRaisePassMessageEvent(new XmlEventArguments("Verifying data file write"));
 
-            TagSequences = new List<string>();
-            VerifiedLines = 0;
-            TagResolutionError = false;
+            tagSequences = new List<string>();
+            verifiedLines = 0;
+            tagResolutionError = false;
 
             using (System.IO.StreamReader xr = new System.IO.StreamReader(_xmlFileSpec))
             {
                 while (!xr.EndOfStream)
                 {
-                    s = xr.ReadLine();
-                    XmlLineType LineType = ParseXmlLine(xmlLine: s, tagCaption: out string tag, tagValue: out string content);
-                    VerifiedLines++;
-
-                    switch (LineType)
+                    string?  q = xr.ReadLine();
+                    if (q is { } s)
                     {
-                        case XmlLineType.Unparseable:
+                        XmlLineType lineType = ParseXmlLine(xmlLine: s, tagCaption: out string tag
+                            , tagValue: out string content);
+                        verifiedLines++;
+
+                        switch (lineType)
+                        {
+                            case XmlLineType.Unparseable:
                             {
-                                VerifiedLines--;
+                                verifiedLines--;
                                 break;
                             }
-                        case XmlLineType.Rubric:
+                            case XmlLineType.Rubric:
                             {
                                 break;
                             }
-                        case XmlLineType.OpeningTag:
+                            case XmlLineType.OpeningTag:
                             {
                                 currentLevel++;
-                                if (etage.Count <= currentLevel) { etage.Add(tag); } else { etage[currentLevel] = tag; }
+                                if (etage.Count <= currentLevel)
+                                {
+                                    etage.Add(tag);
+                                }
+                                else
+                                {
+                                    etage[currentLevel] = tag;
+                                }
+
                                 // add to TagSequences
-                                string OpeningTagPath = string.Empty;
-                                for (int z = 0; z <= currentLevel; z++) { OpeningTagPath += "/" + etage[z]; }
-                                OpeningTagPath = OpeningTagPath.Substring(1); // strip off the leading / slash
-                                if (!TagSequences.Contains(OpeningTagPath)) { TagSequences.Add(OpeningTagPath); }
+                                string openingTagPath = string.Empty;
+                                for (int z = 0; z <= currentLevel; z++)
+                                {
+                                    openingTagPath += "/" + etage[z];
+                                }
+
+                                openingTagPath = openingTagPath.Substring(1); // strip off the leading / slash
+                                if (!tagSequences.Contains(openingTagPath))
+                                {
+                                    tagSequences.Add(openingTagPath);
+                                }
+
                                 break;
                             }
-                        case XmlLineType.ClosingTag:
+                            case XmlLineType.ClosingTag:
                             {
                                 // Record an error if the closing tag does not match the last opening tag
-                                if ("/" + etage[currentLevel] != tag) { TagResolutionError = true; }
+                                if ("/" + etage[currentLevel] != tag)
+                                {
+                                    tagResolutionError = true;
+                                }
+
                                 currentLevel--;
                                 break;
                             }
-                        case XmlLineType.SingleLineEmptyTag:
+                            case XmlLineType.SingleLineEmptyTag:
                             {
                                 // is one-line tag with no content e.g. <Name/>
                                 // add to TagSequences
-                                string OneLineTagPath = string.Empty;
-                                for (int z = 0; z <= currentLevel; z++) { OneLineTagPath += "/" + etage[z]; }
-                                OneLineTagPath += "/" + tag;
-                                OneLineTagPath = OneLineTagPath.Substring(1); // strip off the leading / slash
-                                if (!TagSequences.Contains(OneLineTagPath)) { TagSequences.Add(OneLineTagPath); }
+                                string oneLineTagPath = string.Empty;
+                                for (int z = 0; z <= currentLevel; z++)
+                                {
+                                    oneLineTagPath += "/" + etage[z];
+                                }
+
+                                oneLineTagPath += "/" + tag;
+                                oneLineTagPath = oneLineTagPath.Substring(1); // strip off the leading / slash
+                                if (!tagSequences.Contains(oneLineTagPath))
+                                {
+                                    tagSequences.Add(oneLineTagPath);
+                                }
+
                                 break;
                             }
-                        case XmlLineType.TagPlusContent:
+                            case XmlLineType.TagPlusContent:
                             {
                                 // opening and closing tags on one line with content
                                 // add to TagSequences
-                                string OneLineTagPath = string.Empty;
-                                for (int z = 0; z <= currentLevel; z++) { OneLineTagPath += "/" + etage[z]; }
-                                OneLineTagPath += "/" + tag;
-                                OneLineTagPath = OneLineTagPath.Substring(1); // strip off the leading / slash
-                                if (!TagSequences.Contains(OneLineTagPath)) { TagSequences.Add(OneLineTagPath); }
+                                string oneLineTagPath = string.Empty;
+                                for (int z = 0; z <= currentLevel; z++)
+                                {
+                                    oneLineTagPath += "/" + etage[z];
+                                }
+
+                                oneLineTagPath += "/" + tag;
+                                oneLineTagPath = oneLineTagPath.Substring(1); // strip off the leading / slash
+                                if (!tagSequences.Contains(oneLineTagPath))
+                                {
+                                    tagSequences.Add(oneLineTagPath);
+                                }
+
                                 break;
                             }
-                        default:
+                            default:
                             {
                                 throw new Exception("Unexpected XmlLineType value in VerifyXmlFile method");
                             }
+                        }
                     }
                 }
 
-                if (currentLevel != -1) { TagResolutionError = true; }
-                TagSequences.Sort();
+                if (currentLevel != -1) { tagResolutionError = true; }
+                tagSequences.Sort();
             }
-            OnRaisePassMessageEvent(new XmlEventArguments("Xml data saved"));
+            // OnRaisePassMessageEvent(new XmlEventArguments("Xml data saved"));
         }
 
         /// <summary>
@@ -298,14 +334,19 @@ public class PortfolioXml
 
             MakeXmlFile();
 
-            VerifyXmlFile(VerifiedLines: out int linesVerified, TagResolutionError: out bool verificationTabError, TagSequences: out List<string> TagStructure);
+            VerifyXmlFile(verifiedLines: out int linesVerified, tagResolutionError: out bool verificationTabError, tagSequences: out List<string> tagStructure);
             if (verificationTabError)
             {
-                OnRaiseAlertEvent(new XmlEventArguments("The data file that has just been written could not be verified\nThere were tag resolution errors"));
+                // OnRaiseAlertEvent(new XmlEventArguments("The data file that has just been written could not be verified\nThere were tag resolution errors"));
+                MessageBox.Show(
+                    "The data file that has just been written could not be verified\nThere were tag resolution errors"
+                    , "Crux", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else if (linesVerified != _linesWritten)
             {
-                OnRaiseAlertEvent(new XmlEventArguments("The data file that has just been written could not be verified\nLines written = " + _linesWritten.ToString() + " lines read = " + linesVerified.ToString()));
+                MessageBox.Show(
+                    $"The data file that has just been written could not be verified\nLines written = {_linesWritten}, lines read = {linesVerified}"
+                    , "Crux", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -329,29 +370,29 @@ public class PortfolioXml
                     PortfolioDossier a = _info.Account(x);
                     AddXmlItem("Title", a.Title, xw);
                     AddXmlItem("Obsolete", a.Obsolete.ToString(), xw);
-                    AddXmlItem("Balance", a.Amount.ToString(), xw);
-                    AddXmlItem("BalanceDate", a.LastDate.ToString(), xw);
+                    AddXmlItem("Balance", a.Amount.ToString(CultureInfo.InvariantCulture), xw);
+                    AddXmlItem("BalanceDate", a.LastDate.ToString(CultureInfo.InvariantCulture), xw);
                     AddXmlItem("OnlineOperation", a.Option.ToString(), xw);
                     AddXmlItem("CurrencyEuro", a.CurrencyEuro.ToString(), xw);
                     AddXmlItem("Provider", a.ProviderOrganisation, xw);
-                    for (int y = 0; y < a.ReferenceCount; y++)
+                    foreach (PortfolioDossier.ClassReference r in a.References)
                     {
-                        PortfolioDossier.classReference r = a.Reference(y);
                         XmlLineWrite("<Reference-A>", xw);
                         AddXmlItem("ReferenceCaption", r.Caption, xw);
                         AddXmlItem("ReferenceHighlighted", r.Highlighted.ToString(), xw);
                         AddXmlItem("ReferenceValue", r.TextWithoutReturns, xw);
                         XmlLineWrite("</Reference-A>", xw);
                     }
-                    for (int y = 0; y < a.AlertCount; y++)
+
+                    foreach (PortfolioDossier.ClassAlert t in a.Alerts)
                     {
-                        PortfolioDossier.classAlert t = a.Alert(y);
                         XmlLineWrite("<Alert-A>", xw);
-                        AddXmlItem("AlertDate", t.AlertDate.ToString(), xw);
+                        AddXmlItem("AlertDate", t.AlertDate.ToString(CultureInfo.InvariantCulture), xw);
                         AddXmlItem("AlertCaption", t.Caption, xw);
                         AddXmlItem("AlertShowAmount", t.ShowAmount.ToString(), xw);
                         XmlLineWrite("</Alert-A>", xw);
                     }
+                    
                     XmlLineWrite("</Account>", xw);
                 }
                 XmlLineWrite("</Accounts>", xw);
@@ -363,29 +404,29 @@ public class PortfolioXml
                     XmlLineWrite("<Service>", xw);
                     AddXmlItem("Title", a.Title, xw);
                     AddXmlItem("Obsolete", a.Obsolete.ToString(), xw);
-                    AddXmlItem("Cost", a.Amount.ToString(), xw);
-                    AddXmlItem("LastPaymentDate", a.LastDate.ToString(), xw);
+                    AddXmlItem("Cost", a.Amount.ToString(CultureInfo.InvariantCulture), xw);
+                    AddXmlItem("LastPaymentDate", a.LastDate.ToString(CultureInfo.InvariantCulture), xw);
                     AddXmlItem("DirectDebit", a.Option.ToString(), xw);
                     AddXmlItem("ElectronicDocumentation", a.IncludeInDocument.ToString(), xw);
                     AddXmlItem("CurrencyEuro", a.CurrencyEuro.ToString(), xw);
                     AddXmlItem("Provider", a.ProviderOrganisation, xw);
-                    for (int y = 0; y < a.ReferenceCount; y++)
+
+                    foreach (PortfolioDossier.ClassReference r in a.References)
                     {
-                        PortfolioDossier.classReference r = a.Reference(y);
-                        XmlLineWrite("<Reference-S>", xw);
+                        XmlLineWrite("<Reference-A>", xw);
                         AddXmlItem("ReferenceCaption", r.Caption, xw);
                         AddXmlItem("ReferenceHighlighted", r.Highlighted.ToString(), xw);
                         AddXmlItem("ReferenceValue", r.TextWithoutReturns, xw);
-                        XmlLineWrite("</Reference-S>", xw);
+                        XmlLineWrite("</Reference-A>", xw);
                     }
-                    for (int y = 0; y < a.AlertCount; y++)
+
+                    foreach (PortfolioDossier.ClassAlert t in a.Alerts)
                     {
-                        PortfolioDossier.classAlert t = a.Alert(y);
-                        XmlLineWrite("<Alert-S>", xw);
-                        AddXmlItem("AlertDate", t.AlertDate.ToString(), xw);
+                        XmlLineWrite("<Alert-A>", xw);
+                        AddXmlItem("AlertDate", t.AlertDate.ToString(CultureInfo.InvariantCulture), xw);
                         AddXmlItem("AlertCaption", t.Caption, xw);
                         AddXmlItem("AlertShowAmount", t.ShowAmount.ToString(), xw);
-                        XmlLineWrite("</Alert-S>", xw);
+                        XmlLineWrite("</Alert-A>", xw);
                     }
                     XmlLineWrite("</Service>", xw);
                 }
@@ -393,20 +434,20 @@ public class PortfolioXml
 
                 XmlLineWrite("<DatedBalances>", xw);
                 _info.PurgeDatedBalances(); // flag those which had not changed since the previous recorded balance
-                for (int x = 0; x < _info.DatedBalances.Count; x++)
+                foreach (var t in _info.DatedBalances)
                 {
-                    if (_info.DatedBalances[x].UnwantedFlag == false)
+                    if (t.UnwantedFlag == false)
                     {
-                        AddXmlItem("Balance", _info.DatedBalances[x].Specification, xw);
+                        AddXmlItem("Balance", t.Specification, xw);
                     }
                 }
-                AddXmlItem("LastDocExport", _info.LastDocumentExport.ToString(), xw);
+                AddXmlItem("LastDocExport", _info.LastDocumentExport.ToString(CultureInfo.InvariantCulture), xw);
                 XmlLineWrite("</DatedBalances>", xw);
 
                 XmlLineWrite("</AllData>", xw);
             }
 
-            OnRaisePassMessageEvent(new XmlEventArguments("Data file written"));
+            //OnRaisePassMessageEvent(new XmlEventArguments("Data file written"));
         }
 
         /// <summary>
@@ -416,19 +457,18 @@ public class PortfolioXml
         {
             PortfolioDossier accty = new PortfolioDossier(PortfolioDossier.DossierTypeConstants.AccountDossier);
             PortfolioDossier polly = new PortfolioDossier(PortfolioDossier.DossierTypeConstants.ServiceDossier);
-            PortfolioDossier.classAlert zAlert = new PortfolioDossier.classAlert();
-            PortfolioDossier.classReference zRefer = new PortfolioDossier.classReference();
+            PortfolioDossier.ClassAlert zAlert = new PortfolioDossier.ClassAlert();
+            PortfolioDossier.ClassReference zRefer = new PortfolioDossier.ClassReference();
 
             List<string> level = new List<string>();
-            string s;
 
             bool valueBool;
             Single valueSingle;
             DateTime valueDateTime;
 
-            List<string> ReportedUnknownTags = new List<string>(); 
+            List<string> reportedUnknownTags = new List<string>(); 
 
-            OnRaisePassMessageEvent(new XmlEventArguments("Starting load"));
+            //OnRaisePassMessageEvent(new XmlEventArguments("Starting load"));
 
             _info.ClearAllData();
 
@@ -436,16 +476,21 @@ public class PortfolioXml
             {
                 while (!xmlrdr.EndOfStream)
                 {
-                    s = xmlrdr.ReadLine();
-                    XmlLineType LineType = ParseXmlLine(xmlLine: s, tagCaption: out string tag, tagValue: out string content);
-                    switch (LineType)
+                    string? q=  xmlrdr.ReadLine();
+                    if (q is { } s)
                     {
-                        case XmlLineType.Unparseable:
-                        case XmlLineType.Rubric:
+
+
+                        XmlLineType LineType = ParseXmlLine(xmlLine: s, tagCaption: out string tag
+                            , tagValue: out string content);
+                        switch (LineType)
+                        {
+                            case XmlLineType.Unparseable:
+                            case XmlLineType.Rubric:
                             {
                                 break;
                             }
-                        case XmlLineType.OpeningTag:
+                            case XmlLineType.OpeningTag:
                             {
                                 level.Add(tag);
                                 switch (tag)
@@ -454,197 +499,386 @@ public class PortfolioXml
                                     case "Accounts": // level 2
                                     case "Services": // level 2
                                     case "DatedBalances": // level2
-                                        { break; }
+                                    {
+                                        break;
+                                    }
                                     case "Account": // level 3
-                                        { accty = _info.NewAccount; break; }
+                                    {
+                                        accty = _info.NewAccount;
+                                        break;
+                                    }
                                     case "Service": // level 3
-                                        { polly = _info.NewService; break; }
+                                    {
+                                        polly = _info.NewService;
+                                        break;
+                                    }
                                     case "Reference-A": // level 4
-                                        { zRefer = accty.NewReference; break; }
+                                    {
+                                        zRefer = accty.NewReference;
+                                        break;
+                                    }
                                     case "Reference-S": // level 4
-                                        { zRefer = polly.NewReference; break; }
+                                    {
+                                        zRefer = polly.NewReference;
+                                        break;
+                                    }
                                     case "Alert-A": // level 4
-                                        { zAlert = accty.NewAlert; break; }
+                                    {
+                                        zAlert = accty.NewAlert;
+                                        break;
+                                    }
                                     case "Alert-S": // level 4
-                                        { zAlert = polly.NewAlert; break; }
+                                    {
+                                        zAlert = polly.NewAlert;
+                                        break;
+                                    }
                                     default:
+                                    {
+                                        string msg = $"Unknown XML tag at level {level.Count}\"{tag}\"";
+                                        if (!reportedUnknownTags.Contains(msg))
                                         {
-                                            string msg = $"Unknown XML tag at level {level.Count}\"{tag}\"";
-                                            if (!ReportedUnknownTags.Contains(msg))
-                                            {
-                                                OnRaiseAlertEvent(new XmlEventArguments(msg));
-                                                ReportedUnknownTags.Add(msg);
-                                            }
-                                            break;
+                                            MessageBox.Show(msg, "Crux", MessageBoxButton.OK
+                                                , MessageBoxImage.Error);
+                                            reportedUnknownTags.Add(msg);
                                         }
+
+                                        break;
+                                    }
                                 } // end switch
+
                                 break;
                             }
-                        case XmlLineType.ClosingTag:
+                            case XmlLineType.ClosingTag:
                             {
                                 if ("/" + level[level.Count - 1] != tag) //
                                 {
-                                    OnRaiseAlertEvent(new XmlEventArguments($"Mismatched opening and closing XML tags \"{level[level.Count - 1]}\" and \"{tag}"));
+                                    MessageBox.Show(
+                                        $"Mismatched opening and closing XML tags \"{level[level.Count - 1]}\" and \"{tag}"
+                                        , "Crux", MessageBoxButton.OK, MessageBoxImage.Error);
                                 }
+
                                 level.RemoveAt(level.Count - 1);
                                 break;
                             }
-                        case XmlLineType.SingleLineEmptyTag:
+                            case XmlLineType.SingleLineEmptyTag:
                             {
                                 break;
                             }
-                        case XmlLineType.TagPlusContent:
+                            case XmlLineType.TagPlusContent:
                             {
                                 switch (level[level.Count - 1])
                                 {
                                     case "AllData":
                                     case "Accounts":
                                     case "Services":
-                                        {
-                                            // there are no tag pairs within AllData, Accounts or Services
-                                            System.Windows.MessageBox.Show("Unexpected XML tag \"" + tag + "\" within \"" + level[level.Count - 1] + "\"", "Portfolio Xml file reading", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
-                                            break;
-                                        }
+                                    {
+                                        // there are no tag pairs within AllData, Accounts or Services
+                                        System.Windows.MessageBox.Show(
+                                            "Unexpected XML tag \"" + tag + "\" within \"" + level[level.Count - 1] +
+                                            "\"", "Portfolio Xml file reading", System.Windows.MessageBoxButton.OK
+                                            , System.Windows.MessageBoxImage.Error);
+                                        break;
+                                    }
                                     case "Account":
+                                    {
+                                        switch (tag)
                                         {
-                                            switch (tag)
+                                            case "Obsolete":
                                             {
-                                                case "Obsolete":
-                                                    { if (bool.TryParse(content, out valueBool)) { accty.Obsolete = valueBool; } break; }
-                                                case "Title":
-                                                    { accty.Title = content; break; }
-                                                case "Balance":
-                                                    { if (Single.TryParse(content, out valueSingle)) { accty.Amount = valueSingle; } break; }
-                                                case "BalanceDate":
-                                                    { if (DateTime.TryParse(content, out valueDateTime)) { accty.LastDate = valueDateTime; } break; }
-                                                case "OnlineOperation":
-                                                    { if (bool.TryParse(content, out valueBool)) { accty.Option = valueBool; } break; }
-                                                case "CurrencyEuro":
-                                                    { if (bool.TryParse(content, out valueBool)) { accty.CurrencyEuro = valueBool; } break; }
-                                                case "Provider":
-                                                    { accty.ProviderOrganisation = content; break; }
-                                                default:
-                                                    {
-                                                        string msg = "Unknown XML tag at level " + level.Count.ToString() + " (\"" + level[level.Count - 1] + "\") \"" + tag + "\"";
-                                                        if (!ReportedUnknownTags.Contains(msg))
-                                                        {
-                                                            ReportedUnknownTags.Add(msg);
-                                                            System.Windows.MessageBox.Show(msg, "Portfolio Xml file reading", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
-                                                        }
-                                                        break;
-                                                    }
+                                                if (bool.TryParse(content, out valueBool))
+                                                {
+                                                    accty.Obsolete = valueBool;
+                                                }
+
+                                                break;
                                             }
-                                            break;
+                                            case "Title":
+                                            {
+                                                accty.Title = content;
+                                                break;
+                                            }
+                                            case "Balance":
+                                            {
+                                                if (Single.TryParse(content, out valueSingle))
+                                                {
+                                                    accty.Amount = valueSingle;
+                                                }
+
+                                                break;
+                                            }
+                                            case "BalanceDate":
+                                            {
+                                                if (DateTime.TryParse(content, out valueDateTime))
+                                                {
+                                                    accty.LastDate = valueDateTime;
+                                                }
+
+                                                break;
+                                            }
+                                            case "OnlineOperation":
+                                            {
+                                                if (bool.TryParse(content, out valueBool))
+                                                {
+                                                    accty.Option = valueBool;
+                                                }
+
+                                                break;
+                                            }
+                                            case "CurrencyEuro":
+                                            {
+                                                if (bool.TryParse(content, out valueBool))
+                                                {
+                                                    accty.CurrencyEuro = valueBool;
+                                                }
+
+                                                break;
+                                            }
+                                            case "Provider":
+                                            {
+                                                accty.ProviderOrganisation = content;
+                                                break;
+                                            }
+                                            default:
+                                            {
+                                                string msg = "Unknown XML tag at level " + level.Count.ToString() +
+                                                             " (\"" + level[level.Count - 1] + "\") \"" + tag + "\"";
+                                                if (!reportedUnknownTags.Contains(msg))
+                                                {
+                                                    reportedUnknownTags.Add(msg);
+                                                    System.Windows.MessageBox.Show(msg, "Portfolio Xml file reading"
+                                                        , System.Windows.MessageBoxButton.OK
+                                                        , System.Windows.MessageBoxImage.Error);
+                                                }
+
+                                                break;
+                                            }
                                         }
+
+                                        break;
+                                    }
                                     case "Service":
+                                    {
+                                        switch (tag)
                                         {
-                                            switch (tag)
+                                            case "Obsolete":
                                             {
-                                                case "Obsolete":
-                                                    { if (bool.TryParse(content, out valueBool)) { polly.Obsolete = valueBool; } break; }
-                                                case "Title":
-                                                    { polly.Title = content; break; }
-                                                case "Cost":
-                                                    { if (Single.TryParse(content, out valueSingle)) { polly.Amount = valueSingle; } break; }
-                                                case "LastPaymentDate":
-                                                    { if (DateTime.TryParse(content, out valueDateTime)) { polly.LastDate = valueDateTime; } break; }
-                                                case "DirectDebit":
-                                                    { if (bool.TryParse(content, out valueBool)) { polly.Option = valueBool; } break; }
-                                                case "ElectronicDocumentation":
-                                                    { if (bool.TryParse(content, out valueBool)) { polly.IncludeInDocument = valueBool; } break; }
-                                                case "CurrencyEuro":
-                                                    { if (bool.TryParse(content, out valueBool)) { polly.CurrencyEuro = valueBool; } break; }
-                                                case "Provider":
-                                                    { polly.ProviderOrganisation = content; break; }
-                                                default:
-                                                    {
-                                                        string msg = "Unknown XML tag at level " + level.Count.ToString() + " (\"" + level[level.Count - 1] + "\") \"" + tag + "\"";
-                                                        if (!ReportedUnknownTags.Contains(msg))
-                                                        {
-                                                            System.Windows.MessageBox.Show(msg, "Portfolio Xml file reading", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
-                                                            ReportedUnknownTags.Add(msg);
-                                                        }
-                                                        break;
-                                                    }
+                                                if (bool.TryParse(content, out valueBool))
+                                                {
+                                                    polly.Obsolete = valueBool;
+                                                }
+
+                                                break;
                                             }
-                                            break;
+                                            case "Title":
+                                            {
+                                                polly.Title = content;
+                                                break;
+                                            }
+                                            case "Cost":
+                                            {
+                                                if (Single.TryParse(content, out valueSingle))
+                                                {
+                                                    polly.Amount = valueSingle;
+                                                }
+
+                                                break;
+                                            }
+                                            case "LastPaymentDate":
+                                            {
+                                                if (DateTime.TryParse(content, out valueDateTime))
+                                                {
+                                                    polly.LastDate = valueDateTime;
+                                                }
+
+                                                break;
+                                            }
+                                            case "DirectDebit":
+                                            {
+                                                if (bool.TryParse(content, out valueBool))
+                                                {
+                                                    polly.Option = valueBool;
+                                                }
+
+                                                break;
+                                            }
+                                            case "ElectronicDocumentation":
+                                            {
+                                                if (bool.TryParse(content, out valueBool))
+                                                {
+                                                    polly.IncludeInDocument = valueBool;
+                                                }
+
+                                                break;
+                                            }
+                                            case "CurrencyEuro":
+                                            {
+                                                if (bool.TryParse(content, out valueBool))
+                                                {
+                                                    polly.CurrencyEuro = valueBool;
+                                                }
+
+                                                break;
+                                            }
+                                            case "Provider":
+                                            {
+                                                polly.ProviderOrganisation = content;
+                                                break;
+                                            }
+                                            default:
+                                            {
+                                                string msg = "Unknown XML tag at level " + level.Count.ToString() +
+                                                             " (\"" + level[level.Count - 1] + "\") \"" + tag + "\"";
+                                                if (!reportedUnknownTags.Contains(msg))
+                                                {
+                                                    System.Windows.MessageBox.Show(msg, "Portfolio Xml file reading"
+                                                        , System.Windows.MessageBoxButton.OK
+                                                        , System.Windows.MessageBoxImage.Error);
+                                                    reportedUnknownTags.Add(msg);
+                                                }
+
+                                                break;
+                                            }
                                         }
+
+                                        break;
+                                    }
                                     case "Reference-A":
                                     case "Reference-S":
+                                    {
+                                        switch (tag)
                                         {
-                                            switch (tag)
+                                            case "ReferenceCaption":
                                             {
-                                                case "ReferenceCaption":
-                                                    { zRefer.Caption = content; break; }
-                                                case "ReferenceHighlighted":
-                                                    { if (bool.TryParse(content, out valueBool)) { zRefer.Highlighted = valueBool; }; break; }
-                                                case "ReferenceValue":
-                                                    { zRefer.TextWithoutReturns = content; break; }
-                                                default:
-                                                    {
-                                                        string msg = "Unknown XML tag at level " + level.Count.ToString() + " (\"" + level[level.Count - 1] + "\") \"" + tag + "\"";
-                                                        if (!ReportedUnknownTags.Contains(msg))
-                                                        {
-                                                            System.Windows.MessageBox.Show(msg, "Portfolio Xml file reading", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
-                                                            ReportedUnknownTags.Add(msg);
-                                                        }
-                                                        break;
-                                                    }
+                                                zRefer.Caption = content;
+                                                break;
                                             }
-                                            break;
+                                            case "ReferenceHighlighted":
+                                            {
+                                                if (bool.TryParse(content, out valueBool))
+                                                {
+                                                    zRefer.Highlighted = valueBool;
+                                                }
+
+                                                break;
+                                            }
+                                            case "ReferenceValue":
+                                            {
+                                                zRefer.TextWithoutReturns = content;
+                                                break;
+                                            }
+                                            default:
+                                            {
+                                                string msg = "Unknown XML tag at level " + level.Count.ToString() +
+                                                             " (\"" + level[level.Count - 1] + "\") \"" + tag + "\"";
+                                                if (!reportedUnknownTags.Contains(msg))
+                                                {
+                                                    System.Windows.MessageBox.Show(msg, "Portfolio Xml file reading"
+                                                        , System.Windows.MessageBoxButton.OK
+                                                        , System.Windows.MessageBoxImage.Error);
+                                                    reportedUnknownTags.Add(msg);
+                                                }
+
+                                                break;
+                                            }
                                         }
+
+                                        break;
+                                    }
                                     case "Alert-A":
                                     case "Alert-S":
+                                    {
+                                        switch (tag)
                                         {
-                                            switch (tag)
+                                            case "AlertDate":
                                             {
-                                                case "AlertDate":
-                                                    { if (DateTime.TryParse(content, out valueDateTime)) { zAlert.AlertDate = valueDateTime; } break; }
-                                                case "AlertCaption":
-                                                    { zAlert.Caption = content; break; }
-                                                case "AlertShowAmount":
-                                                    { if (bool.TryParse(content, out valueBool)) { zAlert.ShowAmount = valueBool; }; break; }
-                                                default:
-                                                    {
-                                                        string msg = "Unknown XML tag at level " + level.Count.ToString() + " (\"" + level[level.Count - 1] + "\") \"" + tag + "\"";
-                                                        if (!ReportedUnknownTags.Contains(msg))
-                                                        {
-                                                            System.Windows.MessageBox.Show(msg, "Portfolio Xml file reading", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
-                                                            ReportedUnknownTags.Add(msg);
-                                                        }
-                                                        break;
-                                                    }
-                                            }
-                                            break;
+                                                if (DateTime.TryParse(content, out valueDateTime))
+                                                {
+                                                    zAlert.AlertDate = valueDateTime;
+                                                }
 
-                                        }
-                                    case "DatedBalances":
-                                        {
-                                            switch (tag)
-                                            {
-                                                case "Balance":
-                                                    { _info.DatedBalances.Add(new PortfolioCore.ClassDatedBalances(content)); break; }
-                                                case "LastDocExport":
-                                                    { if (DateTime.TryParse(content, out valueDateTime)) { _info.LastDocumentExport = valueDateTime; } break; }
-                                                default:
-                                                    {
-                                                        string msg = "Unknown XML tag at level " + level.Count.ToString() + " (\"" + level[level.Count - 1] + "\") \"" + tag + "\"";
-                                                        if (!ReportedUnknownTags.Contains(msg))
-                                                        {
-                                                            System.Windows.MessageBox.Show(msg, "Portfolio Xml file reading", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
-                                                            ReportedUnknownTags.Add(msg);
-                                                        }
-                                                        break;
-                                                    }
+                                                break;
                                             }
-                                            break;
+                                            case "AlertCaption":
+                                            {
+                                                zAlert.Caption = content;
+                                                break;
+                                            }
+                                            case "AlertShowAmount":
+                                            {
+                                                if (bool.TryParse(content, out valueBool))
+                                                {
+                                                    zAlert.ShowAmount = valueBool;
+                                                }
+
+                                                break;
+                                            }
+                                            default:
+                                            {
+                                                string msg = "Unknown XML tag at level " + level.Count.ToString() +
+                                                             " (\"" + level[level.Count - 1] + "\") \"" + tag + "\"";
+                                                if (!reportedUnknownTags.Contains(msg))
+                                                {
+                                                    System.Windows.MessageBox.Show(msg, "Portfolio Xml file reading"
+                                                        , System.Windows.MessageBoxButton.OK
+                                                        , System.Windows.MessageBoxImage.Error);
+                                                    reportedUnknownTags.Add(msg);
+                                                }
+
+                                                break;
+                                            }
                                         }
+
+                                        break;
+
+                                    }
+                                    case "DatedBalances":
+                                    {
+                                        switch (tag)
+                                        {
+                                            case "Balance":
+                                            {
+                                                _info.DatedBalances.Add(new PortfolioCore.ClassDatedBalances(content));
+                                                break;
+                                            }
+                                            case "LastDocExport":
+                                            {
+                                                if (DateTime.TryParse(content, out valueDateTime))
+                                                {
+                                                    _info.LastDocumentExport = valueDateTime;
+                                                }
+
+                                                break;
+                                            }
+                                            default:
+                                            {
+                                                string msg = "Unknown XML tag at level " + level.Count.ToString() +
+                                                             " (\"" + level[level.Count - 1] + "\") \"" + tag + "\"";
+                                                if (!reportedUnknownTags.Contains(msg))
+                                                {
+                                                    System.Windows.MessageBox.Show(msg, "Portfolio Xml file reading"
+                                                        , System.Windows.MessageBoxButton.OK
+                                                        , System.Windows.MessageBoxImage.Error);
+                                                    reportedUnknownTags.Add(msg);
+                                                }
+
+                                                break;
+                                            }
+                                        }
+
+                                        break;
+                                    }
                                 }
+
                                 break;
                             }
+                        }
                     }
-                    OnRaisePassMessageEvent(new XmlEventArguments("Finished loading"));
-                    if (level.Count != 0) { OnRaiseAlertEvent(new XmlEventArguments("Opening and closing XML tags have not been resolved")); }
+
+                    //OnRaisePassMessageEvent(new XmlEventArguments("Finished loading"));
+                    if (level.Count != 0)
+                    {
+                        MessageBox.Show("Opening and closing XML tags have not been resolved", "Crux", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
             }
         }

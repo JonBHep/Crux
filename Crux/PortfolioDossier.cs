@@ -8,54 +8,43 @@ public class PortfolioDossier : IComparable
 {
     public enum DossierTypeConstants { NullDossier = 0, AccountDossier = 1, ServiceDossier = 2 };
         
-        public class classReference
+        public class ClassReference
         {
             // TODO when finished, rename 
-            private string _RefText;
+            private string _refText;
             public string Caption { get; set; }
             //public string Value { get; set; }
             public bool Highlighted { get; set; }
             
-            public classReference()
+            public ClassReference()
             {
                 Caption = string.Empty;
                 TextWithReturns = string.Empty;
                 Highlighted = false;
+                _refText = string.Empty;
             }
 
             public string TextWithReturns
             {
-                get
-                {
-                    return _RefText.Replace("_", Environment.NewLine);
-                }
-                set
-                {
-                    _RefText = value.Replace(Environment.NewLine, "_");
-                }
+                get => _refText.Replace("_", Environment.NewLine);
+                set => _refText = value.Replace(Environment.NewLine, "_");
             }
 
             public string TextWithoutReturns
             {
-                get
-                {
-                    return _RefText;
-                }
-                set
-                {
-                    _RefText = value;
-                }
+                get => _refText;
+                set => _refText = value;
             }
 
         }
 
-        public class classAlert
+        public class ClassAlert
         {
             // TODO when finished, rename 
             public string Caption { get; set; }
             public DateTime AlertDate { get; set; }
             public bool ShowAmount { get; set; }
-            public classAlert()
+            public ClassAlert()
             {
                 Caption = string.Empty;
                 AlertDate=DateTime.Today;
@@ -63,7 +52,7 @@ public class PortfolioDossier : IComparable
             }
         }
 
-        public DossierTypeConstants DossierType { get; set; }
+        public DossierTypeConstants DossierType { get; private set; }
         public bool Obsolete { get; set; }
         public bool Option { get; set; }
         public bool CurrencyEuro { get; set; }
@@ -79,69 +68,75 @@ public class PortfolioDossier : IComparable
                 if (DossierType == DossierTypeConstants.AccountDossier) { if (Obsolete) { return false; } else { return true; } } // Accounts, unless obsolete, are always included in document
                 if (Obsolete) { return false; } else { return _includeInDocument; } // Services, unless obsolete, will be included if their flag is set 
             }
-            set
-            {
-                _includeInDocument = value;
-            }
+            set => _includeInDocument = value;
         }
 
         private bool _includeInDocument;
 
-        private readonly List<classAlert> _alertList;
+        private readonly List<ClassAlert> _alertList;
         
-        private readonly List<classReference> _referenceList;
+        private readonly List<ClassReference> _referenceList;
         
-        public int AlertCount { get { return _alertList.Count(); } }
-        
-        public int ReferenceCount { get { return _referenceList.Count(); } }
-        
-        public classAlert Alert(int index)
+        public List<ClassAlert> Alerts
         {
-            if ((index<0)||(index>=_alertList.Count())) {return null;}
-            return _alertList[index];
+            get => _alertList;
         }
+        public List<ClassReference> References
+        {
+            get => _referenceList;
+        }
+        
+        // public int AlertCount => _alertList.Count();
+        //
+        // public int ReferenceCount => _referenceList.Count();
 
-        public classReference Reference(int index)
-        {
-            if ((index < 0) || (index >= _referenceList.Count())) { return null; }
-            return _referenceList[index];
-        }
+        // public ClassAlert? Alert(int index)
+        // {
+        //     if ((index<0)||(index>=_alertList.Count())) {return null;}
+        //     return _alertList[index];
+        // }
+
+        // public ClassReference? Reference(int index)
+        // {
+        //     if ((index < 0) || (index >= _referenceList.Count())) { return null; }
+        //     return _referenceList[index];
+        // }
 
         public void PromoteReference(int index)
         {
             if (index<1) {return;}
             if (index>=_referenceList.Count) {return;}
-            classReference temp = _referenceList[index];
+            ClassReference temp = _referenceList[index];
             _referenceList.RemoveAt(index);
             _referenceList.Insert(index - 1, temp);
         }
 
-        public classAlert NewAlert // used in loading data
+        public ClassAlert NewAlert // used in loading data
         {
             get
             {
-                classAlert nouveau = new classAlert();
+                ClassAlert nouveau = new ClassAlert();
                 _alertList.Add(nouveau);
                 return nouveau;
             }
         }
 
-        public void AddAlert (classAlert nova) // user-added
+        public void AddAlert (ClassAlert nova) // user-added
         {
             _alertList.Add(nova);
         }
 
-        public classReference NewReference  // used in loading data
+        public ClassReference NewReference  // used in loading data
         {
             get
             {
-                classReference nouveau = new classReference();
+                ClassReference nouveau = new ClassReference();
                 _referenceList.Add(nouveau);
                 return nouveau;
             }
         }
         
-        public void AddReference(classReference nova) // user-added
+        public void AddReference(ClassReference nova) // user-added
         {
             _referenceList.Add(nova);
         }
@@ -163,7 +158,7 @@ public class PortfolioDossier : IComparable
             get
             {
                 bool allOk = true;
-                foreach (classAlert a in _alertList) { if (a.AlertDate < DateTime.Today) { allOk = false; } }
+                foreach (ClassAlert a in _alertList) { if (a.AlertDate < DateTime.Today) { allOk = false; } }
                 return !allOk;
             }
         }
@@ -179,20 +174,16 @@ public class PortfolioDossier : IComparable
             Option = false;
             IncludeInDocument = false;
             ProviderOrganisation = string.Empty;
-            _alertList = new List<classAlert>();
-            _referenceList = new List<classReference>();
+            _alertList = new List<ClassAlert>();
+            _referenceList = new List<ClassReference>();
         }
 
         public string GroupName
         {
             get
             {
-                string grup;
                 int p = Title.IndexOf(':');
-                if (p>0)
-                { grup = Title.Substring(0, p); }
-                else
-                { grup = "Default"; }
+                var grup = p>0 ? Title.Substring(0, p) : "Default";
                 return grup;
             }
         }
@@ -201,11 +192,8 @@ public class PortfolioDossier : IComparable
         {
             get
             {
-                string species;
                 int p = Title.IndexOf(':');
-                if (p>0)
-                { species = Title.Substring(p + 1); }
-                else { species = Title; }
+                var species = p>0 ? Title.Substring(p + 1) : Title;
                 return species.Trim();
             }
         }
@@ -242,22 +230,28 @@ public class PortfolioDossier : IComparable
             this.Title = other.Title;
          
             this._alertList.Clear();
-            foreach(classAlert al in other._alertList)
+            foreach(ClassAlert al in other._alertList)
             {
-                classAlert nova = new classAlert();
-                nova.AlertDate=al.AlertDate;
-                nova.Caption=al.Caption;
-                nova.ShowAmount=al.ShowAmount;
+                ClassAlert nova = new ClassAlert
+                {
+                    AlertDate = al.AlertDate,
+                    Caption = al.Caption
+                    ,
+                    ShowAmount = al.ShowAmount
+                };
                 this._alertList.Add(nova);
             }
 
             this._referenceList.Clear();
-            foreach (classReference rf in other._referenceList)
+            foreach (ClassReference rf in other._referenceList)
             {
-                classReference nova = new classReference();
-                nova.Caption = rf.Caption;
-                nova.Highlighted = rf.Highlighted;
-                nova.TextWithReturns = rf.TextWithReturns;
+                ClassReference nova = new ClassReference
+                {
+                    Caption = rf.Caption,
+                    Highlighted = rf.Highlighted
+                    ,
+                    TextWithReturns = rf.TextWithReturns
+                };
                 this._referenceList.Add(nova);
             }
         }

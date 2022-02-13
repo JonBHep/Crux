@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Crux"
         mc:Ignorable="d"
         Title="Crux" Height="440" Width="480" AllowsTransparency="True" Background="Transparent" Loaded="Window_Loaded" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" WindowStyle="None"
         x:ClassModifier="internal">
@@ -39,10 +38,10 @@
             
         </Border>
         <Grid Grid.Row="1" Background="SlateGray">
-            <Image x:Name="imageBackground" Margin="2"/>
-            <Canvas x:Name="ParentCanvas" Margin="2">
-                <Button Padding="16 4" x:Name="buttonAccounts" Background="Transparent" Canvas.Right="24" Canvas.Top="16" FontFamily="Lucida Console" FontSize="14" Content="Accounts, policies and services" Click="ButtonAccounts_Click"/>
-                <Button Padding="16 4" x:Name="buttonPasswords" Background="Transparent" Canvas.Right="24" Canvas.Top="66" Content="Passwords" FontFamily="Lucida Console" FontSize="14" Click="ButtonPasswords_Click"/>
+            <Image x:Name="ImageBackground" Margin="2"/>
+            <Canvas Margin="2">
+                <Button Padding="16 4" x:Name="ButtonAccounts" Background="Transparent" Canvas.Right="24" Canvas.Top="16" FontFamily="Lucida Console" FontSize="14" Content="Accounts, policies and services" Click="ButtonAccounts_Click"/>
+                <Button Padding="16 4" x:Name="ButtonPasswords" Background="Transparent" Canvas.Right="24" Canvas.Top="66" Content="Passwords" FontFamily="Lucida Console" FontSize="14" Click="ButtonPasswords_Click"/>
             </Canvas>
         </Grid>
     </Grid>

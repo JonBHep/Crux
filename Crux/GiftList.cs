@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace Crux;
@@ -12,17 +13,14 @@ public class GiftList
 
     private readonly List<GiftGiven> _gifts = new List<GiftGiven>();
 
-    public List<GiftGiven> Gifts
-    {
-        get { return _gifts; }
-    }
+    public List<GiftGiven> Gifts => _gifts;
 
     public GiftList() // constructor
     {
         LoadData();
     }
 
-    public static string PermittedString(string proposed)
+    private static string PermittedString(string proposed)
     {
         return proposed.Replace(SpecConnector, SafeConnector);
     }
@@ -31,10 +29,9 @@ public class GiftList
     {
         // Purge oldest backup files if there are more than 99
         const string filespec = "Gifts_*.txt";
-        System.IO.FileInfo foundfileinfo;
-        string DataFolder = Jbh.AppManager.DataPath;
+        string dataFolder = Jbh.AppManager.DataPath;
         string[] foundfiles
-            = System.IO.Directory.GetFiles(DataFolder, filespec, System.IO.SearchOption.TopDirectoryOnly);
+            = System.IO.Directory.GetFiles(dataFolder, filespec, System.IO.SearchOption.TopDirectoryOnly);
         while (foundfiles.Count() > 100) // current data plus 99 backups
         {
             // identify and delete the oldest file
@@ -42,7 +39,7 @@ public class GiftList
             string oldestfile = string.Empty;
             foreach (string f in foundfiles)
             {
-                foundfileinfo = new System.IO.FileInfo(f);
+                var foundfileinfo = new System.IO.FileInfo(f);
                 if (foundfileinfo.LastWriteTimeUtc < oldestdate)
                 {
                     oldestdate = foundfileinfo.LastWriteTimeUtc;
@@ -55,7 +52,7 @@ public class GiftList
                 System.IO.File.Delete(oldestfile);
             }
 
-            foundfiles = System.IO.Directory.GetFiles(DataFolder, filespec, System.IO.SearchOption.TopDirectoryOnly);
+            foundfiles = System.IO.Directory.GetFiles(dataFolder, filespec, System.IO.SearchOption.TopDirectoryOnly);
         }
 
         // Create a backup file by renaming the data file which is about to be overwritten
@@ -80,14 +77,12 @@ public class GiftList
         try
         {
             string filepath = System.IO.Path.Combine(Jbh.AppManager.DataPath, "Gifts.txt");
-            using (System.IO.StreamWriter sw = new System.IO.StreamWriter(filepath))
+            using System.IO.StreamWriter sw = new System.IO.StreamWriter(filepath);
+            foreach (GiftGiven jf in _gifts)
             {
-                foreach (GiftGiven jf in _gifts)
-                {
-                    string p = jf.Specification;
-                    string c = Solus.PolyAlphabetic.Encoded(p);
-                    sw.WriteLine(c);
-                }
+                string p = jf.Specification;
+                string c = Solus.PolyAlphabetic.Encoded(p);
+                sw.WriteLine(c);
             }
         }
         catch (Exception ex)
@@ -110,13 +105,16 @@ public class GiftList
         {
             while (!sr.EndOfStream)
             {
-                string c = sr.ReadLine();
-                string p = Solus.PolyAlphabetic.Decoded(c);
-                GiftGiven jf = new GiftGiven
+                string? q = sr.ReadLine();
+                if (q is { } c)
                 {
-                    Specification = p
-                };
-                _gifts.Add(jf);
+                    string p = Solus.PolyAlphabetic.Decoded(c);
+                    GiftGiven jf = new GiftGiven
+                    {
+                        Specification = p
+                    };
+                    _gifts.Add(jf);
+                }
             }
         }
 
@@ -165,13 +163,13 @@ public class GiftList
         return tot;
     }
 
-    public double TaxYearTotal(int StartYear, out int count)
+    public double TaxYearTotal(int startYear, out int count)
     {
         double tot = 0;
         int ct = 0;
         foreach (GiftGiven g in _gifts)
         {
-            if (TaxYearStartYear(g.GiftDate) == StartYear)
+            if (TaxYearStartYear(g.GiftDate) == startYear)
             {
                 if (g.LessThanSevenYearsOld)
                 {
@@ -185,9 +183,9 @@ public class GiftList
         return tot;
     }
 
-    public double TaxYearTotalLessAnnualExemption(int StartYear)
+    public double TaxYearTotalLessAnnualExemption(int startYear)
     {
-        double tot = TaxYearTotal(StartYear, out int ct);
+        double tot = TaxYearTotal(startYear, out var _);
         tot = Math.Max(0, tot - AnnualExemption);
         return tot;
     }
@@ -239,11 +237,11 @@ public class GiftList
             get
             {
                 string rv = DateToCode(GiftDate) + SpecConnector;
-                rv += Amount.ToString() + SpecConnector;
+                rv += Amount.ToString(CultureInfo.InvariantCulture) + SpecConnector;
                 rv += Detail;
                 return rv;
             }
-            set
+            init
             {
                 string[] parts = value.Split(SpecConnector);
                 GiftDate = DateFromCode(parts[0]);
@@ -254,7 +252,7 @@ public class GiftList
 
         public GiftGiven() // constructor
         {
-            Detail = "New gift";
+            _detail = "New gift";
             GiftDate = DateTime.MinValue;
             Amount = 0;
         }
@@ -276,17 +274,22 @@ public class GiftList
             return d;
         }
 
-        int IComparable<GiftGiven>.CompareTo(GiftGiven other)
+        int IComparable<GiftGiven>.CompareTo(GiftGiven? other)
         {
-            return this.GiftDate.CompareTo(other.GiftDate);
+            if (other is { })
+            {
+                return this.GiftDate.CompareTo(other.GiftDate);    
+            }
+
+            return 0;
         }
 
         public bool LessThanSevenYearsOld
         {
             get
             {
-                DateTime SevenYearsAgo = DateTime.Today.AddYears(-7);
-                return (GiftDate > SevenYearsAgo);
+                DateTime sevenYearsAgo = DateTime.Today.AddYears(-7);
+                return (GiftDate > sevenYearsAgo);
             }
         }
 
@@ -321,7 +324,6 @@ public class GiftList
                     {
                         // if overshot then come forward one month
                         mths--;
-                        pt = pt.AddMonths(1);
                     }
                 }
 
@@ -331,8 +333,8 @@ public class GiftList
 
         public string Detail
         {
-            get { return _detail; }
-            set { _detail = PermittedString(value); }
+            get => _detail;
+            set => _detail = PermittedString(value);
         }
     }
 }

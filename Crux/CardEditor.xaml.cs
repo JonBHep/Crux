@@ -3,32 +3,26 @@ using System.Windows;
 
 namespace Crux;
 
-public partial class CardEditor : Window
+public partial class CardEditor
 {
         private readonly CarteBancaire _carte;
         
-        public CardEditor(string cardspec)
+        public CardEditor(string cardSpec)
         {
             InitializeComponent();
-            _carte = new CarteBancaire() { Specification=cardspec};
+            _carte = new CarteBancaire() { Specification=cardSpec};
         }
 
-        public string CardSpecification
-        {
-            get
-            {
-                return _carte.Specification;
-            }
-        }
+        public string CardSpecification => _carte.Specification;
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
-            string errmsg = string.Empty;
+            string errMessage = string.Empty;
             _carte.Caption = CaptionBox.Text.Trim();
-            if (string.IsNullOrEmpty(_carte.Caption)) { errmsg = "Give the card a caption"; }
+            if (string.IsNullOrEmpty(_carte.Caption)) {errMessage = "Give the card a caption"; }
             _carte.CardNumber =NumberBox.Text.Trim();
-            if (string.IsNullOrEmpty(_carte.CardNumber)) { errmsg = "Enter the card number"; }
-            if (DebitRadio.IsChecked.Value)
+            if (string.IsNullOrEmpty(_carte.CardNumber)) { errMessage = "Enter the card number"; }
+            if (DebitRadio.IsChecked.HasValue && DebitRadio.IsChecked.Value)
             {
                 _carte.CreditLimit = -1;
             }
@@ -41,7 +35,7 @@ public partial class CardEditor : Window
                 else
                 {
                     _carte.CreditLimit = 0;
-                    errmsg = "Enter the card credit limit";
+                    errMessage = "Enter the card credit limit";
                 }
             }
 
@@ -54,7 +48,7 @@ public partial class CardEditor : Window
             else
             {
                 _carte.Epingle = 0;
-                errmsg = "Enter the card PIN";
+                errMessage = "Enter the card PIN";
             }
             if (int.TryParse(MonthFromBox.Text, out int ic))
             {
@@ -63,7 +57,7 @@ public partial class CardEditor : Window
             else
             {
                 _carte.FromMonth = 0;
-                errmsg = "From month error";
+                errMessage = "From month error";
             }
             if (int.TryParse(MonthToBox.Text, out int id))
             {
@@ -72,7 +66,7 @@ public partial class CardEditor : Window
             else
             {
                 _carte.ToMonth = 0;
-                errmsg = "To month error";
+errMessage = "To month error";
             }
             if (int.TryParse(YearFromBox.Text, out int ie))
             {
@@ -81,7 +75,7 @@ public partial class CardEditor : Window
             else
             {
                 _carte.FromYear = 0;
-                errmsg = "From year error";
+          errMessage = "From year error";
             }
             if (int.TryParse(YearToBox.Text, out int i))
             {
@@ -90,19 +84,19 @@ public partial class CardEditor : Window
             else
             {
                 _carte.ToYear = 0;
-                errmsg = "To year error";
+                 errMessage = "To year error";
             }
             _carte.NameOnCard = NameBox.Text.Trim();
-            if (string.IsNullOrEmpty(_carte.NameOnCard)) { errmsg = "Enter the name on the card"; }
+            if (string.IsNullOrEmpty(_carte.NameOnCard)) { errMessage = "Enter the name on the card"; }
             
             _carte.Notes = NotesBox.Text.Trim();
             
             _carte.VerificationMessage = VMessageBox.Text.Trim();
             
             _carte.VerificationPassword = VWordBox.Text.Trim();
-            if (!string.IsNullOrEmpty(errmsg))
+            if (!string.IsNullOrEmpty(errMessage))
             {
-                MessageBox.Show(errmsg, Jbh.AppManager.AppName, MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(errMessage, Jbh.AppManager.AppName, MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             DialogResult = true;

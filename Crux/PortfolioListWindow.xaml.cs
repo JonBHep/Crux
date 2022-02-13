@@ -7,7 +7,7 @@ using System.Windows.Media;
 
 namespace Crux;
 
-public partial class PortfolioListWindow : Window
+public partial class PortfolioListWindow
 {
     public PortfolioListWindow(PortfolioDossier.DossierTypeConstants paramDossierType, PortfolioCore paramPortfolio)
         {
@@ -34,20 +34,20 @@ public partial class PortfolioListWindow : Window
 
         private class ListedItem
         {
-            public string GroupName { get; set; }
-            public string DossierName { get; set; }
-            public string Provider { get; set; }
-            public string Amount { get; set; }
-            public string AmountDate { get; set; }
-            public string Alerts { get; set; }
-            public string Online { get; set; }
-            public string InDocument { get; set; }
+            public string? GroupName { get; set; }
+            public string? DossierName { get; set; }
+            public string? Provider { get; set; }
+            public string? Amount { get; set; }
+            public string? AmountDate { get; set; }
+            public string? Alerts { get; set; }
+            public string? Online { get; set; }
+            public string? InDocument { get; set; }
             public bool Obsolete { get; set; }
             // for triggers
             public bool BankBalanceOld { get; set; }
             public bool BankBalanceToday { get; set; }
             public bool AlertOverdue { get; set; }
-            public int Index { get; set; }
+            public int Index { get; init; }
         }
 
         private void Window_ContentRendered(object sender, EventArgs e)
@@ -103,28 +103,28 @@ public partial class PortfolioListWindow : Window
             {
                 case PortfolioDossier.DossierTypeConstants.AccountDossier:
                     {
-                        columnDossier.Header = "Account";
-                        columnProvider.Header = "Provider";
-                        columnAmount.Header = "Balance";
-                        columnAmountDate.Header = "Balance date";
-                        columnAmountDate.Width = 90;
-                        columnAlerts.Header = "Alerts";
-                        columnOnline.Header = "Online operation";
-                        columnDocument.Header = "In document";
-                        columnObsolete.Header = "Obsolete";
+                        ColumnDossier.Header = "Account";
+                        ColumnProvider.Header = "Provider";
+                        ColumnAmount.Header = "Balance";
+                        ColumnAmountDate.Header = "Balance date";
+                        ColumnAmountDate.Width = 90;
+                        ColumnAlerts.Header = "Alerts";
+                        ColumnOnline.Header = "Online operation";
+                        ColumnDocument.Header = "In document";
+                        ColumnObsolete.Header = "Obsolete";
                         break;
                     }
                 case PortfolioDossier.DossierTypeConstants.ServiceDossier:
                     {
-                        columnDossier.Header = "Service";
-                        columnProvider.Header = "Provider";
-                        columnAmount.Header = "Last payment";
-                        columnAmountDate.Header = "Last payment date";
-                        columnAmountDate.Width = 90;
-                        columnAlerts.Header = "Alerts";
-                        columnOnline.Header = "Direct debit";
-                        columnDocument.Header = "In document";
-                        columnObsolete.Header = "Obsolete";
+                        ColumnDossier.Header = "Service";
+                        ColumnProvider.Header = "Provider";
+                        ColumnAmount.Header = "Last payment";
+                        ColumnAmountDate.Header = "Last payment date";
+                        ColumnAmountDate.Width = 90;
+                        ColumnAlerts.Header = "Alerts";
+                        ColumnOnline.Header = "Direct debit";
+                        ColumnDocument.Header = "In document";
+                        ColumnObsolete.Header = "Obsolete";
                         break;
                     }
                 case PortfolioDossier.DossierTypeConstants.NullDossier:
@@ -147,7 +147,7 @@ public partial class PortfolioListWindow : Window
                                 ListedItem itm = new ListedItem
                                 {
                                     Index = x,
-                                    Alerts = _portfolio.Account(x).AlertCount.ToString(),
+                                    Alerts = _portfolio.Account(x).Alerts.Count.ToString(),
                                     Amount = _portfolio.Account(x).AmountString,
                                     AmountDate = _portfolio.Account(x).LastDate.ToShortDateString(),
                                     DossierName = _portfolio.Account(x).TitleSpecifics,
@@ -164,11 +164,11 @@ public partial class PortfolioListWindow : Window
                                 _displayList.Add(itm);
                             }
                         }
-                        textblockDossierTotalCount.Text = _portfolio.AccountCount.ToString() + " accounts";
-                        textblockDossierLiveCount.Text = (_portfolio.AccountCount - _portfolio.AccountCountObsolete).ToString() + " live";
-                        textblockDossierObsoleteCount.Text = _portfolio.AccountCountObsolete.ToString() + " obsolete";
-                        textblockTotalPounds.Text = _portfolio.TotalBalanceOfLiveAccountsPound();
-                        textblockTotalEuros.Text = _portfolio.TotalBalanceOfLiveAccountsEuro();
+                        TextblockDossierTotalCount.Text = _portfolio.AccountCount.ToString() + " accounts";
+                        TextblockDossierLiveCount.Text = (_portfolio.AccountCount - _portfolio.AccountCountObsolete).ToString() + " live";
+                        TextblockDossierObsoleteCount.Text = _portfolio.AccountCountObsolete.ToString() + " obsolete";
+                        TextblockTotalPounds.Text = _portfolio.TotalBalanceOfLiveAccountsPound();
+                        TextblockTotalEuros.Text = _portfolio.TotalBalanceOfLiveAccountsEuro();
                         break;
                     }
                 case PortfolioDossier.DossierTypeConstants.ServiceDossier:
@@ -180,7 +180,7 @@ public partial class PortfolioListWindow : Window
                                 ListedItem itm = new ListedItem
                                 {
                                     Index = x,
-                                    Alerts = _portfolio.Service(x).AlertCount.ToString(),
+                                    Alerts = _portfolio.Service(x).Alerts.Count.ToString(),
                                     Amount = _portfolio.Service(x).AmountString,
                                     AmountDate = _portfolio.Service(x).LastDate.ToShortDateString()
                                 };
@@ -197,11 +197,11 @@ public partial class PortfolioListWindow : Window
                                 _displayList.Add(itm);
                             }
                         }
-                        textblockDossierTotalCount.Text = _portfolio.ServiceCount.ToString() + " services";
-                        textblockDossierLiveCount.Text = (_portfolio.ServiceCount - _portfolio.ServiceCountObsolete).ToString() + " live";
-                        textblockDossierObsoleteCount.Text = _portfolio.ServiceCountObsolete.ToString() + " obsolete";
-                        textblockTotalPounds.Text = string.Empty;
-                        textblockTotalEuros.Text = string.Empty;
+                        TextblockDossierTotalCount.Text = _portfolio.ServiceCount.ToString() + " services";
+                        TextblockDossierLiveCount.Text = (_portfolio.ServiceCount - _portfolio.ServiceCountObsolete).ToString() + " live";
+                        TextblockDossierObsoleteCount.Text = _portfolio.ServiceCountObsolete.ToString() + " obsolete";
+                        TextblockTotalPounds.Text = string.Empty;
+                        TextblockTotalEuros.Text = string.Empty;
                         break;
                     }
                 case PortfolioDossier.DossierTypeConstants.NullDossier:
@@ -211,12 +211,12 @@ public partial class PortfolioListWindow : Window
 
             if (_firstDisplay)
             {
-                listviewDossiers.ItemsSource = _displayList;
-                CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(listviewDossiers.ItemsSource);
+                ListviewDossiers.ItemsSource = _displayList;
+                CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ListviewDossiers.ItemsSource);
                 PropertyGroupDescription groupDescription = new PropertyGroupDescription("GroupName");
-                view.GroupDescriptions.Add(groupDescription);
+                if (view.GroupDescriptions != null) view.GroupDescriptions.Add(groupDescription);
 
-                listviewDossiers.ContextMenu = _cmnu;
+                ListviewDossiers.ContextMenu = _cmnu;
                 _firstDisplay = false;
             }
 
@@ -247,8 +247,6 @@ public partial class PortfolioListWindow : Window
                             BuildList();
                             break;
                         }
-                    default:
-                        { break; }
                 }
             }
         }
@@ -259,48 +257,41 @@ public partial class PortfolioListWindow : Window
             {
                 case PortfolioDossier.DossierTypeConstants.AccountDossier:
                     {
-                        ListedItem it = (ListedItem)listviewDossiers.SelectedItem;
-                        int p = (int)it.Index;
+                        ListedItem it = (ListedItem)ListviewDossiers.SelectedItem;
+                        int p = it.Index;
                         DossierDetailsWindow w = new DossierDetailsWindow(_portfolio.Account(p), _portfolio.GroupsList(_dossierType))
                         {
                             Owner = this
                         };
-                        if (w.ShowDialog() == true) { BuildList(); };
+                        if (w.ShowDialog() == true) { BuildList(); }
+
                         break;
                     }
                 case PortfolioDossier.DossierTypeConstants.ServiceDossier:
                     {
-                        ListedItem it = (ListedItem)listviewDossiers.SelectedItem;
-                        int p = (int)it.Index;
+                        ListedItem it = (ListedItem)ListviewDossiers.SelectedItem;
+                        int p = it.Index;
                         DossierDetailsWindow w = new DossierDetailsWindow(_portfolio.Service(p), _portfolio.GroupsList(_dossierType))
                         {
                             Owner = this
                         };
-                        if (w.ShowDialog() == true) { BuildList(); };
+                        if (w.ShowDialog() == true) { BuildList(); }
+
                         break;
                     }
-                default:
-                    { break; }
             }
         }
 
         private void MenuItemDelete_Click(object sender, RoutedEventArgs e)
         {
-            ListedItem it = (ListedItem)listviewDossiers.SelectedItem;
-            int p = (int)it.Index;
-            MessageBoxResult mbr = MessageBoxResult.None;
+            ListedItem it = (ListedItem)ListviewDossiers.SelectedItem;
+            int p = it.Index;
+            MessageBoxResult mbr;
             switch (_dossierType)
             {
                 case PortfolioDossier.DossierTypeConstants.AccountDossier:
                     {
-                        if (_portfolio.Account(p).Obsolete)
-                        {
-                            mbr = MessageBox.Show("Delete the selected obsolete account?\n\n" + _portfolio.Account(p).Title, "Delete account", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                        }
-                        else
-                        {
-                            mbr = MessageBox.Show("Delete the selected account?\n\n" + _portfolio.Account(p).Title + "\n\nRemember you have the option to mark the account as obsolete", "Delete account", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                        }
+                        mbr = _portfolio.Account(p).Obsolete ? MessageBox.Show("Delete the selected obsolete account?\n\n" + _portfolio.Account(p).Title, "Delete account", MessageBoxButton.YesNo, MessageBoxImage.Question) : MessageBox.Show("Delete the selected account?\n\n" + _portfolio.Account(p).Title + "\n\nRemember you have the option to mark the account as obsolete", "Delete account", MessageBoxButton.YesNo, MessageBoxImage.Question);
                         if (mbr == MessageBoxResult.Yes)
                         {
                             _portfolio.DeleteAccount(p);
@@ -310,14 +301,7 @@ public partial class PortfolioListWindow : Window
                     }
                 case PortfolioDossier.DossierTypeConstants.ServiceDossier:
                     {
-                        if (_portfolio.Service(p).Obsolete)
-                        {
-                            mbr = MessageBox.Show("Delete the selected obsolete service?\n\n" + _portfolio.Service(p).Title, "Delete service", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                        }
-                        else
-                        {
-                            mbr = MessageBox.Show("Delete the selected service?\n\n" + _portfolio.Service(p).Title + "\n\nRemember you have the option to mark the service as obsolete", "Delete service", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                        }
+                        mbr = _portfolio.Service(p).Obsolete ? MessageBox.Show("Delete the selected obsolete service?\n\n" + _portfolio.Service(p).Title, "Delete service", MessageBoxButton.YesNo, MessageBoxImage.Question) : MessageBox.Show("Delete the selected service?\n\n" + _portfolio.Service(p).Title + "\n\nRemember you have the option to mark the service as obsolete", "Delete service", MessageBoxButton.YesNo, MessageBoxImage.Question);
                         if (mbr == MessageBoxResult.Yes)
                         {
                             _portfolio.DeleteService(p);
@@ -356,14 +340,14 @@ public partial class PortfolioListWindow : Window
 
         private void ListviewDossiers_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            bool sel = listviewDossiers.SelectedItem != null;
+            bool sel = ListviewDossiers.SelectedItem != null;
             _cmnuDelete.IsEnabled = sel;
             _cmnuEdit.IsEnabled = sel;
         }
 
         private void ListviewDossiers_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (_cmnuEdit.IsEnabled == true) { MenuItemEdit_Click(sender, e); }
+            if (_cmnuEdit.IsEnabled) { MenuItemEdit_Click(sender, e); }
         }
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)

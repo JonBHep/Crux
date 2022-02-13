@@ -38,7 +38,7 @@ public class PortfolioCore
                 Amount = paramAmount;
             }
 
-            public int CompareTo (object obj)
+            public int CompareTo (object? obj)
             {
                 if (obj == null) return 1;
                 ClassDueDate other = (ClassDueDate) obj;
@@ -58,18 +58,13 @@ public class PortfolioCore
         public class ClassDatedBalances
         {
             private readonly DateTime _dateZero = new DateTime(2015, 1, 1);
-            public DateTime BalanceDate { get { return _dateZero.AddDays(BalanceDateIndex); } }
+            public DateTime BalanceDate => _dateZero.AddDays(BalanceDateIndex);
             public int BalanceDateIndex { get; set; }
             public int BalancePounds{get;set;}
             public int BalanceEuros{get;set;}
             public bool UnwantedFlag { get; set; }
-            public string Specification
-            {
-                get
-                {
-                    return BalanceDateIndex.ToString() + "#" + BalancePounds.ToString() + "#" + BalanceEuros.ToString();
-                }
-            }
+            public string Specification => BalanceDateIndex.ToString() + "#" + BalancePounds.ToString() + "#" + BalanceEuros.ToString();
+
             public ClassDatedBalances(string paramSpecification)
             {
                 string[] u = paramSpecification.Split('#');
@@ -104,9 +99,9 @@ public class PortfolioCore
             }
         }
 
-        public int AccountCount { get { return _accountList.Count; } }
+        public int AccountCount => _accountList.Count;
 
-        public int ServiceCount { get { return _serviceList.Count; } }
+        public int ServiceCount => _serviceList.Count;
 
         public bool DocumentExportOverdue
         {
@@ -167,7 +162,7 @@ public class PortfolioCore
 
         public PortfolioDossier Service(int index) { return _serviceList[index]; }
 
-        public List<ClassDatedBalances> DatedBalances { get { return _datedBalances; } }
+        public List<ClassDatedBalances> DatedBalances => _datedBalances;
 
         public void ClearAllData()
         {
@@ -277,12 +272,12 @@ public class PortfolioCore
             {
                 if (!pd.Obsolete)
                 {
-                    if (pd.CurrencyEuro) { defaultAmount = EuroSymbol.ToString(); } else { defaultAmount = PoundSymbol.ToString(); }
+                    defaultAmount = pd.CurrencyEuro ? EuroSymbol.ToString() : PoundSymbol.ToString();
                     defaultAmount += pd.Amount.ToString("#,0.00");
-                    for (int a=0;a<pd.AlertCount;a++)
-                    { 
-                        if (pd.Alert(a).ShowAmount) { displayedAmount = defaultAmount; } else { displayedAmount = string.Empty; }
-                        rv.Add(new ClassDueDate(pd.Alert(a).AlertDate,pd.Title,pd.Alert(a).Caption,"Account",displayedAmount));
+                    foreach (PortfolioDossier.ClassAlert alert in pd.Alerts)
+                    {
+                        displayedAmount =alert.ShowAmount ? defaultAmount : string.Empty;
+                        rv.Add(new ClassDueDate(alert.AlertDate,pd.Title,alert.Caption,"Account",displayedAmount));    
                     }
                 }
             }
@@ -290,12 +285,12 @@ public class PortfolioCore
             {
                 if (!pd.Obsolete)
                 {
-                    if (pd.CurrencyEuro) { defaultAmount = EuroSymbol.ToString(); } else { defaultAmount = PoundSymbol.ToString(); }
+                    defaultAmount = pd.CurrencyEuro ? EuroSymbol.ToString() : PoundSymbol.ToString();
                     defaultAmount += pd.Amount.ToString("#,0.00");
-                    for (int a=0;a<pd.AlertCount;a++)
-                    { 
-                        if (pd.Alert(a).ShowAmount) { displayedAmount = defaultAmount; } else { displayedAmount = string.Empty; }
-                        rv.Add(new ClassDueDate(pd.Alert(a).AlertDate,pd.Title,pd.Alert(a).Caption,"Service",displayedAmount));
+                    foreach (PortfolioDossier.ClassAlert alert in pd.Alerts)
+                    {
+                        displayedAmount =alert.ShowAmount ? defaultAmount : string.Empty;
+                        rv.Add(new ClassDueDate(alert.AlertDate,pd.Title,alert.Caption,"Service",displayedAmount));    
                     }
                 }
             }
@@ -308,8 +303,7 @@ public class PortfolioCore
         public List<string> GroupsList(PortfolioDossier.DossierTypeConstants typ)
         {
             List<string> lst = new List<string>();
-            List<PortfolioDossier> pfos;
-            if (typ == PortfolioDossier.DossierTypeConstants.AccountDossier) { pfos = _accountList; } else { pfos = _serviceList; }
+            var pfos = typ == PortfolioDossier.DossierTypeConstants.AccountDossier ? _accountList : _serviceList;
             foreach (PortfolioDossier d in pfos)
             {
                 if (!lst.Contains(d.GroupName)) { lst.Add(d.GroupName); }
@@ -321,24 +315,40 @@ public class PortfolioCore
         public void ExportAlertsList()
         {
             List<ClassDueDate> alertDates = DueDates();
+            bool okPath = true;
             string path =Jbh.AppManager.DataPath;
-            path = System.IO.Path.GetDirectoryName(path);
-            path = System.IO.Path.Combine(path, "Souvenir");
-            if (!System.IO.Directory.Exists(path))
+            string? dirpath=System.IO.Path.GetDirectoryName(path);
+            if (dirpath is null)
             {
-                System.Windows.MessageBox.Show("Attempting to export alerts to Souvenir program\n\nCannot locate the directory\n\n" + path, "Directory not found", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+                okPath = false;
+            }
+            else
+            {
+                path = System.IO.Path.Combine(dirpath, "Souvenir");
+                if (!System.IO.Directory.Exists(path))
+                {
+                    okPath = false;
+                    
+                }
+            }
+
+            if (!okPath)
+            {
+                System.Windows.MessageBox.Show(
+                    "Attempting to export alerts to Souvenir program\n\nCannot locate the directory\n\n" + path
+                    , "Directory not found", System.Windows.MessageBoxButton.OK
+                    , System.Windows.MessageBoxImage.Warning);
                 return;
             }
+            
             path = System.IO.Path.Combine(path, "CrucialAlerts.txt");
-            using (System.IO.StreamWriter sw = new System.IO.StreamWriter(path))
+            using System.IO.StreamWriter sw = new System.IO.StreamWriter(path);
+            foreach (ClassDueDate dd in alertDates)
             {
-                foreach (ClassDueDate dd in alertDates)
+                if (!dd.Category.Equals("TODAY"))
                 {
-                    if (!dd.Category.Equals("TODAY"))
-                    {
-                        sw.WriteLine(dd.Due.ToString(System.Globalization.CultureInfo.InvariantCulture));
-                        sw.WriteLine($"{dd.PortfolioDescription} - {dd.AlertDescription}");
-                    }
+                    sw.WriteLine(dd.Due.ToString(System.Globalization.CultureInfo.InvariantCulture));
+                    sw.WriteLine($"{dd.PortfolioDescription} - {dd.AlertDescription}");
                 }
             }
         }

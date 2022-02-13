@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:local="clr-namespace:Crux"
         mc:Ignorable="d"
         Height="675" Width="1200" WindowStartupLocation="CenterScreen" WindowStyle="None" ContentRendered="Window_ContentRendered">
     <Canvas x:Name="PaintCanvas" Background="WhiteSmoke" MouseDown="PaintCanvas_MouseDown">
@@ -15,21 +14,21 @@
 
         <DockPanel Canvas.Left="550" Canvas.Top="200"  Width="400">
             
-            <TextBlock x:Name="textblockTitle" FontFamily="Megrim" DockPanel.Dock="Top" Foreground="DarkGreen" FontSize="32" Margin="0 18" VerticalAlignment="Center"><Run Text="[title]"/></TextBlock>
+            <TextBlock x:Name="TextBlockTitle" FontFamily="Megrim" DockPanel.Dock="Top" Foreground="DarkGreen" FontSize="32" Margin="0 18" VerticalAlignment="Center"><Run Text="[title]"/></TextBlock>
             
             <DockPanel DockPanel.Dock="Top" Margin="0 0 0 8">
                 <TextBlock Foreground="White" Text="Description" Width="100"></TextBlock>
-                <TextBlock x:Name="textblockDescription"  TextWrapping="Wrap" ><Run Text="[description]"/></TextBlock>    
+                <TextBlock x:Name="TextBlockDescription"  TextWrapping="Wrap" ><Run Text="[description]"/></TextBlock>    
             </DockPanel>
             
             <DockPanel DockPanel.Dock="Top" Margin="0 0 0 8">
                 <TextBlock  Foreground="White" Width="100"><Run Text="Copyright"/></TextBlock>
-                <TextBlock x:Name="textblockCopyright" ><Run Text="[copyright]"/></TextBlock>    
+                <TextBlock x:Name="TextBlockCopyright" ><Run Text="[copyright]"/></TextBlock>    
             </DockPanel>
             
             <DockPanel DockPanel.Dock="Top" Margin="0 0 0 8">
                 <TextBlock  Foreground="White" Width="100"><Run Text="Version"/></TextBlock>
-                <TextBlock x:Name="textblockVersion" ><Run Text="[version]"/></TextBlock>
+                <TextBlock x:Name="TextBlockVersion" ><Run Text="[version]"/></TextBlock>
             </DockPanel>
             
             <DockPanel DockPanel.Dock="Top" Margin="0 0 0 8">

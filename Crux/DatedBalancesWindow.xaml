@@ -20,11 +20,11 @@
             <TextBlock Width="80" Padding="4 2" VerticalAlignment="Center" Foreground="SaddleBrown" TextAlignment="Right">Pounds</TextBlock>
             <TextBlock Width="80" Padding="4 2" VerticalAlignment="Center" Foreground="DarkOliveGreen" TextAlignment="Right" >Euros</TextBlock>
         </StackPanel>
-        <DockPanel Grid.ColumnSpan="2" LastChildFill="False">
-            <Button x:Name="buttonClose" DockPanel.Dock="Right" Style="{StaticResource ButtonClose}" Click="ButtonClose_Click" Margin="0 0 8 0"/>
+        <DockPanel Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0" LastChildFill="False">
+            <Button DockPanel.Dock="Right" Style="{StaticResource ButtonClose}" Click="ButtonClose_Click" Margin="0 0 8 0"/>
             <CheckBox x:Name="ListLimitedTick" IsThreeState="False" Checked="ListLimitedTick_Checked" Unchecked="ListLimitedTick_Checked" VerticalAlignment="Center" Margin="6 0 0 0" IsChecked="True">List last 2 years</CheckBox>
         </DockPanel>
-        <ListBox x:Name="BalancesListBox" Grid.Row="2" Margin="4 4 2 4"></ListBox>
-        <Canvas x:Name="canvasGraph" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Margin="0 0 4 4" Background="AliceBlue"></Canvas>
+        <ListBox x:Name="BalancesListBox" Grid.Row="2" Grid.Column="0" Margin="4 4 2 4"></ListBox>
+        <Canvas x:Name="CanvasGraph" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Margin="0 0 4 4" Background="AliceBlue"></Canvas>
     </Grid>
 </Window>

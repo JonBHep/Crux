@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:local="clr-namespace:Crux"
         mc:Ignorable="d"
         Title="Portfolio details" Height="800" Width="1200" WindowStartupLocation="CenterScreen" ContentRendered="Window_ContentRendered" WindowState="Normal" ShowInTaskbar="False" WindowStyle="None" AllowsTransparency="True" Background="Transparent" Loaded="Window_Loaded">
     <Window.Resources>
@@ -23,7 +22,7 @@
             <Setter Property="Padding" Value="4 0"/>
             <Setter Property="MinWidth" Value="80"/>
         </Style>
-        <DataTemplate x:Key="datatemplateAlertDate">
+        <DataTemplate x:Key="DatatemplateAlertDate">
             <TextBlock x:Name="textblock" FontFamily="Arial" FontSize="12" FontWeight="SemiBold" TextAlignment="Left" Foreground="ForestGreen" Text="{Binding DateForDisplay}"/>
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding Path=Overdue}" Value="True">
@@ -31,10 +30,10 @@
                 </DataTrigger>
             </DataTemplate.Triggers>
         </DataTemplate>
-        <DataTemplate x:Key="datatemplateAlertCaption">
+        <DataTemplate x:Key="DatatemplateAlertCaption">
             <TextBlock FontFamily="Arial" FontSize="12" TextAlignment="Left" Foreground="ForestGreen" Text="{Binding Caption}"/>
         </DataTemplate>
-        <DataTemplate x:Key="datatemplateAlertAmount">
+        <DataTemplate x:Key="DatatemplateAlertAmount">
             <TextBlock FontFamily="Arial" FontSize="12" TextAlignment="Left" Foreground="ForestGreen" Text="{Binding Amount}"/>
         </DataTemplate>
     </Window.Resources>
@@ -54,63 +53,63 @@
         <Border Background="Ivory">
             <DockPanel>
                 <DockPanel DockPanel.Dock="Top">
-                    <TextBlock x:Name="textblockTitle" DockPanel.Dock="Left" VerticalAlignment="Center" Margin="8" Padding="8 3" FontWeight="SemiBold"><Run Text="... title"/></TextBlock>
-                    <ComboBox x:Name="comboboxGroupName" IsEditable="True" DockPanel.Dock="Left" VerticalAlignment="Center" MinWidth="200" ToolTip="Group" Foreground="ForestGreen" FontWeight="SemiBold" TextBoxBase.TextChanged="comboboxGroupName_TextChanged"/>
+                    <TextBlock x:Name="TextblockTitle" DockPanel.Dock="Left" VerticalAlignment="Center" Margin="8" Padding="8 3" FontWeight="SemiBold"><Run Text="... title"/></TextBlock>
+                    <ComboBox x:Name="ComboboxGroupName" IsEditable="True" DockPanel.Dock="Left" VerticalAlignment="Center" MinWidth="200" ToolTip="Group" Foreground="ForestGreen" FontWeight="SemiBold" TextBoxBase.TextChanged="comboboxGroupName_TextChanged"/>
                     <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" FontWeight="SemiBold" Margin="0" Padding="4"><Run Text=":"/></TextBlock>
-                    <TextBox x:Name="textboxTitleSpecifics" VerticalAlignment="Center" Padding="3" Margin="0 0 8 0" ToolTip="Name" Foreground="ForestGreen" FontWeight="SemiBold" TextChanged="textboxTitleSpecifics_TextChanged"/>
+                    <TextBox x:Name="TextboxTitleSpecifics" VerticalAlignment="Center" Padding="3" Margin="0 0 8 0" ToolTip="Name" Foreground="ForestGreen" FontWeight="SemiBold" TextChanged="textboxTitleSpecifics_TextChanged"/>
                 </DockPanel>
-                <DockPanel Grid.Row="1">
+                <DockPanel>
                     <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Margin="8" Padding="8 3" FontWeight="SemiBold"><Run Text="Provider organisation"/></TextBlock>
-                    <TextBox x:Name="textboxProviderOrganisation" VerticalAlignment="Center" Padding="3" Margin="0 0 8 0" Foreground="ForestGreen" FontWeight="SemiBold" TextChanged="textboxProviderOrganisation_TextChanged"/>
+                    <TextBox x:Name="TextboxProviderOrganisation" VerticalAlignment="Center" Padding="3" Margin="0 0 8 0" Foreground="ForestGreen" FontWeight="SemiBold" TextChanged="textboxProviderOrganisation_TextChanged"/>
                 </DockPanel>
             </DockPanel>
         </Border>
-        <Border Grid.Column="1" Background="Ivory" VerticalAlignment="Top">
+        <Border Grid.Row="0" Grid.Column="1" Background="Ivory" VerticalAlignment="Top">
             <DockPanel LastChildFill="False">
-                <Button x:Name="buttonOK" DockPanel.Dock="Right" Style="{StaticResource ButtonClose}" VerticalAlignment="Center" Margin="0 8 8 8" Click="buttonOK_Click"/>
-                <Button x:Name="buttonCancel" DockPanel.Dock="Right" Width="80" VerticalAlignment="Center" Margin="0 8 8 8" Padding="8 4" Click="ButtonCancel_Click" Content="Cancel"/>
-                <Button x:Name="buttonCopy" ToolTip="Copy acccount details to clipboard" DockPanel.Dock="Right" Width="80" VerticalAlignment="Center" Margin="8 8 8 8" Padding="8 4" Content="Copy" Click="ButtonCopy_Click"/>
+                <Button x:Name="ButtonOk" DockPanel.Dock="Right" Style="{StaticResource ButtonClose}" VerticalAlignment="Center" Margin="0 8 8 8" Click="buttonOK_Click"/>
+                <Button x:Name="ButtonCancel" DockPanel.Dock="Right" Width="80" VerticalAlignment="Center" Margin="0 8 8 8" Padding="8 4" Click="ButtonCancel_Click" Content="Cancel"/>
+                <Button x:Name="ButtonCopy" ToolTip="Copy acccount details to clipboard" DockPanel.Dock="Right" Width="80" VerticalAlignment="Center" Margin="8 8 8 8" Padding="8 4" Content="Copy" Click="ButtonCopy_Click"/>
             </DockPanel>
         </Border>
 
-        <Border Grid.Row="2" Grid.ColumnSpan="2" Background="MintCream">
+        <Border Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="0" Background="MintCream">
             <DockPanel LastChildFill="False">
-                <TextBlock x:Name="textblockAmount" VerticalAlignment="Center" Margin="8 0" Padding="8 3" FontWeight="SemiBold"><Run Text="Amount"/></TextBlock>
-                <TextBlock x:Name="textblockSymbol" VerticalAlignment="Center" Margin="8 0 0 0" Padding="8 3" FontWeight="SemiBold" Foreground="ForestGreen"><Run Text="£"/></TextBlock>
-                <TextBox x:Name="textboxAmount" VerticalAlignment="Center" Padding="3" Margin="0 0 8 0" Width="120" Foreground="ForestGreen" FontWeight="SemiBold" TextChanged="textboxAmount_TextChanged" LostFocus="textboxAmount_LostFocus"/>
-                <CheckBox x:Name="checkboxEuros" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="8 0 8 0" FontWeight="SemiBold" Content="Euros" Checked="checkboxEuros_Checked" Unchecked="checkboxEuros_Unchecked"/>
-                <TextBlock x:Name="textblockDateCaption" VerticalAlignment="Center" Margin="8 0" Padding="8 3" FontWeight="SemiBold"><Run Text="[date caption]"/></TextBlock>
-                <CheckBox x:Name="checkboxEnableDate" Margin="8 0" VerticalAlignment="Center" Checked="checkboxEnableDate_Checked" Unchecked="checkboxEnableDate_Unchecked"/>
-                <DatePicker x:Name="datepickerSumDate" Width="200" VerticalAlignment="Center" Foreground="ForestGreen" IsEnabled="False" SelectedDateChanged="datepickerSumDate_SelectedDateChanged"/>
-                <Button x:Name="buttonToday" Padding="3" Width="60" VerticalAlignment="Center" Margin="8" Content="Today" Click="buttonToday_Click" />
+                <TextBlock x:Name="TextblockAmount" VerticalAlignment="Center" Margin="8 0" Padding="8 3" FontWeight="SemiBold"><Run Text="Amount"/></TextBlock>
+                <TextBlock x:Name="TextblockSymbol" VerticalAlignment="Center" Margin="8 0 0 0" Padding="8 3" FontWeight="SemiBold" Foreground="ForestGreen"><Run Text="£"/></TextBlock>
+                <TextBox x:Name="TextboxAmount" VerticalAlignment="Center" Padding="3" Margin="0 0 8 0" Width="120" Foreground="ForestGreen" FontWeight="SemiBold" TextChanged="textboxAmount_TextChanged" LostFocus="textboxAmount_LostFocus"/>
+                <CheckBox x:Name="CheckboxEuros" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="8 0 8 0" FontWeight="SemiBold" Content="Euros" Checked="checkboxEuros_Checked" Unchecked="checkboxEuros_Unchecked"/>
+                <TextBlock x:Name="TextblockDateCaption" VerticalAlignment="Center" Margin="8 0" Padding="8 3" FontWeight="SemiBold"><Run Text="[date caption]"/></TextBlock>
+                <CheckBox x:Name="CheckboxEnableDate" Margin="8 0" VerticalAlignment="Center" Checked="checkboxEnableDate_Checked" Unchecked="checkboxEnableDate_Unchecked"/>
+                <DatePicker x:Name="DatepickerSumDate" Width="200" VerticalAlignment="Center" Foreground="ForestGreen" IsEnabled="False" SelectedDateChanged="datepickerSumDate_SelectedDateChanged"/>
+                <Button x:Name="ButtonToday" Padding="3" Width="60" VerticalAlignment="Center" Margin="8" Content="Today" Click="buttonToday_Click" />
             </DockPanel>
         </Border>
-        <Grid Grid.Row="3" Grid.ColumnSpan="2">
+        <Grid Grid.Row="3" Grid.ColumnSpan="2" Grid.Column="0" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Border Background="Ivory">
                 <DockPanel>
-                    <CheckBox x:Name="checkboxOption" DockPanel.Dock="Top" VerticalContentAlignment="Center" Margin="8" Content="[option]" Unchecked="checkboxOption_Unchecked" Checked="checkboxOption_Checked"/>
-                    <CheckBox x:Name="checkboxDocument" DockPanel.Dock="Top" VerticalAlignment="Top" VerticalContentAlignment="Center" Margin="8" Content="Include in exported document" Unchecked="checkboxDocument_Unchecked" Checked="checkboxDocument_Checked"/>
-                    <CheckBox x:Name="checkboxObsolete" DockPanel.Dock="Top" VerticalAlignment="Top" VerticalContentAlignment="Center" Margin="8" Content="Obsolete [...]" Checked="checkboxObsolete_Checked" Unchecked="checkboxObsolete_Unchecked"/>
+                    <CheckBox x:Name="CheckboxOption" DockPanel.Dock="Top" VerticalContentAlignment="Center" Margin="8" Content="[option]" Unchecked="checkboxOption_Unchecked" Checked="checkboxOption_Checked"/>
+                    <CheckBox x:Name="CheckboxDocument" DockPanel.Dock="Top" VerticalAlignment="Top" VerticalContentAlignment="Center" Margin="8" Content="Include in exported document" Unchecked="checkboxDocument_Unchecked" Checked="checkboxDocument_Checked"/>
+                    <CheckBox x:Name="CheckboxObsolete" DockPanel.Dock="Top" VerticalAlignment="Top" VerticalContentAlignment="Center" Margin="8" Content="Obsolete [...]" Checked="checkboxObsolete_Checked" Unchecked="checkboxObsolete_Unchecked"/>
                 </DockPanel>
             </Border>
-            <Border Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" Background="Ivory">
+            <Border Grid.Column="1" Background="Ivory">
                 <DockPanel Margin="6">
                     <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" VerticalAlignment="Stretch">
                         <TextBlock VerticalAlignment="Center" Margin="8 0" FontWeight="SemiBold"><Run Text="Alerts"/></TextBlock>
-                        <Button x:Name="buttonAlertAdd" VerticalAlignment="Center" Width="60" Padding="3" Margin="3 8" Click="ButtonAlertAdd_Click">Add</Button>
-                        <Button x:Name="buttonAlertEdit" VerticalAlignment="Center" Width="60" Padding="3" Margin="3" IsEnabled="False" Click="ButtonAlertEdit_Click">Edit</Button>
-                        <Button x:Name="buttonAlertDelete" VerticalAlignment="Center" Width="60" Padding="3" Margin="3" IsEnabled="False" Click="ButtonAlertDelete_Click">Delete</Button>
+                        <Button x:Name="ButtonAlertAdd" VerticalAlignment="Center" Width="60" Padding="3" Margin="3 8" Click="ButtonAlertAdd_Click">Add</Button>
+                        <Button x:Name="ButtonAlertEdit" VerticalAlignment="Center" Width="60" Padding="3" Margin="3" IsEnabled="False" Click="ButtonAlertEdit_Click">Edit</Button>
+                        <Button x:Name="ButtonAlertDelete" VerticalAlignment="Center" Width="60" Padding="3" Margin="3" IsEnabled="False" Click="ButtonAlertDelete_Click">Delete</Button>
                     </StackPanel>
-                    <ListView x:Name="listviewAlerts" Margin="4" Height="100" SelectionChanged="listviewAlerts_SelectionChanged" MouseDoubleClick="listviewAlerts_MouseDoubleClick">
+                    <ListView x:Name="ListviewAlerts" Margin="4" Height="100" SelectionChanged="listviewAlerts_SelectionChanged" MouseDoubleClick="listviewAlerts_MouseDoubleClick">
                         <ListView.View>
                             <GridView AllowsColumnReorder="False">
-                                <GridViewColumn CellTemplate="{StaticResource datatemplateAlertDate}">Date</GridViewColumn>
-                                <GridViewColumn CellTemplate="{StaticResource datatemplateAlertCaption}">Alert</GridViewColumn>
-                                <GridViewColumn CellTemplate="{StaticResource datatemplateAlertAmount}">Amount</GridViewColumn>
+                                <GridViewColumn CellTemplate="{StaticResource DatatemplateAlertDate}">Date</GridViewColumn>
+                                <GridViewColumn CellTemplate="{StaticResource DatatemplateAlertCaption}">Alert</GridViewColumn>
+                                <GridViewColumn CellTemplate="{StaticResource DatatemplateAlertAmount}">Amount</GridViewColumn>
                             </GridView>
                         </ListView.View>
                     </ListView>
@@ -118,16 +117,16 @@
             </Border>
         </Grid>
 
-        <Border Grid.Row="4" Grid.ColumnSpan="2" Background="Ivory">
+        <Border Grid.Row="4" Grid.ColumnSpan="2" Grid.Column="0" Background="Ivory">
             <DockPanel Margin="6">
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" VerticalAlignment="Stretch">
                     <TextBlock VerticalAlignment="Center" Margin="8 0" FontWeight="SemiBold"><Run Text="References"/></TextBlock>
-                    <Button x:Name="buttonReferenceAdd" VerticalAlignment="Center" Width="60" Padding="3" Margin="3 8" Click="ButtonReferenceAdd_Click">Add</Button>
-                    <Button x:Name="buttonReferenceEdit" VerticalAlignment="Center" Width="60" Padding="3" Margin="3" IsEnabled="False" Click="buttonReferenceEdit_Click">Edit</Button>
-                    <Button x:Name="buttonReferenceDelete" VerticalAlignment="Center" Width="60" Padding="3" Margin="3" IsEnabled="False" Click="buttonReferenceDelete_Click">Delete</Button>
-                    <Button x:Name="buttonReferencePromote" VerticalAlignment="Center" Width="60" Padding="3" Margin="3" IsEnabled="False" Click="buttonReferencePromote_Click">Promote</Button>
+                    <Button x:Name="ButtonReferenceAdd" VerticalAlignment="Center" Width="60" Padding="3" Margin="3 8" Click="ButtonReferenceAdd_Click">Add</Button>
+                    <Button x:Name="ButtonReferenceEdit" VerticalAlignment="Center" Width="60" Padding="3" Margin="3" IsEnabled="False" Click="buttonReferenceEdit_Click">Edit</Button>
+                    <Button x:Name="ButtonReferenceDelete" VerticalAlignment="Center" Width="60" Padding="3" Margin="3" IsEnabled="False" Click="buttonReferenceDelete_Click">Delete</Button>
+                    <Button x:Name="ButtonReferencePromote" VerticalAlignment="Center" Width="60" Padding="3" Margin="3" IsEnabled="False" Click="buttonReferencePromote_Click">Promote</Button>
                 </StackPanel>
-                <ListBox x:Name="listboxReferences" Grid.Row="3" Margin="4" MouseDoubleClick="listboxReferences_MouseDoubleClick" SelectionChanged="listboxReferences_SelectionChanged">
+                <ListBox x:Name="ListboxReferences" Margin="4" MouseDoubleClick="listboxReferences_MouseDoubleClick" SelectionChanged="listboxReferences_SelectionChanged">
                 </ListBox>
             </DockPanel>
         </Border>

@@ -25,8 +25,8 @@ namespace Crux
             bmi.BeginInit();
             bmi.UriSource = uri;
             bmi.EndInit();
-            imageBackground.Source = bmi;
-            imageBackground.Stretch = Stretch.None;
+            ImageBackground.Source = bmi;
+            ImageBackground.Stretch = Stretch.None;
             // TODO Research embedding images
         }
                 

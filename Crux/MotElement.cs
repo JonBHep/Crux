@@ -10,7 +10,7 @@ public class MotElement
         pt = secondly.IndexOf(MotList.Pairconnector);
         Content = secondly.Substring(0, pt);
         string lnk = secondly.Substring(pt + 1);
-        if (bool.TryParse(lnk, out bool q)) { IsLink = q; } else { IsLink = false; }
+        IsLink = bool.TryParse(lnk, out bool q) && q;
     }
 
     public MotElement(string capt, string cont, bool lnk)

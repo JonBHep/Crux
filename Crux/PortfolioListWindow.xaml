@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:local="clr-namespace:Crux"
         mc:Ignorable="d"
         Title="Portfolio list" Height="700" Width="1000" WindowStartupLocation="CenterScreen" ContentRendered="Window_ContentRendered" ResizeMode="NoResize" ShowInTaskbar="False">
     <Window.Resources>
@@ -13,7 +12,7 @@
             <!--If the HorizontalContentAlignment listviewitem style is not set then all cell contents within the listview will left-align-->
         </Style>
 
-        <DataTemplate x:Key="datatemplateDossierTitle">
+        <DataTemplate x:Key="DatatemplateDossierTitle">
             <TextBlock x:Name="textblockTitle" FontFamily="Arial" FontSize="12" FontWeight="SemiBold" TextAlignment="Left" Foreground="SaddleBrown" Text="{Binding DossierName}"/>
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding Obsolete}" Value="True">
@@ -22,7 +21,7 @@
             </DataTemplate.Triggers>
         </DataTemplate>
 
-        <DataTemplate x:Key="datatemplateProvider">
+        <DataTemplate x:Key="DatatemplateProvider">
             <TextBlock x:Name="textblockProvider" FontFamily="Arial" FontSize="12" TextAlignment="Left" Foreground="DarkGreen" Text="{Binding Provider}"/>
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding Obsolete}" Value="True">
@@ -31,7 +30,7 @@
             </DataTemplate.Triggers>
         </DataTemplate>
 
-        <DataTemplate x:Key="datatemplateAlerts">
+        <DataTemplate x:Key="DatatemplateAlerts">
             <TextBlock x:Name="textblockAlerts" FontSize="12" FontWeight="SemiBold" TextAlignment="Center" Foreground="SaddleBrown" Text="{Binding Alerts}"/>
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding AlertOverdue}" Value="True">
@@ -48,11 +47,11 @@
             <CheckBox HorizontalAlignment="Center" IsChecked="{Binding Obsolete}" IsEnabled="False"/>
         </DataTemplate>
 
-        <DataTemplate x:Key="datatemplateOnline">
+        <DataTemplate x:Key="DatatemplateOnline">
             <CheckBox HorizontalAlignment="Center" IsChecked="{Binding Online}" IsEnabled="False"/>
         </DataTemplate>
 
-        <DataTemplate x:Key="datatemplateAmount">
+        <DataTemplate x:Key="DatatemplateAmount">
             <TextBlock x:Name="textblockAmount" HorizontalAlignment="Right" Text="{Binding Amount}" Foreground="Black" FontWeight="Medium"/>
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding BankBalanceOld}" Value="True">
@@ -64,7 +63,7 @@
             </DataTemplate.Triggers>
         </DataTemplate>
 
-        <DataTemplate x:Key="datatemplateAmountDate">
+        <DataTemplate x:Key="DatatemplateAmountDate">
             <TextBlock x:Name="textblockAmountDate" Text="{Binding AmountDate}" Foreground="Black" HorizontalAlignment="Center" FontWeight="Medium"/>
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding BankBalanceOld}" Value="True">
@@ -83,17 +82,17 @@
             <RowDefinition Height="34"/>
             <RowDefinition Height="34"/>
         </Grid.RowDefinitions>
-        <ListView x:Name="listviewDossiers" SelectionChanged="ListviewDossiers_SelectionChanged" MouseDoubleClick="ListviewDossiers_MouseDoubleClick">
+        <ListView x:Name="ListviewDossiers" SelectionChanged="ListviewDossiers_SelectionChanged" MouseDoubleClick="ListviewDossiers_MouseDoubleClick">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn x:Name="columnDossier" CellTemplate="{StaticResource datatemplateDossierTitle}" Header="Account"/>
-                    <GridViewColumn x:Name="columnProvider" CellTemplate="{StaticResource datatemplateProvider}"/>
-                    <GridViewColumn x:Name="columnAmount" Header="Amount" CellTemplate="{StaticResource datatemplateAmount}"/>
-                    <GridViewColumn x:Name="columnAmountDate" Header="AmountDate" CellTemplate="{StaticResource datatemplateAmountDate}"/>
-                    <GridViewColumn x:Name="columnAlerts" Header="Alerts" CellTemplate="{StaticResource datatemplateAlerts}"/>
-                    <GridViewColumn x:Name="columnOnline" Header="Online" CellTemplate="{StaticResource datatemplateOnline}"/>
-                    <GridViewColumn x:Name="columnDocument" Header="Document" CellTemplate="{StaticResource InDocumentTemplate}"/>
-                    <GridViewColumn x:Name="columnObsolete" Header="Obsolete" CellTemplate="{StaticResource ObsolescenceTemplate}"/>
+                    <GridViewColumn x:Name="ColumnDossier" CellTemplate="{StaticResource DatatemplateDossierTitle}" Header="Account"/>
+                    <GridViewColumn x:Name="ColumnProvider" CellTemplate="{StaticResource DatatemplateProvider}"/>
+                    <GridViewColumn x:Name="ColumnAmount" Header="Amount" CellTemplate="{StaticResource DatatemplateAmount}"/>
+                    <GridViewColumn x:Name="ColumnAmountDate" Header="AmountDate" CellTemplate="{StaticResource DatatemplateAmountDate}"/>
+                    <GridViewColumn x:Name="ColumnAlerts" Header="Alerts" CellTemplate="{StaticResource DatatemplateAlerts}"/>
+                    <GridViewColumn x:Name="ColumnOnline" Header="Online" CellTemplate="{StaticResource DatatemplateOnline}"/>
+                    <GridViewColumn x:Name="ColumnDocument" Header="Document" CellTemplate="{StaticResource InDocumentTemplate}"/>
+                    <GridViewColumn x:Name="ColumnObsolete" Header="Obsolete" CellTemplate="{StaticResource ObsolescenceTemplate}"/>
                 </GridView>
             </ListView.View>
             <ListView.GroupStyle>
@@ -122,16 +121,16 @@
             </ListView.GroupStyle>
         </ListView>
         <StackPanel Orientation="Horizontal" Grid.Row="1">
-            <TextBlock x:Name="textblockDossierTotalCount" VerticalAlignment="Center" Margin="8"><Run Text="Count"/></TextBlock>
-            <TextBlock x:Name="textblockDossierLiveCount" VerticalAlignment="Center" Margin="8" Foreground="DarkGreen"><Run Text="Count"/></TextBlock>
-            <TextBlock x:Name="textblockDossierObsoleteCount" VerticalAlignment="Center" Margin="8 0" Foreground="Maroon"><Run Text="Obsolete"/></TextBlock>
-            <TextBlock x:Name="textblockTotalPounds" VerticalAlignment="Center" Margin="8 0"><Run Text="Total"/></TextBlock>
-            <TextBlock x:Name="textblockTotalEuros" VerticalAlignment="Center" Margin="8 0"><Run Text="Total"/></TextBlock>
+            <TextBlock x:Name="TextblockDossierTotalCount" VerticalAlignment="Center" Margin="8"><Run Text="Count"/></TextBlock>
+            <TextBlock x:Name="TextblockDossierLiveCount" VerticalAlignment="Center" Margin="8" Foreground="DarkGreen"><Run Text="Count"/></TextBlock>
+            <TextBlock x:Name="TextblockDossierObsoleteCount" VerticalAlignment="Center" Margin="8 0" Foreground="Maroon"><Run Text="Obsolete"/></TextBlock>
+            <TextBlock x:Name="TextblockTotalPounds" VerticalAlignment="Center" Margin="8 0"><Run Text="Total"/></TextBlock>
+            <TextBlock x:Name="TextblockTotalEuros" VerticalAlignment="Center" Margin="8 0"><Run Text="Total"/></TextBlock>
             <TextBlock VerticalAlignment="Center" Margin="8 0" Foreground="Red" FontWeight="Bold"><Run Text="Double-click an item to view or edit details"/></TextBlock>
             <TextBlock VerticalAlignment="Center" Margin="8 0"><Run Text="Right-click the list to access the menu"/></TextBlock>
         </StackPanel>
         <DockPanel LastChildFill="False" Grid.Row="2">
-            <Button x:Name="buttonClose" Margin="4" Style="{StaticResource ButtonClose}" VerticalAlignment="Center" ToolTip="Return to Accounts and Services main screen" Click="ButtonClose_Click">Return</Button>
+            <Button x:Name="ButtonClose" Margin="4" Style="{StaticResource ButtonClose}" VerticalAlignment="Center" ToolTip="Return to Accounts and Services main screen" Click="ButtonClose_Click">Return</Button>
             <Button x:Name="BalancesButton" ToolTip="View a list and chart of dated balances" DockPanel.Dock="Right" VerticalAlignment="Center" Width="72" Height="27" Margin="0 0 8 0" Click="BalancesButton_Click">Timeline</Button>
         </DockPanel>
     </Grid>

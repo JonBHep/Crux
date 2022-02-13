@@ -32,13 +32,14 @@
         <TextBlock Grid.Row="0">Caption</TextBlock>
         <TextBox x:Name="CaptionBox" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="0 0 6 0"></TextBox>
         
-        <TextBlock Grid.Row="1">Name on card</TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="0">Name on card</TextBlock>
         <TextBox x:Name="NameBox" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="0 0 6 0"></TextBox>
 
-        <TextBlock Grid.Row="2">Card number</TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="0">Card number</TextBlock>
         <TextBox x:Name="NumberBox" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="0 0 6 0"></TextBox>
         
-        <TextBlock Grid.Row="3">Valid from</TextBlock>
+        <TextBlock Grid.Row="3" Grid.Column="0">Valid from</TextBlock>
+        
         <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
             <TextBlock Margin="0 0 2 0">MM</TextBlock>
             <TextBox x:Name="MonthFromBox" Width="40"  HorizontalAlignment="Left"></TextBox>
@@ -46,7 +47,7 @@
             <TextBox x:Name="YearFromBox" Width="80"  HorizontalAlignment="Left"></TextBox>
         </StackPanel>
         
-        <TextBlock Grid.Row="4">Valid to</TextBlock>
+        <TextBlock Grid.Row="4" Grid.Column="0">Valid to</TextBlock>
         <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
             <TextBlock Margin="0 0 2 0">MM</TextBlock>
             <TextBox x:Name="MonthToBox" Width="40"  HorizontalAlignment="Left"></TextBox>

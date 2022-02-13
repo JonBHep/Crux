@@ -10,12 +10,12 @@ using System.Windows.Xps.Packaging;
 
 namespace Crux;
 
-public partial class PortfolioStartWindow : Window
+public partial class PortfolioStartWindow
 {
-    private bool _dataWasLoaded = false;
+    private bool _dataWasLoaded;
         private readonly string _dataFilePath = System.IO.Path.Combine(Jbh.AppManager.DataPath, "Portfolio.xml");
-        private PortfolioXml _xmlMachine;
-        private PortfolioCore _portfolio = new PortfolioCore();
+        private readonly PortfolioXml _xmlMachine;
+        private PortfolioCore _portfolio = new();
 
         public PortfolioStartWindow()
         {
@@ -28,8 +28,10 @@ public partial class PortfolioStartWindow : Window
             bmi.BeginInit();
             bmi.UriSource = uri;
             bmi.EndInit();
-            imagePicture.Source = bmi;
-            imagePicture.Stretch = Stretch.Uniform;
+            ImagePicture.Source = bmi;
+            ImagePicture.Stretch = Stretch.Uniform;
+            
+            _xmlMachine = new PortfolioXml(_dataFilePath,_portfolio);
             // TODO Research embedding images
         }
 
@@ -42,25 +44,25 @@ public partial class PortfolioStartWindow : Window
         {
             if (_dataWasLoaded)
             {
-                textblockAccountsCount.Foreground = new SolidColorBrush(Colors.DarkBlue);
-                textblockServicesCount.Foreground = new SolidColorBrush(Colors.DarkGreen);
-                textblockAccountsCount.Text = _portfolio.AccountCount.ToString() + " accounts";
-                textblockServicesCount.Text = _portfolio.ServiceCount.ToString() + " services";
+                TextblockAccountsCount.Foreground = new SolidColorBrush(Colors.DarkBlue);
+                TextblockServicesCount.Foreground = new SolidColorBrush(Colors.DarkGreen);
+                TextblockAccountsCount.Text = _portfolio.AccountCount.ToString() + " accounts";
+                TextblockServicesCount.Text = _portfolio.ServiceCount.ToString() + " services";
 
                 int aco = _portfolio.AccountCountOverdue(out List<string> acSoucis);
                 int svo = _portfolio.ServiceCountOverdue(out List<string> svSoucis);
                 if (aco + svo == 0) 
                 { 
-                    textblockOverdue.Visibility = Visibility.Hidden;
-                    textblockAccountsOverdueCount.Visibility = Visibility.Hidden;
-                    textblockServicesOverdueCount.Visibility = Visibility.Hidden;
+                    TextblockOverdue.Visibility = Visibility.Hidden;
+                    TextblockAccountsOverdueCount.Visibility = Visibility.Hidden;
+                    TextblockServicesOverdueCount.Visibility = Visibility.Hidden;
                 }
                 else
                 {
-                    textblockOverdue.Visibility = Visibility.Visible;
+                    TextblockOverdue.Visibility = Visibility.Visible;
                     if (aco == 0)
                     {
-                        textblockAccountsOverdueCount.Visibility = Visibility.Collapsed;
+                        TextblockAccountsOverdueCount.Visibility = Visibility.Collapsed;
                     }
                     else
                     {
@@ -70,15 +72,15 @@ public partial class PortfolioStartWindow : Window
                             System.Windows.Controls.TextBlock tblk = new System.Windows.Controls.TextBlock() { Text = s, Padding = new Thickness(2, 2, 2, 2)};
                             spnl.Children.Add(tblk);
                         }
-                        textblockAccountsOverdueCount.Inlines.Clear();
-                        textblockAccountsOverdueCount.Inlines.Add(new Run() { Text = "Accounts: " + aco.ToString(), Foreground = Brushes.Red });
-                        textblockAccountsOverdueCount.Inlines.Add(new Run() { Text = " (hover for list)" , Foreground = Brushes.Gray });
-                        textblockAccountsOverdueCount.Visibility = Visibility.Visible;
-                        textblockAccountsOverdueCount.ToolTip = spnl;
+                        TextblockAccountsOverdueCount.Inlines.Clear();
+                        TextblockAccountsOverdueCount.Inlines.Add(new Run() { Text = "Accounts: " + aco.ToString(), Foreground = Brushes.Red });
+                        TextblockAccountsOverdueCount.Inlines.Add(new Run() { Text = " (hover for list)" , Foreground = Brushes.Gray });
+                        TextblockAccountsOverdueCount.Visibility = Visibility.Visible;
+                        TextblockAccountsOverdueCount.ToolTip = spnl;
                     }
                     if (svo == 0)
                     {
-                        textblockServicesOverdueCount.Visibility = Visibility.Collapsed;
+                        TextblockServicesOverdueCount.Visibility = Visibility.Collapsed;
                     }
                     else
                     {
@@ -88,28 +90,27 @@ public partial class PortfolioStartWindow : Window
                             System.Windows.Controls.TextBlock tblk = new System.Windows.Controls.TextBlock() { Text = s , Padding = new Thickness(2, 2, 2, 2) };
                             spnl.Children.Add(tblk);
                         }
-                        textblockServicesOverdueCount.Inlines.Clear();
-                        textblockServicesOverdueCount.Inlines.Add(new Run() { Text = "Services: " + svo.ToString(), Foreground = Brushes.Red });
-                        textblockServicesOverdueCount.Inlines.Add(new Run() { Text = " (hover for list)", Foreground = Brushes.Gray });
-                        textblockServicesOverdueCount.Visibility = Visibility.Visible;
-                        textblockServicesOverdueCount.ToolTip = spnl;
+                        TextblockServicesOverdueCount.Inlines.Clear();
+                        TextblockServicesOverdueCount.Inlines.Add(new Run() { Text = "Services: " + svo.ToString(), Foreground = Brushes.Red });
+                        TextblockServicesOverdueCount.Inlines.Add(new Run() { Text = " (hover for list)", Foreground = Brushes.Gray });
+                        TextblockServicesOverdueCount.Visibility = Visibility.Visible;
+                        TextblockServicesOverdueCount.ToolTip = spnl;
                     }
                 }
-                textblockDocumentExported.Text = _portfolio.LastDocumentExport.ToLongDateString();
-                if (_portfolio.DocumentExportOverdue) { textblockDocumentExported.Foreground = new SolidColorBrush(Colors.Red); } else { textblockDocumentExported.Foreground = new SolidColorBrush(Colors.Black); }
+                TextblockDocumentExported.Text = _portfolio.LastDocumentExport.ToLongDateString();
+                TextblockDocumentExported.Foreground = _portfolio.DocumentExportOverdue ? new SolidColorBrush(Colors.Red) : new SolidColorBrush(Colors.Black);
                 
             }
         }
 
         private void Window_ContentRendered(object sender, EventArgs e)
         {
-            textblockAccountsCount.Text = "Data not loaded";
-            textblockServicesCount.Text="";
+            TextblockAccountsCount.Text = "Data not loaded";
+            TextblockServicesCount.Text="";
             _dataWasLoaded = true;
             _portfolio = new PortfolioCore();
             if (System.IO.File.Exists(_dataFilePath))
             {
-                _xmlMachine = new PortfolioXml(_dataFilePath,_portfolio);
                 _xmlMachine.ReadXmlFile();
                 _portfolio.SortAccounts();
                 _portfolio.SortServices();
@@ -124,15 +125,14 @@ public partial class PortfolioStartWindow : Window
             const string filespec = "Portfolio_*.xml";
             string dataFolder = Jbh.AppManager.DataPath;
             string[] foundfiles = System.IO.Directory.GetFiles(dataFolder, filespec, System.IO.SearchOption.TopDirectoryOnly);
-            System.IO.FileInfo foundFileInfo;
             while(foundfiles.Count()>100) // current data plus 99 backups
             {
                 // identify and delete the oldest file
                 DateTime oldestDate = DateTime.Now;
                 string oldestFile = string.Empty;
                 foreach (string f in foundfiles)
-                { 
-                    foundFileInfo = new System.IO.FileInfo(f);
+                {
+                    var foundFileInfo = new System.IO.FileInfo(f);
                     if (foundFileInfo.LastWriteTimeUtc<oldestDate)
                     {
                         oldestDate = foundFileInfo.LastWriteTimeUtc;
@@ -186,35 +186,27 @@ public partial class PortfolioStartWindow : Window
 
  
 
-        private static Paragraph FreshPara(int fSize, bool Grayed = false, bool Bolded = false, bool Fixed = false)
+        private static Paragraph FreshPara(int fSize, bool grayed = false, bool bolded = false, bool @fixed = false)
         {
-            Paragraph para = new Paragraph();
-            if (Fixed) { para.FontFamily = new System.Windows.Media.FontFamily("Lucida Console"); } else { para.FontFamily = new System.Windows.Media.FontFamily("Arial"); }
-            
-            para.FontSize = fSize;
-            if (Grayed)
+            Paragraph para = new Paragraph
             {
-                para.Foreground = Brushes.Gray;
-            }
-            else
-            {
-                para.Foreground = Brushes.Black;
-            }
-            if (Bolded)
-            {
-                para.FontWeight = FontWeights.Bold;
-            }
-            else
-            {
-                para.FontWeight = FontWeights.Normal;
-            }
+                FontFamily = @fixed ? new FontFamily("Lucida Console") : new FontFamily("Arial"),
+                FontSize = fSize
+                ,
+                Foreground = grayed ? Brushes.Gray : Brushes.Black
+                ,
+                FontWeight = bolded ? FontWeights.Bold : FontWeights.Normal
+            };
+
             return para;
         }
 
         private static InlineUIContainer FreshLineContainer(double lineThickness)
         {
-            System.Windows.Shapes.Line ruler = new System.Windows.Shapes.Line { X1 = 0, X2 = 10, Y1 = 0, Y2 = 0, Stroke = new SolidColorBrush(Colors.Black), StrokeThickness = lineThickness };
-            ruler.Stretch = Stretch.Fill;
+            System.Windows.Shapes.Line ruler = new System.Windows.Shapes.Line { X1 = 0, X2 = 10, Y1 = 0, Y2 = 0, Stroke = new SolidColorBrush(Colors.Black), StrokeThickness = lineThickness
+                ,
+                Stretch = Stretch.Fill
+            };
             InlineUIContainer container = new InlineUIContainer(ruler);
             return container;
         }
@@ -232,11 +224,11 @@ public partial class PortfolioStartWindow : Window
                 ColumnWidth = pageWidth
             };
 
-            Paragraph para = FreshPara(16, Bolded: true);
+            Paragraph para = FreshPara(16, bolded: true);
             para.Inlines.Add(new Run("JONATHAN HEPWORTH: PROPERTY, ACCOUNTS, POLICIES, UTILITIES ETC."));
             flowDocument.Blocks.Add(para);
 
-            para = FreshPara(10, Grayed: true);
+            para = FreshPara(10, grayed: true);
             para.FontWeight = FontWeights.Thin;
             para.Inlines.Add(new Run("Document created: "));
             para.Inlines.Add(new Bold(new Run(DateTime.Today.ToLongDateString())));
@@ -256,7 +248,7 @@ public partial class PortfolioStartWindow : Window
             para.Inlines.Add(new Run(". This contains the original of my confidential data (under 'Jbh.Original\\Jbh.Business') including my financial and property information which is summarised in this document. It also contains a recent backup of my less confidential data, applications etc. under 'Jbh.Portable\\Jbh.Info'" ));
             flowDocument.Blocks.Add(para);
 
-            para = FreshPara(14, Bolded: true);
+            para = FreshPara(14, bolded: true);
             para.Inlines.Add(new Run("MY WILL & MY EXECUTORS"));
             flowDocument.Blocks.Add(para);
 
@@ -298,7 +290,7 @@ public partial class PortfolioStartWindow : Window
             para.Inlines.Add(new Run("."));
             flowDocument.Blocks.Add(para);
 
-            para = FreshPara(14, Bolded: true);
+            para = FreshPara(14, bolded: true);
             para.Inlines.Add(new Run("Financial and property records"));
             flowDocument.Blocks.Add(para);
 
@@ -318,7 +310,7 @@ public partial class PortfolioStartWindow : Window
             para.Inlines.Add(new Run("."));
             flowDocument.Blocks.Add(para);
 
-            para = FreshPara(14, Bolded: true);
+            para = FreshPara(14, bolded: true);
             para.Inlines.Add(new Run("Family history"));
             flowDocument.Blocks.Add(para);
 
@@ -328,7 +320,7 @@ public partial class PortfolioStartWindow : Window
             para.Inlines.Add(new Run("  where can also be found all my records of the Arthur Jackson archive and website, photographs of his paintings etc. Duplicate copies of all the data in 'Family' should also be found on at least two external drives which are not password protected and which should be labelled 'Family History'. At the time of writing these are desktop hard disk drives which require their own power supply plugs which should be found with them."));
             flowDocument.Blocks.Add(para);
 
-            para = FreshPara(14, Bolded: true);
+            para = FreshPara(14, bolded: true);
             para.Inlines.Add(new Run("Other data"));
             flowDocument.Blocks.Add(para);
             
@@ -339,15 +331,15 @@ public partial class PortfolioStartWindow : Window
             para.Inlines.Add(new Run(" What ought to be of interest to Devon County Council is the source code of the applications I developed for the County Council and Adopt South West which they will need in order to maintain and further develop their adoption information systems. The source code is contained on the USB sticks prepared for my executors. My contacts in Devon County Council and the Adopt South West regional adoption agency hosted by Devon County Council are Kath Drescher and Mark Berry (Adoption Service - 'Adopt South-West') and Jon Prout (Devon CC ICT Services)."));
             flowDocument.Blocks.Add(para);
 
-            para = FreshPara(14, Bolded: true);
+            para = FreshPara(14, bolded: true);
             para.Inlines.Add(new Run("MY PROPERTY"));
             flowDocument.Blocks.Add(para);
 
-            para = FreshPara(12, Bolded: true);
+            para = FreshPara(12, bolded: true);
             para.Inlines.Add(new Run("P1: Main residence (WHOLLY OWNED)"));
             flowDocument.Blocks.Add(para);
 
-            para = FreshPara(12, Bolded: true);
+            para = FreshPara(12, bolded: true);
             para.Inlines.Add(new Run("Rose Cottage, Old Road, Harbertonford, Totnes, Devon, TQ9 7TA"));
             flowDocument.Blocks.Add(para);
 
@@ -360,11 +352,11 @@ public partial class PortfolioStartWindow : Window
             para.Inlines.Add(new Run("I was granted Planning Approval for two different schemes involving building an extension incorporating a new kitchen and remodelling of the lower staircase. Both consents are still valid. Copies of the relevant plans and approvals are included on the USB drives prepared for my executors. These approvals may enhance the attractiveness of Rose Cottage to potential purchasers."));
             flowDocument.Blocks.Add(para);
 
-            para = FreshPara(12, Bolded: true);
+            para = FreshPara(12, bolded: true);
             para.Inlines.Add(new Run("P2: Rental property (WHOLLY OWNED)"));
             flowDocument.Blocks.Add(para);
 
-            para = FreshPara(12, Bolded: true);
+            para = FreshPara(12, bolded: true);
             para.Inlines.Add(new Run("96 Helston Road, Penryn, Cornwall TR10 8NG"));
             flowDocument.Blocks.Add(para);
 
@@ -385,11 +377,11 @@ public partial class PortfolioStartWindow : Window
             para.Inlines.Add(new Run("The property is let through Townsend's property services, 92 Trevethan Road, Falmouth, TR11 2AX. (Telephone: 01326 315000 and email: enquiry@townsends.co [sic])."));
             flowDocument.Blocks.Add(para);
 
-            para = FreshPara(12, Bolded: true);
+            para = FreshPara(12, bolded: true);
             para.Inlines.Add(new Run("P3: Holiday home (INFO ONLY - NO LONGER OWNED)"));
             flowDocument.Blocks.Add(para);
 
-            para = FreshPara(12, Bolded: true);
+            para = FreshPara(12, bolded: true);
             para.Inlines.Add(new Run("La Grange de Viaud (a.k.a. Les Chabossauds), Courlac, 16210 Chalais, Charente, France"));
             flowDocument.Blocks.Add(para);
 
@@ -401,7 +393,7 @@ public partial class PortfolioStartWindow : Window
             para.Inlines.Add(new Run("The property was sold on 8 February 2019, my purchase in 2008 and subsequent sale of the property being arranged by a notaire, Maitre Alexandre Desautel, Place du Chateau, BP9, 16390 Aubeterre-Sur-Dronne, France (Tel 00 33 (0)5 45 98 58 80, email alexandre.desautel@notaires.fr). I remained responsible for the payment of property taxes for the calendar year 2019, namely taxe d'habitation and taxe fonciere, which I paid in full and on time. Further details can be obtained from the estate agent Euro-Immobilier Chalais, 7 Avenue de la Gare, 16210 Chalais, France email contact@euro-immo.com (Richard and Catherine Dannreuther)."));
             flowDocument.Blocks.Add(para);
 
-            para = FreshPara(12, Bolded: true);
+            para = FreshPara(12, bolded: true);
             para.Inlines.Add(new Run("P4: Works of Art"));
             flowDocument.Blocks.Add(para);
 
@@ -422,7 +414,7 @@ public partial class PortfolioStartWindow : Window
             para.Inlines.Add(new Run("Works of art of which I share ownership equally with my brother and sister are a painting of Portloe by our father, a plaster relief by Barbara Hepworth of my father’s sisters Jill and Peggy, and a drawing by Barbara Hepworth of my grandparents. These works are currently in the keeping of my brother (the painting), The Hepworth gallery, Wakefield (the plaster), and my sister (the drawing)."));
             flowDocument.Blocks.Add(para);
 
-            para = FreshPara(14, Bolded: true);
+            para = FreshPara(14, bolded: true);
             para.Inlines.Add(new Run("BANK AND SAVINGS ACCOUNTS"));
             flowDocument.Blocks.Add(para);
 
@@ -430,7 +422,7 @@ public partial class PortfolioStartWindow : Window
             para.Inlines.Add(new Run("Bank statements for my current accounts going back several years will be found on my Samsung T3 drive under Jbh.Original\\Jbh.Business\\Finance."));
             flowDocument.Blocks.Add(para);
 
-            para = FreshPara(12, Bolded: true);
+            para = FreshPara(12, bolded: true);
             para.Inlines.Add(new Run("SUMMARY"));
             flowDocument.Blocks.Add(para);
 
@@ -462,7 +454,7 @@ public partial class PortfolioStartWindow : Window
                 }
             }
 
-            para = FreshPara(14, Bolded: true);
+            para = FreshPara(14, bolded: true);
             para.Inlines.Add(new Run("Totals"));
             flowDocument.Blocks.Add(para);
 
@@ -503,7 +495,7 @@ public partial class PortfolioStartWindow : Window
                     para = FreshPara(12);
                     para.Inlines.Add(new Run("Balance: "));
                     string currency = PortfolioCore.PoundSymbol.ToString();
-                    if (_portfolio.Account(a).CurrencyEuro) { currency = PortfolioCore.EuroSymbol.ToString(); };
+                    if (_portfolio.Account(a).CurrencyEuro) { currency = PortfolioCore.EuroSymbol.ToString(); }
                     para.Inlines.Add(new Bold(new Run(currency)));
                     para.Inlines.Add(new Bold(new Run(_portfolio.Account(a).Amount.ToString("#,0.00"))));
                     para.Inlines.Add(new Run(" as at " + _portfolio.Account(a).LastDate.ToLongDateString()));
@@ -511,24 +503,23 @@ public partial class PortfolioStartWindow : Window
 
                     para = FreshPara(12);
                     para.Inlines.Add(new Run("Operated on-line: "));
-                    if (_portfolio.Account(a).Option) { para.Inlines.Add(new Bold(new Run("Yes"))); } else { para.Inlines.Add(new Bold(new Run("No"))); }
+                    para.Inlines.Add(_portfolio.Account(a).Option ? new Bold(new Run("Yes")) : new Bold(new Run("No")));
                     flowDocument.Blocks.Add(para);
 
-                    for (int b = 0; b < _portfolio.Account(a).AlertCount; b++)
+                    foreach (PortfolioDossier.ClassAlert alert in _portfolio.Account(a).Alerts )
                     {
-
                         para = FreshPara(12);
-                        para.Inlines.Add(new Run(_portfolio.Account(a).Alert(b).AlertDate.ToShortDateString() + ": "));
-                        para.Inlines.Add(new Bold(new Run(_portfolio.Account(a).Alert(b).Caption)));
-                        if (_portfolio.Account(a).Alert(b).ShowAmount) { para.Inlines.Add(new Bold(new Run(" " + _portfolio.Account(a).Amount.ToString("#,0.00")))); }
+                        para.Inlines.Add(new Run(alert.AlertDate.ToShortDateString() + ": "));
+                        para.Inlines.Add(new Bold(new Run(alert.Caption)));
+                        if (alert.ShowAmount) { para.Inlines.Add(new Bold(new Run(" " + _portfolio.Account(a).Amount.ToString("#,0.00")))); }
                         flowDocument.Blocks.Add(para);
                     }
 
-                    for (int b = 0; b < _portfolio.Account(a).ReferenceCount; b++)
+                    foreach (PortfolioDossier.ClassReference reference in _portfolio.Account(a).References)
                     {
-                        para = FreshPara(12, Fixed: true);
-                        para.Inlines.Add(new Run(_portfolio.Account(a).Reference(b).Caption + ": "));
-                        para.Inlines.Add(new Bold(new Run(_portfolio.Account(a).Reference(b).TextWithReturns)));
+                        para = FreshPara(12, @fixed: true);
+                        para.Inlines.Add(new Run(reference.Caption + ": "));
+                        para.Inlines.Add(new Bold(new Run(reference.TextWithReturns)));
                         flowDocument.Blocks.Add(para);
                     }
 
@@ -537,7 +528,7 @@ public partial class PortfolioStartWindow : Window
                 }
             }
 
-            para = FreshPara(14, Bolded: true);
+            para = FreshPara(14, bolded: true);
             para.Inlines.Add(new Run("SERVICES, UTILITIES, POLICIES ETC."));
             flowDocument.Blocks.Add(para);
             
@@ -570,7 +561,7 @@ public partial class PortfolioStartWindow : Window
                         para = FreshPara(12);
                         para.Inlines.Add(new Run("Last payment: "));
                         string currency = PortfolioCore.PoundSymbol.ToString();
-                        if (_portfolio.Service(a).CurrencyEuro) { currency = PortfolioCore.EuroSymbol.ToString(); };
+                        if (_portfolio.Service(a).CurrencyEuro) { currency = PortfolioCore.EuroSymbol.ToString(); }
                         para.Inlines.Add(new Bold(new Run(currency)));
                         para.Inlines.Add(new Bold(new Run(_portfolio.Service(a).Amount.ToString("#,0.00"))));
                         para.Inlines.Add(new Run(" on " + _portfolio.Service(a).LastDate.ToLongDateString()));
@@ -579,23 +570,29 @@ public partial class PortfolioStartWindow : Window
 
                     para = FreshPara(12);
                     para.Inlines.Add(new Run("Direct debit: "));
-                    if (_portfolio.Service(a).Option) { para.Inlines.Add(new Bold(new Run("Yes"))); } else { para.Inlines.Add(new Bold(new Run("No"))); }
+                    para.Inlines.Add(_portfolio.Service(a).Option ? new Bold(new Run("Yes")) : new Bold(new Run("No")));
                     flowDocument.Blocks.Add(para);
 
-                    for (int b = 0; b < _portfolio.Service(a).AlertCount; b++)
+                    foreach (PortfolioDossier.ClassAlert alert in _portfolio.Service(a).Alerts)
                     {
-                        para = FreshPara(12);
-                        para.Inlines.Add(new Run(_portfolio.Service(a).Alert(b).AlertDate.ToShortDateString() + ": "));
-                        para.Inlines.Add(new Bold(new Run(_portfolio.Service(a).Alert(b).Caption)));
-                        if (_portfolio.Service(a).Alert(b).ShowAmount) { para.Inlines.Add(new Bold(new Run(" " + _portfolio.Service(a).Amount.ToString("#,0.00")))); }
-                        flowDocument.Blocks.Add(para);
+                            para = FreshPara(12);
+                            para.Inlines.Add(
+                                new Run(alert.AlertDate.ToShortDateString() + ": "));
+                            para.Inlines.Add(new Bold(new Run(alert.Caption)));
+                            if (alert.ShowAmount)
+                            {
+                                para.Inlines.Add(
+                                    new Bold(new Run(" " + _portfolio.Service(a).Amount.ToString("#,0.00"))));
+                            }
+
+                            flowDocument.Blocks.Add(para);
                     }
 
-                    for (int b = 0; b < _portfolio.Service(a).ReferenceCount; b++)
+                    foreach (var reference in _portfolio.Service(a).References)
                     {
-                        para = FreshPara(12, Fixed: true);
-                        para.Inlines.Add(new Run(_portfolio.Service(a).Reference(b).Caption + ": "));
-                        para.Inlines.Add(new Bold(new Run(_portfolio.Service(a).Reference(b).TextWithReturns)));
+                        para = FreshPara(12, @fixed: true);
+                        para.Inlines.Add(new Run( reference.Caption + ": "));
+                        para.Inlines.Add(new Bold(new Run(reference.TextWithReturns)));
                         flowDocument.Blocks.Add(para);
                     }
 
@@ -605,7 +602,7 @@ public partial class PortfolioStartWindow : Window
                 }
             }
 
-            para = FreshPara(14, Bolded: true);
+            para = FreshPara(14, bolded: true);
             para.Inlines.Add(new Run("GIFTS I HAVE MADE IN THE LAST 7 YEARS"));
             flowDocument.Blocks.Add(para);
 
@@ -620,7 +617,6 @@ public partial class PortfolioStartWindow : Window
             container = FreshLineContainer(2);
             flowDocument.Blocks.Add(new Paragraph(container));
 
-            serial = 0;
             GiftList gifts = new GiftList();
 
             foreach (GiftList.GiftGiven g in gifts.Gifts)
@@ -636,7 +632,7 @@ public partial class PortfolioStartWindow : Window
                 }
             }
 
-            para = FreshPara(14, Bolded: true);
+            para = FreshPara(14, bolded: true);
             para.Inlines.Add(new Run("GIFTS MADE IN EACH TAX YEAR"));
             flowDocument.Blocks.Add(para);
 
@@ -648,18 +644,18 @@ public partial class PortfolioStartWindow : Window
             {
                 para = FreshPara(14);
                 para.Inlines.Add(new Run($"{yr}-{yr + 1}: "));
-                para.Inlines.Add(new Run(" Gross £" + gifts.TaxYearTotal(yr, out int ycount).ToString("#,0.00")));
+                para.Inlines.Add(new Run(" Gross £" + gifts.TaxYearTotal(yr, out var _).ToString("#,0.00")));
                 para.Inlines.Add(new Bold(new Run(" Net £" + gifts.TaxYearTotalLessAnnualExemption(yr).ToString("#,0.00"))));
                 flowDocument.Blocks.Add(para);
             }
 
-            para = FreshPara(14, Bolded: true);
+            para = FreshPara(14, bolded: true);
             para.Inlines.Add(new Run("SUMMARY"));
             flowDocument.Blocks.Add(para);
 
             para = FreshPara(14);
             para.Inlines.Add(new Run("All gifts in past seven years: "));
-            para.Inlines.Add(new Bold(new Run($"£{gifts.SevenYearTimeTotal(out int SevenCount):#,0.00}")));
+            para.Inlines.Add(new Bold(new Run($"£{gifts.SevenYearTimeTotal(out var _):#,0.00}")));
             flowDocument.Blocks.Add(para);
 
             para = FreshPara(14);
@@ -667,7 +663,7 @@ public partial class PortfolioStartWindow : Window
             para.Inlines.Add(new Bold(new Run($"£{gifts.MyCalculationOfTotalPotentiallyChargeableGifts():#,0.00}")));
             flowDocument.Blocks.Add(para);
 
-            para = FreshPara(14, Bolded: true);
+            para = FreshPara(14, bolded: true);
             para.Inlines.Add(new Run("END OF DOCUMENT"));
             flowDocument.Blocks.Add(para);
 
@@ -733,7 +729,7 @@ public partial class PortfolioStartWindow : Window
             };
             if (!string.IsNullOrWhiteSpace(path)) { dlg.InitialDirectory = path; }
 
-            Nullable<bool> result = dlg.ShowDialog();
+            bool? result = dlg.ShowDialog();
             if (!result.HasValue) { return; }
             if (!result.Value) { return; }
 
@@ -759,11 +755,12 @@ public partial class PortfolioStartWindow : Window
             //Now print using PrintDialog
             var pd = new System.Windows.Controls.PrintDialog();
 
-            if (pd.ShowDialog().Value)
+            bool? back = pd.ShowDialog();
+            if (back.HasValue && back.Value)
             {
                 testdoc.PageHeight = pd.PrintableAreaHeight;
                 testdoc.PageWidth = pd.PrintableAreaWidth;
-                IDocumentPaginatorSource idocument = testdoc as IDocumentPaginatorSource;
+                IDocumentPaginatorSource idocument = testdoc;
 
                 pd.PrintDocument(idocument.DocumentPaginator, "Printing FlowDocument");
             }
