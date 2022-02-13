@@ -1,24 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Crux
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    internal partial class MainWindow : Window
+    internal partial class MainWindow
     {
         internal MainWindow()
         {
@@ -72,14 +64,12 @@ namespace Crux
 
         private void TextBlock_MouseEnter(object sender, MouseEventArgs e)
         {
-            TextBlock tb = sender as TextBlock;
-            tb.FontWeight = FontWeights.Bold;
+            if (sender is TextBlock tb){tb.FontWeight = FontWeights.Bold;}
         }
 
         private void TextBlock_MouseLeave(object sender, MouseEventArgs e)
         {
-            TextBlock tb = sender as TextBlock;
-            tb.FontWeight = FontWeights.Normal;
+            if (sender is TextBlock tb){tb.FontWeight = FontWeights.Normal;}
         }
     }
 }

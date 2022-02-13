@@ -1,0 +1,40 @@
+﻿<Window x:Class="Crux.PortfolioStartWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:Crux"
+        mc:Ignorable="d"
+        Title="Accounts, policies and services" Width="600" WindowStartupLocation="CenterScreen" Icon="JH Aramis bleu reference.ico" ResizeMode="NoResize" WindowStyle="None" Background="DarkSlateBlue" SizeToContent="Width" ContentRendered="Window_ContentRendered" Closing="Window_Closing" ShowInTaskbar="False">
+    <Grid Margin="1" Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="140"/>
+            <ColumnDefinition Width="Auto" MinWidth="100"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <DockPanel Grid.Row="1" LastChildFill="False">
+            <Button x:Name="buttonAccounts" Margin="8 8 8 4" Padding ="12 4" DockPanel.Dock="Top" ToolTip="Current and savings accounts" Click="ButtonAccounts_Click" Content="Accounts"/>
+            <Button x:Name="buttonCards" Margin="8 4 8 4" Padding ="12 4" DockPanel.Dock="Top" ToolTip="Credit and debit cards" Click="ButtonCards_Click" Content="Cards"/>
+            <Button x:Name="buttonServices" Margin="8 4 8 4" Padding ="12 4" DockPanel.Dock="Top" ToolTip="Policies and services" Click="ButtonServices_Click" Content="Services"/>
+            <Button x:Name="GiftsButton" Margin="8 4 8 4" Padding="12 4" DockPanel.Dock="Top" ToolTip="Record of gifts I have made" Click="GiftsButton_Click" Content="Gifts"/>
+            <Button x:Name="buttonDueDates" Margin="8 24 8 4" Padding ="12 4" DockPanel.Dock="Top" Click="ButtonDueDates_Click" Content="Due dates"/>
+            <Button x:Name="buttonDocument" Margin="8 4 8 4" Padding ="12 4" DockPanel.Dock="Top" ToolTip="Save a document listing all this information" Click="ButtonDocument_Click" Content="Save document"/>
+            <Button x:Name="PrintButton" Margin="8 4 8 4" Padding ="0 4" DockPanel.Dock="Top" ToolTip="Print or save to PDF a document listing this information" Click="PrintButton_Click" Content="Print / PDF"/>
+            <TextBlock x:Name="textblockAccountsCount" Padding="10 16 10 4" DockPanel.Dock="Top"><Run Text="X accounts"/></TextBlock>
+            <TextBlock x:Name="textblockServicesCount" Padding="10" DockPanel.Dock="Top"><Run Text="Y services"/></TextBlock>
+            <TextBlock x:Name="textblockOverdue" Padding="10 10 10 4" FontWeight="SemiBold" DockPanel.Dock="Top"><Run Text="Overdue alerts"/></TextBlock>
+            <TextBlock x:Name="textblockAccountsOverdueCount" Padding="20 0 10 0" Foreground="Red" DockPanel.Dock="Top"><Run Text="X accounts"/></TextBlock>
+            <TextBlock x:Name="textblockServicesOverdueCount" Padding="20 4 10 0" Foreground="Red" DockPanel.Dock="Top"><Run Text="Y services"/></TextBlock>
+            <TextBlock Padding="10 20 10 4" FontWeight="SemiBold" DockPanel.Dock="Top"><Run Text="Document last exported"/></TextBlock>
+            <TextBlock x:Name="textblockDocumentExported" Padding="20 0 10 0" DockPanel.Dock="Top"><Run Text="18 June 2015"/></TextBlock>
+
+            <Button x:Name="buttonClose" Margin="8" Style="{StaticResource ButtonClose}" DockPanel.Dock="Bottom" Click="ButtonClose_Click" ToolTip="Return to first screen" Content="Main screen"/>
+
+        </DockPanel>
+        <Image x:Name="imagePicture" Grid.Column="1" Grid.RowSpan="2" HorizontalAlignment="Right"/>
+        <TextBlock Margin="8" Grid.ColumnSpan="2"  HorizontalAlignment="Left" FontFamily="Segoe Print" Foreground="DarkSlateBlue" FontSize="14"><Run Text="ACCOUNTS, POLICIES AND SERVICES"/></TextBlock>
+    </Grid>
+</Window>

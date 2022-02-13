@@ -12,16 +12,16 @@ public partial class MotEditor
    internal MotEditor(string passwordSpec, MotList ml)
         {
             InitializeComponent();
-            editedSpec = passwordSpec;
-            _tempPasswordFile = new Mot { Specification = editedSpec };
-            pool = ml;
+            _editedSpec = passwordSpec;
+            _tempPasswordFile = new Mot { Specification = _editedSpec };
+            _pool = ml;
         }
         private readonly Mot _tempPasswordFile;
-        private bool _somethingAltered = false;
-        private string editedSpec;
-        private MotList pool; // for checking uniqueness of titles
-        public string EditedSpecification { get { return editedSpec; } }
-        
+        private bool _somethingAltered;
+        private string _editedSpec;
+        private readonly MotList _pool; // for checking uniqueness of titles
+        public string EditedSpecification => _editedSpec;
+
         private void Window_ContentRendered(object sender, EventArgs e)
         {
             ComboboxKey.Items.Clear();
@@ -36,15 +36,15 @@ public partial class MotEditor
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            double scrX = System.Windows.SystemParameters.PrimaryScreenWidth;
-            double scrY = System.Windows.SystemParameters.PrimaryScreenHeight;
-            double winX = scrX * .8;
-            double winY = scrY * .94;
-            double Xm = (scrX - winX) / 2;
-            double Ym = (scrY - winY) / 4;
+            var scrX = SystemParameters.PrimaryScreenWidth;
+            var scrY = SystemParameters.PrimaryScreenHeight;
+            var winX = scrX * .8;
+            var winY = scrY * .94;
+            var xm = (scrX - winX) / 2;
+            var ym = (scrY - winY) / 4;
             Width = winX; Height = winY;
-            Left = Xm;
-            Top = Ym;
+            Left = xm;
+            Top = ym;
 
             TextboxTitle.Focus();
             TextboxTitle.SelectAll();
@@ -58,12 +58,12 @@ public partial class MotEditor
         private void RefreshTitles()
         {
             FontFamily ff = new FontFamily("Lucida Console");
-            double listwidth = TitlesListBox.ActualWidth;
-            double textwidth = (listwidth > 120) ? listwidth - 120 : 200;
+        //    double listwidth = TitlesListBox.ActualWidth;
+          //  double textwidth = (listwidth > 120) ? listwidth - 120 : 200;
             TitlesListBox.Items.Clear();
             foreach (string nom in _tempPasswordFile.Aliases)
             {
-                TextBlock tbk = new TextBlock() { FontFamily = ff, Text = nom, Foreground = Brushes.SteelBlue };
+                // TextBlock tbk = new TextBlock() { FontFamily = ff, Text = nom, Foreground = Brushes.SteelBlue };
                 TitlesListBox.Items.Add(new ListBoxItem() { Tag = nom, Content = new TextBlock() { FontFamily = ff, Text = nom, Foreground = Brushes.SteelBlue } });
             }
             RemoveTitleButton.IsEnabled = false;
@@ -80,7 +80,7 @@ public partial class MotEditor
                 TextBlock tbk = new TextBlock() { FontFamily = ff, Text = _tempPasswordFile.Element[i].Caption, Foreground = Brushes.SteelBlue };
                 if (_tempPasswordFile.Element[i].IsLink) { tbk.Inlines.Add(new Run() { Foreground = Brushes.Crimson, Text = " (weblink)" }); }
                 TextBlock tbv = new TextBlock() { FontFamily = ff, Text = _tempPasswordFile.Element[i].Content, Foreground = Brushes.SaddleBrown, TextWrapping = TextWrapping.Wrap, MaxWidth = textwidth, Margin = new Thickness(12, 0, 0, 0) };
-                StackPanel panel = new StackPanel() { };
+                StackPanel panel = new StackPanel();
                 panel.Children.Add(tbk);
                 panel.Children.Add(tbv);
                 ListBoxItem item = new ListBoxItem() { Content = panel };
@@ -93,16 +93,15 @@ public partial class MotEditor
         }
         private void Enablement()
         {
-            bool itemselected = PasswordListBox.SelectedItem != null;
-            bool highitemselected = false;
-            if (itemselected) { highitemselected = PasswordListBox.SelectedIndex > 0; }
-            bool textinboxes = true;
-            if (string.IsNullOrWhiteSpace(ComboboxKey.Text)) { textinboxes = false; }
-            if (string.IsNullOrWhiteSpace(TextboxValue.Text)) { textinboxes = false; }
-            ButtonAdd.IsEnabled = textinboxes;
-            ButtonDelete.IsEnabled = itemselected;
-            ButtonEdit.IsEnabled = itemselected;
-            ButtonMoveUp.IsEnabled = highitemselected;
+            bool itemSelected = PasswordListBox.SelectedItem != null;
+            bool highItemSelected = false;
+            if (itemSelected) { highItemSelected = PasswordListBox.SelectedIndex > 0; }
+            bool textInBoxes = !string.IsNullOrWhiteSpace(ComboboxKey.Text);
+            if (string.IsNullOrWhiteSpace(TextboxValue.Text)) { textInBoxes = false; }
+            ButtonAdd.IsEnabled = textInBoxes;
+            ButtonDelete.IsEnabled = itemSelected;
+            ButtonEdit.IsEnabled = itemSelected;
+            ButtonMoveUp.IsEnabled = highItemSelected;
             SaveButton.IsEnabled = (TitlesListBox.Items.Count>0) && (PasswordListBox.Items.Count > 0) && _somethingAltered;
         }
 
@@ -176,21 +175,23 @@ public partial class MotEditor
         {
             string keytext = ComboboxKey.Text.Trim();
             string valtext = TextboxValue.Text.Trim();
-            bool ok = true;
-            if (!MotList.IsPermittedString(keytext)) { ok = false; }
+            
+            bool ok = MotList.IsPermittedString(keytext);
             if (!MotList.IsPermittedString(valtext)) { ok = false; }
             if (!ok) { MessageBox.Show("Invalid characters in input strings", "Invalid input", MessageBoxButton.OK, MessageBoxImage.Warning); return; }
 
+            bool isLink =LinkCheckBox.IsChecked ?? false;
+            
             if ((string)ButtonAdd.Content == "Add")
             {
-                _tempPasswordFile.AddElement(keytext, valtext, LinkCheckBox.IsChecked.Value);
+                _tempPasswordFile.AddElement(keytext, valtext, isLink);
             }
             else
             {
                 if (PasswordListBox.SelectedItem != null)
                 {
                     int i = PasswordListBox.SelectedIndex;
-                    _tempPasswordFile.AmendElement(i, keytext, valtext, LinkCheckBox.IsChecked.Value);
+                    _tempPasswordFile.AmendElement(i, keytext, valtext, isLink);
                     ButtonAdd.Content = "Add";
                 }
             }
@@ -229,9 +230,9 @@ public partial class MotEditor
             if (answ == MessageBoxResult.Cancel) { return; }
             if (answ == MessageBoxResult.Yes) { _tempPasswordFile.PasswordChanged = DateTime.Today; }
             _tempPasswordFile.Updated = DateTime.Today.ToString("dd MMM yyyy");
-            _tempPasswordFile.Favourite = CheckboxFavourite.IsChecked.Value;
+            _tempPasswordFile.Favourite =CheckboxFavourite.IsChecked ?? false;
             _tempPasswordFile.Accessed = DateTime.Now;
-            editedSpec = _tempPasswordFile.Specification;
+            _editedSpec = _tempPasswordFile.Specification;
             DialogResult = true;
         }
 
@@ -248,7 +249,7 @@ public partial class MotEditor
         private void AddTitleButton_Click(object sender, RoutedEventArgs e)
         {
             string nu = TextboxTitle.Text.Trim();
-            if (pool.MotDictionary.ContainsKey(nu))
+            if (_pool.MotDictionary.ContainsKey(nu))
             {
                 MessageBox.Show("Cannot add this caption as it is already in use", Jbh.AppManager.AppName, MessageBoxButton.OK, MessageBoxImage.Hand);
                 return;
@@ -263,20 +264,17 @@ public partial class MotEditor
 
         private void RemoveTitleButton_Click(object sender, RoutedEventArgs e)
         {
-            if (TitlesListBox.SelectedItem is ListBoxItem item)
+            if (TitlesListBox.SelectedItem is ListBoxItem {Tag: string nom})
             {
-                if (item.Tag is string nom)
+                if (TitlesListBox.Items.Count < 2)
                 {
-                    if (TitlesListBox.Items.Count < 2)
-                    {
-                        MessageBox.Show("Do not remove the only caption", Jbh.AppManager.AppName, MessageBoxButton.OK, MessageBoxImage.Hand);
-                    }
-                    else
-                    {
-                        _tempPasswordFile.Aliases.Remove(nom);
-                        _somethingAltered = true;
-                        RefreshLists();
-                    }
+                    MessageBox.Show("Do not remove the only caption", Jbh.AppManager.AppName, MessageBoxButton.OK, MessageBoxImage.Hand);
+                }
+                else
+                {
+                    _tempPasswordFile.Aliases.Remove(nom);
+                    _somethingAltered = true;
+                    RefreshLists();
                 }
             }
         }
