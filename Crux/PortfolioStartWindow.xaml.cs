@@ -14,8 +14,8 @@ public partial class PortfolioStartWindow : Window
 {
     private bool _dataWasLoaded = false;
         private readonly string _dataFilePath = System.IO.Path.Combine(Jbh.AppManager.DataPath, "Portfolio.xml");
-        private XmlProcessor  _xmlMachine;
-        private ClassPortfolioCore _portfolio = new ClassPortfolioCore();
+        private PortfolioXml _xmlMachine;
+        private PortfolioCore _portfolio = new PortfolioCore();
 
         public PortfolioStartWindow()
         {
@@ -106,10 +106,10 @@ public partial class PortfolioStartWindow : Window
             textblockAccountsCount.Text = "Data not loaded";
             textblockServicesCount.Text="";
             _dataWasLoaded = true;
-            _portfolio = new ClassPortfolioCore();
+            _portfolio = new PortfolioCore();
             if (System.IO.File.Exists(_dataFilePath))
             {
-                _xmlMachine = new XmlProcessor(_dataFilePath,_portfolio);
+                _xmlMachine = new PortfolioXml(_dataFilePath,_portfolio);
                 _xmlMachine.ReadXmlFile();
                 _portfolio.SortAccounts();
                 _portfolio.SortServices();
@@ -247,9 +247,7 @@ public partial class PortfolioStartWindow : Window
             para.Inlines.Add(new Bold(new Run("Crucial")));
             para.Inlines.Add(new Run(" which exists on my computer. To access my computer, log in with the PIN number "));
             para.Inlines.Add(new Bold(new Run("5864.")));
-            //para.Inlines.Add(new Run(" or the password "));
-            //para.Inlines.Add(new Bold(new Run("tournesol.calculus")));
-            //para.Inlines.Add(new Run(" (my Microsoft Account password). Another password "));
+            
             para.Inlines.Add(new Run(" Another password "));
             para.Inlines.Add(new Bold(new Run("Avalon2285")));
             para.Inlines.Add(new Run(" will unlock some of my portable external USB drives. The most important is a black SanDisk Extreme solid state drive which will probably be found plugged in to"));
@@ -447,11 +445,11 @@ public partial class PortfolioStartWindow : Window
                     para.Inlines.Add(new Bold(new Run(_portfolio.Account(a).TitleSpecifics)));
 
                     para.Inlines.Add(new Run("   balance: "));
-                    string currency = ClassPortfolioCore.PoundSymbol.ToString();
+                    string currency = PortfolioCore.PoundSymbol.ToString();
                     if (_portfolio.Account(a).CurrencyEuro) 
                     {
                         totaleuros += _portfolio.Account(a).Amount;
-                        currency = ClassPortfolioCore.EuroSymbol.ToString();
+                        currency = PortfolioCore.EuroSymbol.ToString();
                     }
                     else
                     {
@@ -470,12 +468,12 @@ public partial class PortfolioStartWindow : Window
 
             para = FreshPara(14);
             para.Inlines.Add(new Run("Pounds"));
-            para.Inlines.Add(new Bold(new Run($" {ClassPortfolioCore.PoundSymbol}{totalpounds:#,0.00}")));
+            para.Inlines.Add(new Bold(new Run($" {PortfolioCore.PoundSymbol}{totalpounds:#,0.00}")));
             flowDocument.Blocks.Add(para);
 
             para = FreshPara(14);
             para.Inlines.Add(new Run("Euros"));
-            para.Inlines.Add(new Bold(new Run($" {ClassPortfolioCore.EuroSymbol}{totaleuros:#,0.00}")));
+            para.Inlines.Add(new Bold(new Run($" {PortfolioCore.EuroSymbol}{totaleuros:#,0.00}")));
             flowDocument.Blocks.Add(para);
 
             InlineUIContainer container = FreshLineContainer(2);
@@ -504,8 +502,8 @@ public partial class PortfolioStartWindow : Window
 
                     para = FreshPara(12);
                     para.Inlines.Add(new Run("Balance: "));
-                    string currency = ClassPortfolioCore.PoundSymbol.ToString();
-                    if (_portfolio.Account(a).CurrencyEuro) { currency = ClassPortfolioCore.EuroSymbol.ToString(); };
+                    string currency = PortfolioCore.PoundSymbol.ToString();
+                    if (_portfolio.Account(a).CurrencyEuro) { currency = PortfolioCore.EuroSymbol.ToString(); };
                     para.Inlines.Add(new Bold(new Run(currency)));
                     para.Inlines.Add(new Bold(new Run(_portfolio.Account(a).Amount.ToString("#,0.00"))));
                     para.Inlines.Add(new Run(" as at " + _portfolio.Account(a).LastDate.ToLongDateString()));
@@ -571,8 +569,8 @@ public partial class PortfolioStartWindow : Window
                     {
                         para = FreshPara(12);
                         para.Inlines.Add(new Run("Last payment: "));
-                        string currency = ClassPortfolioCore.PoundSymbol.ToString();
-                        if (_portfolio.Service(a).CurrencyEuro) { currency = ClassPortfolioCore.EuroSymbol.ToString(); };
+                        string currency = PortfolioCore.PoundSymbol.ToString();
+                        if (_portfolio.Service(a).CurrencyEuro) { currency = PortfolioCore.EuroSymbol.ToString(); };
                         para.Inlines.Add(new Bold(new Run(currency)));
                         para.Inlines.Add(new Bold(new Run(_portfolio.Service(a).Amount.ToString("#,0.00"))));
                         para.Inlines.Add(new Run(" on " + _portfolio.Service(a).LastDate.ToLongDateString()));
@@ -678,6 +676,7 @@ public partial class PortfolioStartWindow : Window
 
         private void ButtonAccounts_Click(object sender, RoutedEventArgs e)
         {
+            // TODO
             // PortfolioListWindow w = new PortfolioListWindow(classPortfolioDossier.DossierTypeConstants.AccountDossier, _portfolio)
             // {
             //     Owner = this
@@ -688,6 +687,7 @@ public partial class PortfolioStartWindow : Window
 
         private void ButtonServices_Click(object sender, RoutedEventArgs e)
         {
+            // TODO
             // PortfolioListWindow w = new PortfolioListWindow(classPortfolioDossier.DossierTypeConstants.ServiceDossier, _portfolio)
             // {
             //     Owner = this
@@ -698,6 +698,7 @@ public partial class PortfolioStartWindow : Window
 
         private void ButtonDueDates_Click(object sender, RoutedEventArgs e)
         {
+            // TODO
             // windowPortfolioAlerts w = new windowPortfolioAlerts(_portfolio.DueDates())
             // {
             //     Owner = this
@@ -707,6 +708,7 @@ public partial class PortfolioStartWindow : Window
 
         private void GiftsButton_Click(object sender, RoutedEventArgs e)
         {
+            // TODO
             // GiftsWindow win = new GiftsWindow() { Owner = this };
             // win.ShowDialog();
 
@@ -714,6 +716,7 @@ public partial class PortfolioStartWindow : Window
 
         private void ButtonCards_Click(object sender, RoutedEventArgs e)
         {
+            // TODO
             // CartesSelecter w = new CartesSelecter() { Owner = this };
             // w.ShowDialog();
         }
@@ -757,42 +760,9 @@ public partial class PortfolioStartWindow : Window
         private void PrintButton_Click(object sender, RoutedEventArgs e)
         {
             // print document - e.g. in order to use 'Print to PDF' or 'Print to file' printer driver
-            //string path = GetLocationForExportedDocument();
-            //Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog
-            //{
-            //    AddExtension = true,
-            //    CheckFileExists = false,
-            //    CheckPathExists = true,
-            //    DefaultExt = ".xps",
-            //    FileName = "JBH_Accounts_Policies_Services_" + DateTime.Today.ToString("yyyy-MM-dd") + ".xps",
-            //    Filter = "XPS Document (.xps)|*.xps|All files (*.*)|*.*",
-            //    OverwritePrompt = true,
-            //    Title = "Save details of my accounts and services to a document",
-            //    ValidateNames = true
-            //};
-            //if (!string.IsNullOrWhiteSpace(path)) { dlg.InitialDirectory = path; }
-
-            //Nullable<bool> result = dlg.ShowDialog();
-            //if (!result.HasValue) { return; }
-            //if (!result.Value) { return; }
-
-            FlowDocument testdoc = CreateFlowDocument(96 * 8.27, 96 * 11.7); // A4 approx (inches x 96 dpi) THIS IS WHERE THE CONTENT IS SPECIFIED
-            // Save document
-            //string filename = dlg.FileName;
-            //if (System.IO.File.Exists(filename)) { System.IO.File.Delete(filename); } // else will crash when trying to create a doc with the same name
-            //XpsDocument doc = new XpsDocument(dlg.FileName, System.IO.FileAccess.ReadWrite);
-            //XpsDocumentWriter docWriter = XpsDocument.CreateXpsDocumentWriter(doc);
-            //IDocumentPaginatorSource paginer = testdoc;
-            //docWriter.Write(paginer.DocumentPaginator);
-            //doc.Close();
             
-
-            ////Clone the source document
-            //var str = XamlWriter.Save(testdoc);
-            //var stringReader = new System.IO.StringReader(str);
-            //var xmlReader = XmlReader.Create(stringReader);
-            //var CloneDoc = XamlReader.Load(xmlReader) as FlowDocument;
-
+            FlowDocument testdoc = CreateFlowDocument(96 * 8.27, 96 * 11.7); // A4 approx (inches x 96 dpi) THIS IS WHERE THE CONTENT IS SPECIFIED
+            
             //Now print using PrintDialog
             var pd = new System.Windows.Controls.PrintDialog();
 
@@ -804,14 +774,7 @@ public partial class PortfolioStartWindow : Window
 
                 pd.PrintDocument(idocument.DocumentPaginator, "Printing FlowDocument");
             }
-            //string DocFile = GetDocFileSpec(docFile: "MyRecipes.rtf", rtfFile: true);
-            //if (string.IsNullOrWhiteSpace(filename)) { return; }
-            //System.IO.FileStream fs = new System.IO.FileStream(filename, System.IO.FileMode.OpenOrCreate, System.IO.FileAccess.Write);
-            //using (fs)
-            //{
-            //    TextRange rtbtext = new TextRange(testdoc.ContentStart, testdoc.ContentEnd);
-            //    rtbtext.Save(fs, dataFormat: DataFormats.Rtf);
-            //}
+            
             _portfolio.LastDocumentExport = DateTime.Now;
             ShowCounts();
         }

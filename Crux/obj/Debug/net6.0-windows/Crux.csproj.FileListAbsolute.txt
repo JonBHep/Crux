@@ -31,3 +31,9 @@ C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-w
 C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\MotViewWindow.baml
 C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\Crux.csproj.CopyComplete
 C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\App.baml
+C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\PortfolioStartWindow.g.cs
+C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\PortfolioStartWindow.baml
+C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\CardEditor.baml
+C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\CardsWindow.baml
+C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\CardEditor.g.cs
+C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\CardsWindow.g.cs

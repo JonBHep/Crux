@@ -1,0 +1,51 @@
+﻿<Window x:Class="Crux.CardsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        
+        mc:Ignorable="d"
+        Title="Credit and debit cards" Height="450" Width="800" Background="Ivory" Icon="JH Aramis bleu reference.ico" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ContentRendered="Window_ContentRendered">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="38"></RowDefinition>
+            <RowDefinition Height="38"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="80"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <ListBox x:Name="CardsListBox" Margin="4" SelectionChanged="CardsListBox_SelectionChanged"></ListBox>
+            <DockPanel Grid.Column="1" LastChildFill="False">
+                <Button Margin="4" Height="28" DockPanel.Dock="Top" FontWeight="Bold" Click="CloseButton_Click">Close</Button>
+                <Button Margin="4" Height="28" DockPanel.Dock="Bottom" Click="NewButton_Click">New...</Button>
+            </DockPanel>
+            
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="80"></ColumnDefinition>
+                <ColumnDefinition Width="80"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="CardCaptionBlock" VerticalAlignment="Center" Margin="6" Foreground="SaddleBrown" FontFamily="Lucida Console" FontSize="14"></TextBlock>
+            <Button x:Name="EditButton" Grid.Column="1" Margin="4" Height="28" VerticalAlignment="Center" ToolTip="Edit card details" Click="EditButton_Click">Edit</Button>
+            <Button x:Name="DeleteButton" Grid.Column="2" Margin="4" Height="28" VerticalAlignment="Center" Click="DeleteButton_Click">Delete</Button>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock VerticalAlignment="Center" Margin="6 0">COPY</TextBlock>
+            <Button x:Name="CopyNameButton" Grid.Column="1" ToolTip="Copy name on card" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="12 3" Width="100" Height="26" Background="Cornsilk" Foreground="SaddleBrown" Click="CopyNameButton_Click">Cardholder</Button>
+            <Button x:Name="CopyNumberButton" Grid.Column="2" ToolTip="Copy card number" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="12 3" Width="100" Height="26" Background="Cornsilk" Foreground="SaddleBrown" Click="CopyNumberButton_Click">Card number</Button>
+            <Button x:Name="CopyCcvButton" Grid.Column="3" ToolTip="Copy card verification value" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="12 3" Width="100" Height="26" Background="Cornsilk" Foreground="SaddleBrown" Click="CopyCcvButton_Click">CVV</Button>
+        </Grid>
+        
+    </Grid>
+</Window>

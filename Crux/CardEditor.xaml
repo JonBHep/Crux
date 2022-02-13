@@ -1,0 +1,90 @@
+﻿<Window x:Class="Crux.CardEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        
+         mc:Ignorable="d"
+        Title="Credit or debit card" Height="450" Width="800" Background="Ivory" Foreground="SaddleBrown" Icon="JH Aramis bleu reference.ico" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" Cursor="" ResizeMode="NoResize" ContentRendered="Window_ContentRendered">
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="Margin" Value="6 0 6 0"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        
+        <TextBlock Grid.Row="0">Caption</TextBlock>
+        <TextBox x:Name="CaptionBox" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="0 0 6 0"></TextBox>
+        
+        <TextBlock Grid.Row="1">Name on card</TextBlock>
+        <TextBox x:Name="NameBox" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="0 0 6 0"></TextBox>
+
+        <TextBlock Grid.Row="2">Card number</TextBlock>
+        <TextBox x:Name="NumberBox" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="0 0 6 0"></TextBox>
+        
+        <TextBlock Grid.Row="3">Valid from</TextBlock>
+        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+            <TextBlock Margin="0 0 2 0">MM</TextBlock>
+            <TextBox x:Name="MonthFromBox" Width="40"  HorizontalAlignment="Left"></TextBox>
+            <TextBlock Margin="12 0 2 0">YYYY</TextBlock>
+            <TextBox x:Name="YearFromBox" Width="80"  HorizontalAlignment="Left"></TextBox>
+        </StackPanel>
+        
+        <TextBlock Grid.Row="4">Valid to</TextBlock>
+        <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+            <TextBlock Margin="0 0 2 0">MM</TextBlock>
+            <TextBox x:Name="MonthToBox" Width="40"  HorizontalAlignment="Left"></TextBox>
+            <TextBlock Margin="12 0 2 0">YYYY</TextBlock>
+            <TextBox x:Name="YearToBox" Width="80"  HorizontalAlignment="Left"></TextBox>
+        </StackPanel>
+        
+        <TextBlock Grid.Row="0" Grid.Column="2">CVV</TextBlock>
+        <TextBox x:Name="CvvBox" Grid.Row="0" Grid.Column="3" Width="100" VerticalAlignment="Center" HorizontalAlignment="Left"></TextBox>
+        
+        <TextBlock Grid.Row="1" Grid.Column="2">PIN</TextBlock>
+        <TextBox x:Name="PinBox" Grid.Row="1" Grid.Column="3" Width="100" VerticalAlignment="Center" HorizontalAlignment="Left"></TextBox>
+        
+        <TextBlock Grid.Row="2" Grid.Column="2">Type</TextBlock>
+        <StackPanel Grid.Row="2" Grid.Column="3" VerticalAlignment="Center">
+            <StackPanel Orientation="Horizontal">
+                <RadioButton x:Name="DebitRadio" Margin="0 0 12 8" Foreground="SaddleBrown" IsThreeState="False" Checked="DebitRadio_Checked">Debit</RadioButton>
+                <RadioButton x:Name="CreditRadio" Margin="0 0 0 8" Foreground="SaddleBrown" IsThreeState="False" Checked="CreditRadio_Checked">Credit</RadioButton>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock x:Name="CreditLimitCaption" Margin="0 0 4 0">Credit limit £</TextBlock>
+                <TextBox x:Name="CreditLimitBox"  Width="100"></TextBox>
+            </StackPanel>
+        </StackPanel>
+        
+        <TextBlock Grid.Row="3" Grid.Column="2">Verification message</TextBlock>
+        <TextBox x:Name="VMessageBox" Grid.Row="3" Grid.Column="3" Margin="0 0 6 0" VerticalAlignment="Center"></TextBox>
+        
+        <TextBlock Grid.Row="4" Grid.Column="2">Verification password</TextBlock>
+        <TextBox x:Name="VWordBox" Grid.Row="4" Grid.Column="3" Margin="0 0 6 0" VerticalAlignment="Center"></TextBox>
+        
+        <TextBlock Grid.Row="5" Grid.Column="0">Notes</TextBlock>
+        <TextBox x:Name="NotesBox" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" Margin="0 0 6 0" TextWrapping="Wrap"></TextBox>
+
+        <DockPanel Grid.Row="6" Grid.Column="3" LastChildFill="False">
+            <Button Margin="0 0 8 0" Width="80" Height="32" FontWeight="Medium" DockPanel.Dock="Right" Click="OkButton_Click">OK</Button>
+            <Button Margin="0 0 8 0" Width="80" Height="32" IsCancel="True" DockPanel.Dock="Right">Cancel</Button>
+        </DockPanel>
+        
+    </Grid>
+</Window>

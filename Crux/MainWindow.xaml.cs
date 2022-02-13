@@ -41,15 +41,16 @@ namespace Crux
 
         private void ButtonAccounts_Click(object sender, RoutedEventArgs e)
         {
-            // PortfolioStartWindow w = new PortfolioStartWindow()
-            // {
-            //     Owner = this
-            // };
-            // w.ShowDialog();
+            PortfolioStartWindow w = new PortfolioStartWindow()
+            {
+                Owner = this
+            };
+            w.ShowDialog();
         }
 
         private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            // TODO Add About Window
             // windowAbout w = new windowAbout
             // {
             //     Owner = this
