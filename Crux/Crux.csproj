@@ -26,6 +26,7 @@
 
     <ItemGroup>
       <Compile Remove="PortfolioDetailsWindow.xaml.cs" />
+      <Compile Remove="XmlEventArguments.cs" />
     </ItemGroup>
 
 </Project>
