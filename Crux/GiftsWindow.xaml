@@ -5,7 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:Crux"
         mc:Ignorable="d"
-        Title="Gifts made (excluding gifts to charities and political parties)" Height="700" Width="1000" WindowStartupLocation="CenterScreen" Icon="JH Aramis bleu reference.ico" ResizeMode="NoResize" ContentRendered="Window_ContentRendered" ShowInTaskbar="False" Loaded="Window_Loaded" Closing="Window_Closing" >
+        Title="Gifts made (excluding gifts to charities and political parties)" Height="700" Width="1000" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ContentRendered="Window_ContentRendered" ShowInTaskbar="False" Loaded="Window_Loaded" Closing="Window_Closing" >
     <Window.Resources>
         <Style TargetType="{x:Type ListViewItem}">
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>

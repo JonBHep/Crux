@@ -50,12 +50,8 @@ namespace Crux
 
         private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            // TODO Add About Window
-            // windowAbout w = new windowAbout
-            // {
-            //     Owner = this
-            // };
-            // w.ShowDialog();
+            AboutBox w=new AboutBox {Owner = this};
+             w.ShowDialog();
         }
 
         private void TextBlock_MouseDown_1(object sender, MouseButtonEventArgs e)

@@ -5,7 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:Crux"
         mc:Ignorable="d"
-        Title="Accounts, policies and services" Width="600" WindowStartupLocation="CenterScreen" Icon="JH Aramis bleu reference.ico" ResizeMode="NoResize" WindowStyle="None" Background="DarkSlateBlue" SizeToContent="Width" ContentRendered="Window_ContentRendered" Closing="Window_Closing" ShowInTaskbar="False">
+        Title="Accounts, policies and services" Width="600" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None" Background="DarkSlateBlue" SizeToContent="Width" ContentRendered="Window_ContentRendered" Closing="Window_Closing" ShowInTaskbar="False">
     <Grid Margin="1" Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="140"/>

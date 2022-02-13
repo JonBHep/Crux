@@ -5,7 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         
          mc:Ignorable="d"
-        Title="Credit or debit card" Height="450" Width="800" Background="Ivory" Foreground="SaddleBrown" Icon="JH Aramis bleu reference.ico" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" Cursor="" ResizeMode="NoResize" ContentRendered="Window_ContentRendered">
+        Title="Credit or debit card" Height="450" Width="800" Background="Ivory" Foreground="SaddleBrown" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" Cursor="" ResizeMode="NoResize" ContentRendered="Window_ContentRendered">
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"></Setter>

@@ -49,3 +49,5 @@ C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-w
 C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\PortfolioListWindow.baml
 C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\DatedBalancesWindow.baml
 C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\DatedBalancesWindow.g.cs
+C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\AboutBox.g.cs
+C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\AboutBox.baml
