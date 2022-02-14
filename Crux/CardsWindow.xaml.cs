@@ -77,7 +77,7 @@ public partial class CardsWindow
         int i = CardsListBox.SelectedIndex;
         if (i >= 0)
         {
-            if (CardsListBox.SelectedItem is ListBox {Tag: string s})
+            if (CardsListBox.SelectedItem is ListBoxItem {Tag: string s})
             {
                 CardEditor w = new CardEditor(s) {Owner = this};
                 bool? response = w.ShowDialog();
