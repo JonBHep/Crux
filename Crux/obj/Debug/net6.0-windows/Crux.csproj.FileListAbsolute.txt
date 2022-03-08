@@ -2,7 +2,6 @@ C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\bin\Debug\net6.0-w
 C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\bin\Debug\net6.0-windows\Crux.deps.json
 C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\bin\Debug\net6.0-windows\Crux.runtimeconfig.json
 C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\bin\Debug\net6.0-windows\Crux.dll
-C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\bin\Debug\net6.0-windows\ref\Crux.dll
 C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\bin\Debug\net6.0-windows\Crux.pdb
 C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\Crux.csproj.AssemblyReference.cache
 C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\MainWindow.g.cs
@@ -51,3 +50,6 @@ C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-w
 C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\DatedBalancesWindow.g.cs
 C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\AboutBox.g.cs
 C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\AboutBox.baml
+C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\refint\Crux.dll
+C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\MiseAJourWindow.g.cs
+C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\obj\Debug\net6.0-windows\MiseAJourWindow.baml

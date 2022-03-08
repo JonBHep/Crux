@@ -14,10 +14,10 @@ public partial class GiftsWindow
     }
     private struct Donation
         {
-            public string GDate { get;set;}
+            public string GDate { get;init;}
             public string GAge { get;set;}
-            public string GDetail { get; set; }
-            public string GAmount { get; set; }
+            public string GDetail { get; init; }
+            public string GAmount { get; init; }
             public Brush Tint { get; set; }
         }
 
@@ -32,7 +32,7 @@ public partial class GiftsWindow
         private readonly System.Collections.ObjectModel.ObservableCollection<Donation> _giftsList = new System.Collections.ObjectModel.ObservableCollection<Donation>();
         private readonly System.Collections.ObjectModel.ObservableCollection<TaxYearSummary> _taxYearsList = new System.Collections.ObjectModel.ObservableCollection<TaxYearSummary>();
 
-        private GiftList _dons;
+        private readonly GiftList _dons;
 
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -47,8 +47,6 @@ public partial class GiftsWindow
             Height = winY;
             Left = xm;
             Top = ym;
-
-            
         }
 
         private void Window_ContentRendered(object sender, EventArgs e)
@@ -59,13 +57,14 @@ public partial class GiftsWindow
         private void RebuildListViewSources()
         {
             Donation d = new Donation();
-            TaxYearSummary ty;
 
             _giftsList.Clear();
             foreach (GiftList.GiftGiven g in _dons.Gifts)
             {
-                d = new Donation() { GAmount = g.Amount.ToString("#0.00"), GDate = g.GiftDate.ToShortDateString(), GDetail = g.Detail, GAge = g.AgeString };
-                if (g.LessThanSevenYearsOld) { d.Tint = Brushes.Black; } else { d.Tint = Brushes.Gray; }
+                d = new Donation { GAmount = g.Amount.ToString("#0.00"), GDate = g.GiftDate.ToShortDateString(), GDetail = g.Detail, GAge = g.AgeString
+                    ,
+                    Tint = g.LessThanSevenYearsOld ? Brushes.Black : Brushes.Gray
+                };
                 _giftsList.Add(d);
             }
             GiftsListView.ItemsSource = _giftsList;
@@ -80,7 +79,7 @@ public partial class GiftsWindow
             _taxYearsList.Clear();
             for (int yr=DateTime.Today.Year-8; yr <= DateTime.Today.Year; yr++)
             {
-                ty = new TaxYearSummary
+                var ty = new TaxYearSummary
                 {
                     YDates = $"{yr}-{yr + 1}",
                     YGross ="£"+ _dons.TaxYearTotal(yr, out int ycount).ToString("#,0.00"),
@@ -145,7 +144,7 @@ public partial class GiftsWindow
         {
             if (!EnteredDataIsOk()) { MessageBox.Show("Invalid data entered", Jbh.AppManager.AppName, MessageBoxButton.OK, MessageBoxImage.Asterisk); return; }
 
-            DateTime when =GiftDatePicker.SelectedDate ?? DateTime.Today; // in fact will not be null - already checked
+            DateTime when = GiftDatePicker.SelectedDate ?? DateTime.Today; // in fact will not be null - already checked
             double howMuch =double.Parse(GiftAmountBox.Text);
             string what = GiftDetailBox.Text.Trim();
 
@@ -155,7 +154,10 @@ public partial class GiftsWindow
                 Detail = what,
                 GiftDate = when
             };
-
+            
+            GiftDatePicker.SelectedDate = null;
+            GiftAmountBox.Text = string.Empty;
+            GiftDetailBox.Text = "Gift to Tom";
             _dons.AddItem(g);
             RebuildListViewSources();
         }
@@ -181,13 +183,8 @@ public partial class GiftsWindow
 
         private bool EnteredDataIsOk()
         {
-            bool ok = true;
-            DateTime when = DateTime.MinValue;
-            string what = string.Empty;
-            if (!double.TryParse(GiftAmountBox.Text, out double howmuch))
-            {
-                ok = false;
-            }
+            bool ok = double.TryParse(GiftAmountBox.Text, out var _);
+
 
             if (!GiftDatePicker.SelectedDate.HasValue)
             {

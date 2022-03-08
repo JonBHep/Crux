@@ -11,28 +11,28 @@
             <!--If the HorizontalContentAlignment ListViewItem style is not set then all cell contents within the listview will left-align-->
         </Style>
         <DataTemplate x:Key="DateTemplate">
-            <TextBlock MinWidth="80" HorizontalAlignment="Right" Foreground="{Binding Tint}" Text="{Binding G_date}"/>
+            <TextBlock MinWidth="80" HorizontalAlignment="Right" Foreground="{Binding Tint}" Text="{Binding GDate}"/>
         </DataTemplate>
         <DataTemplate x:Key="AmountTemplate">
-            <TextBlock MinWidth="80" TextAlignment="Right" Foreground="{Binding Tint}" Text="{Binding G_amount}"/>
+            <TextBlock MinWidth="80" TextAlignment="Right" Foreground="{Binding Tint}" Text="{Binding GAmount}"/>
         </DataTemplate>
         <DataTemplate x:Key="DetailTemplate">
-            <TextBlock Foreground="{Binding Tint}" Text="{Binding G_detail}"/>
+            <TextBlock Foreground="{Binding Tint}" Text="{Binding GDetail}"/>
         </DataTemplate>
         <DataTemplate x:Key="AgeTemplate">
-            <TextBlock MinWidth="80" Foreground="{Binding Tint}" Text="{Binding G_age}"/>
+            <TextBlock MinWidth="80" Foreground="{Binding Tint}" Text="{Binding GAge}"/>
         </DataTemplate>
         <DataTemplate x:Key="YearDatesTemplate">
-            <TextBlock MinWidth="80" Text="{Binding Y_dates}"/>
+            <TextBlock MinWidth="80" Text="{Binding YDates}"/>
         </DataTemplate>
         <DataTemplate x:Key="YearCountTemplate">
-            <TextBlock MinWidth="80" Text="{Binding Y_count}"/>
+            <TextBlock MinWidth="80" Text="{Binding YCount}"/>
         </DataTemplate>
         <DataTemplate x:Key="YearGrossTemplate">
-            <TextBlock MinWidth="80"  TextAlignment="Right" Text="{Binding Y_gross}"/>
+            <TextBlock MinWidth="80"  TextAlignment="Right" Text="{Binding YGross}"/>
         </DataTemplate>
         <DataTemplate x:Key="YearNetTemplate">
-            <TextBlock MinWidth="80" TextAlignment="Right" Text="{Binding Y_net}"/>
+            <TextBlock MinWidth="80" TextAlignment="Right" Text="{Binding YNet}"/>
         </DataTemplate>
     </Window.Resources>
     <Grid>
@@ -64,7 +64,7 @@
                     <TextBlock VerticalAlignment="Center">Details</TextBlock>
                     
                     <Button VerticalAlignment="Center" DockPanel.Dock="Right" Margin="6" Padding="0 4" ToolTip="Add as a new gift" Content="Add" Width="60" Click="ButtonAdd_Click"/>
-                    <TextBox x:Name="GiftDetailBox" VerticalAlignment="Center" Margin="4 0 0 0"></TextBox>
+                    <TextBox x:Name="GiftDetailBox" VerticalAlignment="Center" Margin="4 0 0 0" Text="Gift to Tom"></TextBox>
                 </DockPanel>
                 <DockPanel LastChildFill="False">
                     <Button x:Name="ButtonDelete" Margin="6" DockPanel.Dock="Right" Padding="0 4" ToolTip="Delete the selected gift" Content="Delete" Width="60" Click="ButtonDelete_Click" IsEnabled="False"/>

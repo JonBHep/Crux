@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -114,7 +115,8 @@ public partial class MotViewWindow
                 {
                     try
                     {
-                        System.Diagnostics.Process myProcess = new System.Diagnostics.Process();
+                        Process myProcess = new Process();
+                        myProcess.StartInfo.UseShellExecute = true;
                         myProcess.StartInfo.FileName = _pword.Element[i].Content;
                         myProcess.Start();
                     }

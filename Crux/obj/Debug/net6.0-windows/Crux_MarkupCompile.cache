@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET6_0;NETCOREAPP
 C:\Jbh.Original\Jbh.Info\Code\WPF\Current\Reference\Crux\Crux\App.xaml
-15-782804044
+16-989657025
 
-28-1251967627
-195-2117317312
-AboutBox.xaml;CardEditor.xaml;CardsWindow.xaml;DatedBalancesWindow.xaml;DossierDetailsWindow.xaml;DossierSubDetailsWindow.xaml;GiftsWindow.xaml;MainWindow.xaml;MotEditor.xaml;MotMaker.xaml;MotsStartWindow.xaml;MotViewWindow.xaml;PortfolioAlertsWindow.xaml;PortfolioListWindow.xaml;PortfolioStartWindow.xaml;
+29497972611
+195-1354719069
+AboutBox.xaml;CardEditor.xaml;CardsWindow.xaml;DatedBalancesWindow.xaml;DossierDetailsWindow.xaml;DossierSubDetailsWindow.xaml;GiftsWindow.xaml;MainWindow.xaml;MiseAJourWindow.xaml;MotEditor.xaml;MotMaker.xaml;MotsStartWindow.xaml;MotViewWindow.xaml;PortfolioAlertsWindow.xaml;PortfolioListWindow.xaml;PortfolioStartWindow.xaml;
 
 False
 

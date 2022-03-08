@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         mc:Ignorable="d"
-        Title="Portfolio list" Height="700" Width="1000" WindowStartupLocation="CenterScreen" ContentRendered="Window_ContentRendered" ResizeMode="NoResize" ShowInTaskbar="False">
+        Title="Portfolio list" Height="700" Width="1000" WindowStartupLocation="CenterScreen" Loaded="PortfolioListWindow_OnLoaded" ContentRendered="Window_ContentRendered" ResizeMode="NoResize" ShowInTaskbar="False">
     <Window.Resources>
 
         <Style TargetType="{x:Type ListViewItem}">
@@ -132,6 +132,7 @@
         <DockPanel LastChildFill="False" Grid.Row="2">
             <Button x:Name="ButtonClose" Margin="4" Style="{StaticResource ButtonClose}" VerticalAlignment="Center" ToolTip="Return to Accounts and Services main screen" Click="ButtonClose_Click">Return</Button>
             <Button x:Name="BalancesButton" ToolTip="View a list and chart of dated balances" DockPanel.Dock="Right" VerticalAlignment="Center" Width="72" Height="27" Margin="0 0 8 0" Click="BalancesButton_Click">Timeline</Button>
+            <Button x:Name="UpdateBalancesButton" ToolTip="Enter up to date account balances" DockPanel.Dock="Right" VerticalAlignment="Center" Width="128" Height="27" Margin="0 0 8 0" Click="UpdateBalancesButton_Click">Update balances</Button>
         </DockPanel>
     </Grid>
 </Window>
