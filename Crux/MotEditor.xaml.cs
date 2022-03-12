@@ -9,18 +9,20 @@ namespace Crux;
 
 public partial class MotEditor
 {
-   internal MotEditor(string passwordSpec, MotList ml)
+   internal MotEditor(string passwordSpec, MotList ml, bool isNew)
         {
             InitializeComponent();
             _editedSpec = passwordSpec;
             _tempPasswordFile = new Mot { Specification = _editedSpec };
             _pool = ml;
+            _newBorn = isNew;
         }
         private readonly Mot _tempPasswordFile;
         private bool _somethingAltered;
         private string _editedSpec;
         private readonly MotList _pool; // for checking uniqueness of titles
         public string EditedSpecification => _editedSpec;
+        private bool _newBorn;
 
         private void Window_ContentRendered(object sender, EventArgs e)
         {
@@ -58,12 +60,9 @@ public partial class MotEditor
         private void RefreshTitles()
         {
             FontFamily ff = new FontFamily("Lucida Console");
-        //    double listwidth = TitlesListBox.ActualWidth;
-          //  double textwidth = (listwidth > 120) ? listwidth - 120 : 200;
             TitlesListBox.Items.Clear();
             foreach (string nom in _tempPasswordFile.Aliases)
             {
-                // TextBlock tbk = new TextBlock() { FontFamily = ff, Text = nom, Foreground = Brushes.SteelBlue };
                 TitlesListBox.Items.Add(new ListBoxItem() { Tag = nom, Content = new TextBlock() { FontFamily = ff, Text = nom, Foreground = Brushes.SteelBlue } });
             }
             RemoveTitleButton.IsEnabled = false;
@@ -226,9 +225,24 @@ public partial class MotEditor
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult answ = MessageBox.Show("Has the password been altered?", "Password file", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
-            if (answ == MessageBoxResult.Cancel) { return; }
-            if (answ == MessageBoxResult.Yes) { _tempPasswordFile.PasswordChanged = DateTime.Today; }
+            if (_newBorn)
+            {
+                _tempPasswordFile.PasswordChanged = DateTime.Today;
+            }
+            else
+            {
+                MessageBoxResult answ = MessageBox.Show("Has the password been altered?", "Password file"
+                    , MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+                if (answ == MessageBoxResult.Cancel)
+                {
+                    return;
+                }
+                if (answ == MessageBoxResult.Yes)
+                {
+                    _tempPasswordFile.PasswordChanged = DateTime.Today;
+                }
+            }
+
             _tempPasswordFile.Updated = DateTime.Today.ToString("dd MMM yyyy");
             _tempPasswordFile.Favourite =CheckboxFavourite.IsChecked ?? false;
             _tempPasswordFile.Accessed = DateTime.Now;
@@ -283,6 +297,5 @@ public partial class MotEditor
         {
             RemoveTitleButton.IsEnabled = TitlesListBox.SelectedIndex >= 0;
         }
-        
         
 }

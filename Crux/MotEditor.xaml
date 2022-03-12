@@ -46,6 +46,7 @@
             <Button DockPanel.Dock="Right" Margin="4" Padding="4" VerticalAlignment="Center" Click="buttonGeneratePassword_Click" Content="Generate a password" Focusable="False"/>
             <TextBox x:Name="TextboxValue" Margin="4" Padding="4" VerticalAlignment="Center" VerticalContentAlignment="Center" FontFamily="Lucida Console" TextChanged="textboxValue_TextChanged"/>
         </DockPanel>
+        
         <DockPanel Grid.Row="7" LastChildFill="False">
             <CheckBox x:Name="LinkCheckBox" IsThreeState="False" DockPanel.Dock="Left" Margin="72 6 0 6" VerticalAlignment="Center" VerticalContentAlignment="Center" Content="Weblink"/>
             <TextBlock Margin="8 0 0 0" Foreground="DarkSlateBlue" VerticalAlignment="Center"><Run Text="Tick 'Weblink' for a web address which can be launched when viewing the Password file"/></TextBlock>

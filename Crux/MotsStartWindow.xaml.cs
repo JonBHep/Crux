@@ -157,7 +157,7 @@ public partial class MotsStartWindow
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
         {
             Mot newpwd = new Mot();
-            MotEditor ed=new MotEditor(newpwd.Specification, _motList)
+            MotEditor ed=new MotEditor(newpwd.Specification, _motList, true)
             {
                 Owner = this
             };

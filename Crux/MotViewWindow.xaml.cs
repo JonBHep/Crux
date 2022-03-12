@@ -143,7 +143,7 @@ public partial class MotViewWindow
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
-            MotEditor w = new MotEditor(_originalSpecification, _pool)
+            MotEditor w = new MotEditor(_originalSpecification, _pool, false)
             {
                 Owner = this
             };
