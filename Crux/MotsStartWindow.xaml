@@ -19,7 +19,7 @@
             <TextBox x:Name="TextboxFilter" Margin="8 2" Width="80" VerticalAlignment="Center" TextChanged="TextboxFilter_TextChanged"></TextBox>
             <Button x:Name="ButtonClear" Margin="8 2" Padding="8 2" VerticalAlignment="Center" Click="ButtonClear_Click" >Clear</Button>
             <TextBlock x:Name="TextblockCount" Margin="8 2" VerticalAlignment="Center" Foreground="CornflowerBlue" FontSize="14" FontFamily="Consolas">entries</TextBlock>
-            <TextBlock Margin="8 2" VerticalAlignment="Center" TextAlignment="Left" Foreground="Crimson" FontSize="14" FontFamily="Consolas">For travelling, note key passwords in Eric's List in OneDrive/PersonalVault</TextBlock>
+            <TextBlock Margin="8 2" VerticalAlignment="Center" TextAlignment="Left" Foreground="Crimson" FontSize="14" FontFamily="Consolas">Note key passwords in Business\Travel\Current trip\Eric's List and Replicate to DropBox / OneDrive</TextBlock>
         </DockPanel>
         <TabControl x:Name="PasswordTabControl" Grid.Row="1" Grid.Column="0">
 

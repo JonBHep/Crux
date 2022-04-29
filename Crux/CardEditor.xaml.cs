@@ -41,15 +41,8 @@ public partial class CardEditor
 
             _carte.Cvv = CvvBox.Text.Trim();
 
-            if (int.TryParse(PinBox.Text, out int ib))
-            {
-                _carte.Epingle = ib;
-            }
-            else
-            {
-                _carte.Epingle = 0;
-                errMessage = "Enter the card PIN";
-            }
+            _carte.Nip =PinBox.Text.Trim();
+            
             if (int.TryParse(MonthFromBox.Text, out int ic))
             {
                 _carte.FromMonth = ic;
@@ -116,7 +109,7 @@ errMessage = "To month error";
                 CreditLimitBox.Text = _carte.CreditLimit.ToString();
             }
             CvvBox.Text = _carte.Cvv;
-            PinBox.Text = _carte.Epingle.ToString();
+            PinBox.Text = _carte.Nip;
             MonthFromBox.Text = _carte.FromMonth.ToString("00");
             MonthToBox.Text = _carte.ToMonth.ToString("00");
             YearFromBox.Text = _carte.FromYear.ToString("0000");

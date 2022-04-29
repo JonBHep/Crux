@@ -13,7 +13,7 @@ public class CarteBancaire : IComparable<CarteBancaire>
     public int ToMonth { get; set; }
     public int ToYear { get; set; }
     public string Cvv { get; set; }
-    public int Epingle { get; set; }
+    public string Nip { get; set; }
     public string VerificationMessage { get; set; }
     public string VerificationPassword { get; set; }
     public int CreditLimit { get; set; }
@@ -25,6 +25,7 @@ public class CarteBancaire : IComparable<CarteBancaire>
         NameOnCard = string.Empty;
         CardNumber = string.Empty;
         Cvv=string.Empty;
+        Nip = string.Empty;
         VerificationMessage = string.Empty;
         VerificationPassword = string.Empty;
         Notes = string.Empty;
@@ -69,7 +70,7 @@ public class CarteBancaire : IComparable<CarteBancaire>
             rv += ToMonth.ToString("00") + SpecConnector;
             rv += ToYear.ToString("0000") + SpecConnector;
             rv += Cvv + SpecConnector;
-            rv += Epingle.ToString() + SpecConnector;
+            rv += Nip + SpecConnector;
             rv += VerificationMessage + SpecConnector;
             rv += VerificationPassword + SpecConnector;
             rv += CreditLimit.ToString() + SpecConnector;
@@ -92,7 +93,7 @@ public class CarteBancaire : IComparable<CarteBancaire>
             ToMonth = int.Parse(parts[5]);
             ToYear = int.Parse(parts[6]);
             Cvv = parts[7];
-            Epingle = int.Parse(parts[8]);
+            Nip = parts[8];
             VerificationMessage = parts[9];
             VerificationPassword = parts[10];
             CreditLimit = int.Parse(parts[11]);
