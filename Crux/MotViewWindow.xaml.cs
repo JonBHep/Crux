@@ -143,15 +143,14 @@ public partial class MotViewWindow
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
-            MotEditor w = new MotEditor(_originalSpecification, _pool, false)
+            MotEditor w = new MotEditor(_revisedSpecification, _pool, false)
             {
                 Owner = this
             };
             bool? sd = w.ShowDialog();
-            if (sd.HasValue && sd.Value) 
+            if (sd?? false) 
             {
-                _revisedSpecification = w.EditedSpecification;
-                _pword.Specification = _revisedSpecification; 
+                _pword.Specification =_revisedSpecification = w.EditedSpecification;
                 RefreshView();
             }
         }
